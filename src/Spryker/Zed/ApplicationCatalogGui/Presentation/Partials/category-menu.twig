@@ -1,0 +1,56 @@
+{%- macro leaf(node, depth=0) -%}
+    {%- import _self as app_categories -%}
+
+    {%- if node is defined %}
+        {% set isCategoryActive = node.is_active is defined and node.is_active %}
+        <li class="item{{ isCategoryActive ? " active" : "" }}" style="margin: 0; background: {{ isCategoryActive ? "#e7eaec" : "white" }}">
+            <a href="{{ node.category_url }}" style="color: grey">
+                {%- if depth > 0 %}
+                    <span class="fa fa fa-angle-double-right"></span>
+                {% endif -%}
+                <span class="nav-label">{{ node.name | trans }}</span>
+            </a>
+        </li>
+    {% endif -%}
+{%- endmacro -%}
+
+{%- macro branch(node, depth=0) -%}
+    {%- import _self as app_categories -%}
+
+    {%- if node is defined %}
+        {% set isCategoryActive = node.is_active is defined and node.is_active %}
+        <li class="{{ isCategoryActive ? " active" : "" }}" style="background: {{ isCategoryActive ? "#e7eaec" : "white" }}">
+            <a href="{{ node.category_url }}" data-toggle="collapse" data-target=".category-{{ node.id_category }}"
+               style="color: gray">
+                <span class="nav-label">{{ node.name | trans }}</span>
+                <span class="fa fa-angle-down pull-right"></span>
+            </a>
+
+            <ul class="nav nav-second-level collapse {{ isCategoryActive ? " in" : "" }} category-{{ node.id_category }}"
+                style="background: {{ isCategoryActive ? "#e7eaec" : "#ffffff" }}">
+                {{ app_categories.tree(node.children, (depth + 1)) }}
+            </ul>
+        </li>
+    {% endif -%}
+{%- endmacro -%}
+
+{%- macro tree(root, depth=0) -%}
+    {%- import _self as app_categories -%}
+
+    {%- for child in root -%}
+        {%- if child.children is defined and child.children is not empty -%}
+            {{ app_categories.branch(child, depth) }}
+        {%- else -%}
+            {{ app_categories.leaf(child, depth) }}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endmacro -%}
+
+{%- import _self as app_categories -%}
+
+<div>
+    <ul class="nav">
+        {{ app_categories.tree(categoriesMenu) }}
+    </ul>
+</div>
+

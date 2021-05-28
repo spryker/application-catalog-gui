@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <application-catalog-gui>
+        <label>Application Catalog</label>
+        <title>Application Catalog</title>
+        <icon>fa-archive</icon>
+        <pages>
+            <catalog>
+                <label>Catalog</label>
+                <title>Catalog</title>
+                <bundle>application-catalog-gui</bundle>
+                <controller>index</controller>
+                <action>index</action>
+                <pages>
+                    <details>
+                        <label>Application Details</label>
+                        <title>Application Details</title>
+                        <bundle>application-catalog-gui</bundle>
+                        <controller>index/details</controller>
+                        <action>index</action>
+                        <visible>0</visible>
+                    </details>
+                </pages>
+            </catalog>
+        </pages>
+    </application-catalog-gui>
+</config>
