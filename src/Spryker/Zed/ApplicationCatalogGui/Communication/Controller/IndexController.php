@@ -8,11 +8,14 @@
 namespace Spryker\Zed\ApplicationCatalogGui\Communication\Controller;
 
 use Generated\Shared\Transfer\ApplicationCategoryCriteriaTransfer;
+use Generated\Shared\Transfer\ApplicationConnectRequestTransfer;
 use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationTransfer;
 use Generated\Shared\Transfer\LabelCriteriaTransfer;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Table\ApplicationsTable;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -23,15 +26,9 @@ class IndexController extends AbstractController
 {
     protected const PARAM_SEARCH_TERM = 'search';
     protected const PARAM_PAGE = 'page';
-    protected const PARAM_FILTER = 'filter';
     protected const PARAM_CONNECTION_STATE_IDS = 'connection-states';
-    protected const PARAM_IDENTIFIER = 'id';
 
-    protected const KEY_PAGE_NUMBER = 'number';
-    protected const KEY_PAGE_SIZE = 'size';
-    protected const KEY_CATEGORY_IDS = 'categories';
-    protected const KEY_LABEL_IDS = 'labels';
-    protected const KEY_SEARCH_VALUE = 'value';
+    protected const MESSAGE_CONNECTION_FAILED = 'Connection is failed';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -53,16 +50,22 @@ class IndexController extends AbstractController
         $labelCollectionTransfer = $this->getFactory()->getApplicationCatalogClient()
             ->getLabelCollection($labelCriteriaTransfer);
 
+        $categoriesMenu = $this->getFactory()->createCategoriesNavigation()->renderCategoriesMenu(
+            $applicationCategoryCollectionTransfer->getCategories(),
+            $applicationCriteriaTransfer->getCategoryIds(),
+            $request
+        );
+
+        $labelsData = $this->getFactory()->createLabelsNavigation()->getLabelsData(
+            $labelCollectionTransfer->getLabels(),
+            $applicationCriteriaTransfer->getLabelIds(),
+            $request
+        );
+
         return $this->viewResponse([
             'appsTable' => $applicationsTable->render(),
-            'labelButtons' => $applicationsTable->renderLabelButtons(
-                $labelCollectionTransfer->getLabels(),
-                $applicationCriteriaTransfer->getLabelIds()
-            ),
-            'categoriesMenu' => $applicationsTable->renderCategoriesMenu(
-                $applicationCategoryCollectionTransfer->getCategories(),
-                $applicationCriteriaTransfer->getCategoryIds()
-            ),
+            'labelsData' => $labelsData,
+            'categoriesMenu' => $categoriesMenu,
         ]);
     }
 
@@ -104,14 +107,37 @@ class IndexController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function connectAction(Request $request): RedirectResponse
+    {
+        $uuid = (string)$request->query->get(ApplicationsTable::KEY_UUID);
+
+        $applicationConnectRequestTransfer = (new ApplicationConnectRequestTransfer())
+            ->setApplicationUuid($uuid);
+
+        $applicationConnectResponseTransfer = $this->getFactory()
+            ->getApplicationCatalogClient()
+            ->connectApplication($applicationConnectRequestTransfer);
+
+        if (!$applicationConnectResponseTransfer->getIsConnected()) {
+            $this->addErrorMessage(static::MESSAGE_CONNECTION_FAILED);
+        }
+
+        return $this->redirectResponse($request->headers->get('referer'));
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Generated\Shared\Transfer\ApplicationTransfer|null
      */
     protected function getApplicationTransfer(Request $request): ?ApplicationTransfer
     {
-        $identifier = (string)$request->query->get(static::PARAM_IDENTIFIER);
+        $uuid = (string)$request->query->get(ApplicationsTable::KEY_UUID);
 
         $applicationCriteriaTransfer = (new ApplicationCriteriaTransfer())
-            ->setIdApplication($identifier)
+            ->setApplicationUuid($uuid)
             ->setLocale($this->getFactory()->getLocaleFacade()->getCurrentLocale());
 
         return $this->getFactory()
@@ -126,22 +152,22 @@ class IndexController extends AbstractController
      */
     protected function getApplicationCriteriaTransferFromRequest(Request $request): ApplicationCriteriaTransfer
     {
-        $filterData = (array)$request->query->get(static::PARAM_FILTER);
+        $filterData = (array)$request->query->get(ApplicationsTable::KEY_FILTER);
 
         $applicationCriteriaTransfer = (new ApplicationCriteriaTransfer())
             ->setLocale($this->getFactory()->getLocaleFacade()->getCurrentLocale());
 
-        if (!empty($filterData[self::KEY_CATEGORY_IDS])) {
-            $applicationCriteriaTransfer->setCategoryIds(explode(',', $filterData[self::KEY_CATEGORY_IDS]));
+        if (!empty($filterData[ApplicationsTable::KEY_CATEGORY_IDS])) {
+            $applicationCriteriaTransfer->setCategoryIds(explode(',', $filterData[ApplicationsTable::KEY_CATEGORY_IDS]));
         }
 
-        if (!empty($filterData[self::KEY_LABEL_IDS])) {
-            $applicationCriteriaTransfer->setLabelIds(explode(',', $filterData[self::KEY_LABEL_IDS]));
+        if (!empty($filterData[ApplicationsTable::KEY_LABEL_IDS])) {
+            $applicationCriteriaTransfer->setLabelIds(explode(',', $filterData[ApplicationsTable::KEY_LABEL_IDS]));
         }
 
         $searchData = (array)$request->query->get(static::PARAM_SEARCH_TERM);
-        if (!empty($searchData[self::KEY_SEARCH_VALUE])) {
-            $applicationCriteriaTransfer->setSearchTerm($searchData[self::KEY_SEARCH_VALUE]);
+        if (!empty($searchData[ApplicationsTable::KEY_SEARCH_VALUE])) {
+            $applicationCriteriaTransfer->setSearchTerm($searchData[ApplicationsTable::KEY_SEARCH_VALUE]);
         }
 
         return $applicationCriteriaTransfer;

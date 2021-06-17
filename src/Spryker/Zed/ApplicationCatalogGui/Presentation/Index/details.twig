@@ -14,7 +14,7 @@
 
         {% block widget_content %}
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-3 text-center">
                     <a href="{{ appData.url }}">
                         <img src="{{ appData.iconUrl }}" width="125px" alt="logo"/>
                     </a>
@@ -31,14 +31,20 @@
                     <p>{{ appData.description }}</p>
                     <p>
                         {%- for category in appData.categories -%}
-                            <span class="badge badge-secondary m-r-xs">{{ category.name }}</span>
+                            <span class="badge badge-secondary m-r-xs">{{ category.title }}</span>
                         {%- endfor -%}
                     </p>
                 </div>
                 <div class="col-lg-2 text-right">
-                    <a href="#" class="btn btn-create btn-md" disabled="disabled">
-                        <i class="fa"></i> {{ 'Connect app' | trans }}
-                    </a>
+                    {%- if appData.connectionState.code == 'connected' %}
+                        <a href="#" class="btn btn-create btn-md" disabled="disabled">
+                            <i class="fa"></i> {{ 'Disconnect app' | trans }}
+                        </a>
+                    {%- else -%}
+                        <a href="/application-catalog-gui/index/connect?uuid={{ appData.applicationUuid }}" class="btn btn-create btn-md">
+                            <i class="fa"></i> {{ 'Connect app' | trans }}
+                        </a>
+                    {%- endif -%}
                     <br>
                     <div class="text-muted">{{ appData.connectionState.description }}</div>
                 </div>
@@ -55,7 +61,7 @@
                 </div>
                 <div class="col-lg-2 text-right">
                     {%- for label in appData.labels -%}
-                        <span class="badge badge-success m-r-xs">{{ label.name }}</span>
+                        <span class="badge badge-success m-r-xs">{{ label.title }}</span>
                     {%- endfor -%}
                 </div>
             </div>

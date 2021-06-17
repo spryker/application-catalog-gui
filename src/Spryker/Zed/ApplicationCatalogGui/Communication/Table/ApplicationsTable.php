@@ -7,7 +7,6 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Communication\Table;
 
-use ArrayObject;
 use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationTransfer;
 use Spryker\Service\UtilText\Model\Url\Url;
@@ -17,11 +16,23 @@ use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 
 class ApplicationsTable extends AbstractTable
 {
+    public const KEY_FILTER = 'filter';
+    public const KEY_UUID = 'uuid';
+
+    public const KEY_CATEGORY_IDS = 'categories';
+    public const KEY_LABEL_IDS = 'labels';
+    public const KEY_SEARCH_VALUE = 'value';
+
+    public const PAGE_URL = '/application-catalog-gui';
+
     protected const CONNECT_BTN_NAME = 'Connect';
+    protected const DISCONNECT_BTN_NAME = 'Disconnect';
     protected const DETAILS_BTN_NAME = 'Details';
-    protected const PAGE_URL = '/application-catalog-gui';
     protected const TABLE_DATA_URL = '/table';
     protected const APP_DETAILS_URL = '/application-catalog-gui/index/details';
+    protected const CONNECT_URL = '/application-catalog-gui/index/connect';
+
+    protected const CONNECTED_STATUS = 'connected';
 
     /**
      * @var \Spryker\Zed\ApplicationCatalogGui\Dependency\Client\ApplicationCatalogGuiToApplicationCatalogClientInterface
@@ -43,121 +54,6 @@ class ApplicationsTable extends AbstractTable
     ) {
         $this->applicationCatalogClient = $applicationCatalogClient;
         $this->applicationCriteriaTransfer = $applicationCriteriaTransfer;
-    }
-
-    /**
-     * @phpstan-param \ArrayObject<int, \Generated\Shared\Transfer\LabelTransfer> $labelTransfers
-     *
-     * @param \ArrayObject|\Generated\Shared\Transfer\LabelTransfer[] $labelTransfers
-     * @param string[] $selectedLabelIds
-     *
-     * @return string[]
-     */
-    public function renderLabelButtons(ArrayObject $labelTransfers, array $selectedLabelIds): array
-    {
-        $queryData = $this->getRequest()->query->all();
-
-        $data = [];
-        foreach ($labelTransfers as $labelTransfer) {
-            $queryData['filter']['labels'] = $labelTransfer->getIdLabel();
-
-            $defaultOptions = ['class' => 'btn btn-success'];
-            if (in_array($labelTransfer->getIdLabel(), $selectedLabelIds)) {
-                $defaultOptions = ['style' => 'btn btn-dark'];
-                unset($queryData['filter']['labels']);
-            }
-
-            $url = Url::generate(static::PAGE_URL, $queryData);
-            $data[] = $this->generateButton($url, $labelTransfer->getName(), $defaultOptions);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @phpstan-param \ArrayObject<int, \Generated\Shared\Transfer\ApplicationCategoryTransfer> $applicationCategoryTransfers
-     *
-     * @param \ArrayObject|\Generated\Shared\Transfer\ApplicationCategoryTransfer[] $applicationCategoryTransfers
-     * @param string[] $selectedCategoryIds
-     *
-     * @return mixed[]
-     */
-    public function renderCategoriesMenu(ArrayObject $applicationCategoryTransfers, array $selectedCategoryIds): array
-    {
-        $queryData = $this->getRequest()->query->all();
-
-        $defaultCategoryData = $this->getDefaultCategoryMenu($selectedCategoryIds, $queryData);
-        $categoriesData = $this->getCategoriesMenu($applicationCategoryTransfers, $selectedCategoryIds, $queryData);
-
-        return array_merge($defaultCategoryData, $categoriesData);
-    }
-
-    /**
-     * @param string[] $selectedCategoryIds
-     * @param mixed[] $queryData
-     *
-     * @return mixed[]
-     */
-    public function getDefaultCategoryMenu(array $selectedCategoryIds, array $queryData): array
-    {
-        unset($queryData['filter']['categories']);
-
-        $defaultCategoryData = [];
-        $defaultCategoryData[] = [
-            'category_url' => Url::generate(static::PAGE_URL, $queryData),
-            'id_category' => '',
-            'name' => 'All Categories',
-            'is_active' => !count($selectedCategoryIds),
-            'children' => [],
-        ];
-
-        return $defaultCategoryData;
-    }
-
-    /**
-     * @phpstan-param \ArrayObject<int, \Generated\Shared\Transfer\ApplicationCategoryTransfer> $applicationCategoryTransfers
-     *
-     * @param \ArrayObject|\Generated\Shared\Transfer\ApplicationCategoryTransfer[] $applicationCategoryTransfers
-     * @param string[] $selectedCategoryIds
-     * @param mixed[] $queryData
-     *
-     * @return mixed[]
-     */
-    public function getCategoriesMenu(
-        ArrayObject $applicationCategoryTransfers,
-        array $selectedCategoryIds,
-        array $queryData
-    ): array {
-        $data = [];
-        foreach ($applicationCategoryTransfers as $applicationCategoryTransfer) {
-            if ($applicationCategoryTransfer->getIdCategory() === null) {
-                continue;
-            }
-
-            $queryData['filter']['categories'] = $applicationCategoryTransfer->getIdCategory();
-            $url = Url::generate(static::PAGE_URL, $queryData);
-
-            $categoryChildren = $this->getCategoriesMenu(
-                $applicationCategoryTransfer->getChildren(),
-                $selectedCategoryIds,
-                $queryData
-            );
-            $categoryData = [
-                'category_url' => $url,
-                'id_category' => $applicationCategoryTransfer->getIdCategory(),
-                'name' => $applicationCategoryTransfer->getName(),
-                'is_active' => $this->isCategoryActive(
-                    $applicationCategoryTransfer->getIdCategory(),
-                    $categoryChildren,
-                    $selectedCategoryIds
-                ),
-                'children' => $categoryChildren,
-            ];
-
-            $data[] = $categoryData;
-        }
-
-        return $data;
     }
 
     /**
@@ -266,17 +162,36 @@ class ApplicationsTable extends AbstractTable
      */
     protected function prepareActionButtonsView(ApplicationTransfer $applicationTransfer): string
     {
-        $detailsUrl = Url::generate(static::APP_DETAILS_URL, ['id' => $applicationTransfer->getIdApplication()]);
-
-        $connectButton = $this->generateButton('#', static::CONNECT_BTN_NAME, [
-            'disabled' => 'disabled',
-            'class' => 'btn-create',
-        ]);
+        $detailsUrl = Url::generate(static::APP_DETAILS_URL, [static::KEY_UUID => $applicationTransfer->getApplicationUuid()]);
         $detailButton = $this->generateButton($detailsUrl, static::DETAILS_BTN_NAME, [
             'class' => 'btn-success',
         ]);
+        $connectionButton = $this->prepareConnectionButton($applicationTransfer);
 
-        return $connectButton . ' ' . $detailButton;
+        return $connectionButton . ' ' . $detailButton;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ApplicationTransfer $applicationTransfer
+     *
+     * @return string
+     */
+    protected function prepareConnectionButton(ApplicationTransfer $applicationTransfer): string
+    {
+        $connectUrl = Url::generate(static::CONNECT_URL, [
+            static::KEY_UUID => $applicationTransfer->getApplicationUuid(),
+        ]);
+
+        if ($applicationTransfer->getConnectionState()->getCode() == static::CONNECTED_STATUS) {
+            return $this->generateButton('#', static::DISCONNECT_BTN_NAME, [
+                'disabled' => 'disabled',
+                'class' => 'btn-create',
+            ]);
+        }
+
+        return $this->generateButton($connectUrl, static::CONNECT_BTN_NAME, [
+            'class' => 'btn-create',
+        ]);
     }
 
     /**
@@ -288,7 +203,7 @@ class ApplicationsTable extends AbstractTable
     {
         $categories = [];
         foreach ($applicationTransfer->getCategories() as $applicationCategoryTransfer) {
-            $categories[] = '<span class="badge badge-light m-r-xs">' . $applicationCategoryTransfer->getName() . '</span>';
+            $categories[] = '<span class="badge badge-light m-r-xs">' . $applicationCategoryTransfer->getTitle() . '</span>';
         }
 
         return implode('', $categories);
@@ -303,30 +218,9 @@ class ApplicationsTable extends AbstractTable
     {
         $labels = [];
         foreach ($applicationTransfer->getLabels() as $labelTransfer) {
-            $labels[] = '<span class="badge badge-light m-r-xs">' . $labelTransfer->getName() . '</span>';
+            $labels[] = '<span class="badge badge-light m-r-xs">' . $labelTransfer->getTitle() . '</span>';
         }
 
         return implode('', $labels);
-    }
-
-    /**
-     * @param string $currentIdCategory
-     * @param mixed[] $categoryChildren
-     * @param mixed[] $selectedCategoryIds
-     *
-     * @return bool
-     */
-    protected function isCategoryActive(
-        string $currentIdCategory,
-        array $categoryChildren,
-        array $selectedCategoryIds
-    ): bool {
-        foreach ($categoryChildren as $categoryChild) {
-            if (!empty($categoryChild['is_active'])) {
-                return true;
-            }
-        }
-
-        return in_array($currentIdCategory, $selectedCategoryIds);
     }
 }

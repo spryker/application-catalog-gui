@@ -10,6 +10,8 @@ namespace Spryker\Zed\ApplicationCatalogGui\Dependency\Client;
 use Generated\Shared\Transfer\ApplicationCategoryCollectionTransfer;
 use Generated\Shared\Transfer\ApplicationCategoryCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationCollectionTransfer;
+use Generated\Shared\Transfer\ApplicationConnectRequestTransfer;
+use Generated\Shared\Transfer\ApplicationConnectResponseTransfer;
 use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationTransfer;
 use Generated\Shared\Transfer\LabelCollectionTransfer;
@@ -72,5 +74,15 @@ class ApplicationCatalogGuiToApplicationCatalogClientBridge implements Applicati
         LabelCriteriaTransfer $labelCriteriaTransfer
     ): LabelCollectionTransfer {
         return $this->applicationCatalogClient->getLabelCollection($labelCriteriaTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ApplicationConnectRequestTransfer $applicationConnectRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\ApplicationConnectResponseTransfer
+     */
+    public function connectApplication(ApplicationConnectRequestTransfer $applicationConnectRequestTransfer): ApplicationConnectResponseTransfer
+    {
+        return $this->applicationCatalogClient->connectApplication($applicationConnectRequestTransfer);
     }
 }

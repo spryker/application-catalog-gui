@@ -9,6 +9,10 @@ namespace Spryker\Zed\ApplicationCatalogGui\Communication;
 
 use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
 use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\CategoriesNavigation;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\CategoriesNavigationInterface;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\LabelsNavigation;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\LabelsNavigationInterface;
 use Spryker\Zed\ApplicationCatalogGui\Communication\Table\ApplicationsTable;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Client\ApplicationCatalogGuiToApplicationCatalogClientInterface;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
@@ -44,5 +48,21 @@ class ApplicationCatalogGuiCommunicationFactory extends AbstractCommunicationFac
         ApplicationCriteriaTransfer $applicationCriteriaTransfer
     ): ApplicationsTable {
         return new ApplicationsTable($this->getApplicationCatalogClient(), $applicationCriteriaTransfer);
+    }
+
+    /**
+     * @return \Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\LabelsNavigationInterface
+     */
+    public function createLabelsNavigation(): LabelsNavigationInterface
+    {
+        return new LabelsNavigation();
+    }
+
+    /**
+     * @return \Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\CategoriesNavigationInterface
+     */
+    public function createCategoriesNavigation(): CategoriesNavigationInterface
+    {
+        return new CategoriesNavigation();
     }
 }
