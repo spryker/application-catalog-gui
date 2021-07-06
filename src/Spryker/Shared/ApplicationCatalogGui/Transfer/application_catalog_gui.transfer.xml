@@ -19,6 +19,7 @@
     </transfer>
 
     <transfer name="ConnectionState" strict="true">
+        <property name="code" type="string"/>
         <property name="description" type="string"/>
     </transfer>
 
