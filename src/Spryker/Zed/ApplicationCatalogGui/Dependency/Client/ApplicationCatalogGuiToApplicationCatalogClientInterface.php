@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Dependency\Client;
 
+use Generated\Shared\Transfer\AdvertisementBannerCollectionTransfer;
+use Generated\Shared\Transfer\AdvertisementBannerCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationCategoryCollectionTransfer;
 use Generated\Shared\Transfer\ApplicationCategoryCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationCollectionTransfer;
@@ -54,6 +56,15 @@ interface ApplicationCatalogGuiToApplicationCatalogClientInterface
     public function getLabelCollection(
         LabelCriteriaTransfer $labelCriteriaTransfer
     ): LabelCollectionTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\AdvertisementBannerCriteriaTransfer $advertisementBannerCriteriaTransfer
+     *
+     * @return \Generated\Shared\Transfer\AdvertisementBannerCollectionTransfer
+     */
+    public function getAdvertisementBannerCollection(
+        AdvertisementBannerCriteriaTransfer $advertisementBannerCriteriaTransfer
+    ): AdvertisementBannerCollectionTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\ApplicationConnectRequestTransfer $applicationConnectRequestTransfer

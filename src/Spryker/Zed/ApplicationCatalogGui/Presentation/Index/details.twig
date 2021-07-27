@@ -37,11 +37,11 @@
                 </div>
                 <div class="col-lg-2 text-right">
                     {%- if appData.connectionState.code == 'connected' %}
-                        <a href="#" class="btn btn-create btn-md" disabled="disabled">
+                        <a href="#" class="btn btn-create btn-outline btn-xs" disabled="disabled">
                             <i class="fa"></i> {{ 'Disconnect app' | trans }}
                         </a>
                     {%- else -%}
-                        <a href="/application-catalog-gui/index/connect?uuid={{ appData.applicationUuid }}" class="btn btn-create btn-md">
+                        <a href="{{ url('/application-catalog-gui/index/connect', {'uuid': appData.applicationUuid}) }}" class="btn btn-create btn-outline btn-xs">
                             <i class="fa"></i> {{ 'Connect app' | trans }}
                         </a>
                     {%- endif -%}

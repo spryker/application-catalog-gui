@@ -24,12 +24,12 @@ class ApplicationsTable extends AbstractTable
     public const KEY_SEARCH_VALUE = 'value';
 
     public const PAGE_URL = '/application-catalog-gui';
+    public const APP_DETAILS_URL = '/application-catalog-gui/index/details';
 
     protected const CONNECT_BTN_NAME = 'Connect';
     protected const DISCONNECT_BTN_NAME = 'Disconnect';
     protected const DETAILS_BTN_NAME = 'Details';
     protected const TABLE_DATA_URL = '/table';
-    protected const APP_DETAILS_URL = '/application-catalog-gui/index/details';
     protected const CONNECT_URL = '/application-catalog-gui/index/connect';
 
     protected const CONNECTED_STATUS = 'connected';
@@ -83,6 +83,7 @@ class ApplicationsTable extends AbstractTable
             'actions',
         ]);
         $config->setPaging(false);
+        $config->setOrdering(false);
 
         return $config;
     }

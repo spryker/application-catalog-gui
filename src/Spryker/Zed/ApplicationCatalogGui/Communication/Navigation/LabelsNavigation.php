@@ -31,9 +31,9 @@ class LabelsNavigation implements LabelsNavigationInterface
         foreach ($labelTransfers as $labelTransfer) {
             $queryData[ApplicationsTable::KEY_FILTER][ApplicationsTable::KEY_LABEL_IDS] = $labelTransfer->getIdLabel();
 
-            $buttonClass = 'btn-success';
+            $buttonClass = 'btn-outline';
             if (in_array($labelTransfer->getIdLabel(), $selectedLabelIds)) {
-                $buttonClass = 'btn-dark';
+                $buttonClass = 'btn-success';
                 unset($queryData[ApplicationsTable::KEY_FILTER][ApplicationsTable::KEY_LABEL_IDS]);
             }
 

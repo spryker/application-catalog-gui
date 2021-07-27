@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Communication\Controller;
 
+use Generated\Shared\Transfer\AdvertisementBannerCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationCategoryCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationConnectRequestTransfer;
 use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
@@ -50,6 +51,8 @@ class IndexController extends AbstractController
         $labelCollectionTransfer = $this->getFactory()->getApplicationCatalogClient()
             ->getLabelCollection($labelCriteriaTransfer);
 
+        $advertisementBannerCriteriaTransfer = new AdvertisementBannerCriteriaTransfer();
+
         $categoriesMenu = $this->getFactory()->createCategoriesNavigation()->renderCategoriesMenu(
             $applicationCategoryCollectionTransfer->getCategories(),
             $applicationCriteriaTransfer->getCategoryIds(),
@@ -66,6 +69,7 @@ class IndexController extends AbstractController
             'appsTable' => $applicationsTable->render(),
             'labelsData' => $labelsData,
             'categoriesMenu' => $categoriesMenu,
+            'banner' => $this->getFactory()->createAdvertisementBanner()->getAdvertisementBanner($advertisementBannerCriteriaTransfer),
         ]);
     }
 

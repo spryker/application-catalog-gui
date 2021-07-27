@@ -9,6 +9,8 @@ namespace Spryker\Zed\ApplicationCatalogGui\Communication;
 
 use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
 use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Advertisement\AdvertisementBanner;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Advertisement\AdvertisementBannerInterface;
 use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\CategoriesNavigation;
 use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\CategoriesNavigationInterface;
 use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\LabelsNavigation;
@@ -64,5 +66,15 @@ class ApplicationCatalogGuiCommunicationFactory extends AbstractCommunicationFac
     public function createCategoriesNavigation(): CategoriesNavigationInterface
     {
         return new CategoriesNavigation();
+    }
+
+    /**
+     * @return \Spryker\Zed\ApplicationCatalogGui\Communication\Advertisement\AdvertisementBannerInterface
+     */
+    public function createAdvertisementBanner(): AdvertisementBannerInterface
+    {
+        return new AdvertisementBanner(
+            $this->getApplicationCatalogClient()
+        );
     }
 }
