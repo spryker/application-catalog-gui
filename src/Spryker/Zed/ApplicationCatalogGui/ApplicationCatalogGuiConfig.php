@@ -33,4 +33,14 @@ class ApplicationCatalogGuiConfig extends AbstractBundleConfig
     {
         return static::DEFAULT_START_PAGE;
     }
+
+    /**
+     * @api
+     *
+     * @return string
+     */
+    public function getTenantUuid(): string
+    {
+        return getenv('TENANT_UUID') ?? getenv('SPRYKER_BE_HOST');
+    }
 }

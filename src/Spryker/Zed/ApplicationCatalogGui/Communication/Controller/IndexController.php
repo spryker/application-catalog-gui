@@ -9,6 +9,7 @@ namespace Spryker\Zed\ApplicationCatalogGui\Communication\Controller;
 
 use Generated\Shared\Transfer\AdvertisementBannerCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationCategoryCriteriaTransfer;
+use Generated\Shared\Transfer\ApplicationConfigurationRequestTransfer;
 use Generated\Shared\Transfer\ApplicationConnectRequestTransfer;
 use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationTransfer;
@@ -115,7 +116,7 @@ class IndexController extends AbstractController
      */
     public function connectAction(Request $request): RedirectResponse
     {
-        $uuid = (string)$request->query->get(ApplicationsTable::KEY_UUID);
+        $uuid = $request->query->get(ApplicationsTable::KEY_UUID, '');
 
         $applicationConnectRequestTransfer = (new ApplicationConnectRequestTransfer())
             ->setApplicationUuid($uuid);
@@ -134,11 +135,43 @@ class IndexController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
+     * @return mixed[]
+     */
+    public function configureAction(Request $request): array
+    {
+        $uuid = $request->query->get(ApplicationsTable::KEY_UUID, '');
+        $applicationTransfer = $this->getApplicationTransfer($request);
+
+        if ($applicationTransfer === null) {
+            throw new NotFoundHttpException('Application not found');
+        }
+
+        $applicationSchemaAndHost = $request->getSchemeAndHttpHost();
+
+        $applicationConfigRequestTransfer = (new ApplicationConfigurationRequestTransfer())
+            ->setApplicationUuid($uuid)
+            ->setTenantDomain($applicationSchemaAndHost)
+            ->setTenantUuid($this->getFactory()->getConfig()->getTenantUuid());
+
+
+        $applicationConfigResponseTransfer = $this->getFactory()
+            ->getApplicationCatalogClient()
+            ->getApplicationConfiguration($applicationConfigRequestTransfer);
+
+        return $this->viewResponse([
+            'frameSourceUrl' => $applicationConfigResponseTransfer->getConfigUrlOrFail(),
+            'appName' => $applicationTransfer->getName(),
+        ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Generated\Shared\Transfer\ApplicationTransfer|null
      */
     protected function getApplicationTransfer(Request $request): ?ApplicationTransfer
     {
-        $uuid = (string)$request->query->get(ApplicationsTable::KEY_UUID);
+        $uuid = $request->query->get(ApplicationsTable::KEY_UUID, '');
 
         $applicationCriteriaTransfer = (new ApplicationCriteriaTransfer())
             ->setApplicationUuid($uuid)
