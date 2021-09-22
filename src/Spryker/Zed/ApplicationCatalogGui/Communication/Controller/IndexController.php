@@ -26,10 +26,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexController extends AbstractController
 {
+    /**
+     * @var string
+     */
     protected const PARAM_SEARCH_TERM = 'search';
+    /**
+     * @var string
+     */
     protected const PARAM_PAGE = 'page';
+    /**
+     * @var string
+     */
     protected const PARAM_CONNECTION_STATE_IDS = 'connection-states';
 
+    /**
+     * @var string
+     */
     protected const MESSAGE_CONNECTION_FAILED = 'Connection is failed';
 
     /**
@@ -135,6 +147,8 @@ class IndexController extends AbstractController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return mixed[]
      */
     public function configureAction(Request $request): array
@@ -152,7 +166,6 @@ class IndexController extends AbstractController
             ->setApplicationUuid($uuid)
             ->setTenantDomain($applicationSchemaAndHost)
             ->setTenantUuid($this->getFactory()->getConfig()->getTenantUuid());
-
 
         $applicationConfigResponseTransfer = $this->getFactory()
             ->getApplicationCatalogClient()

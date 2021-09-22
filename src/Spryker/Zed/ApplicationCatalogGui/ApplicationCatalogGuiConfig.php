@@ -11,7 +11,13 @@ use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class ApplicationCatalogGuiConfig extends AbstractBundleConfig
 {
+    /**
+     * @var int
+     */
     protected const DEFAULT_PAGE_SIZE = 9;
+    /**
+     * @var int
+     */
     protected const DEFAULT_START_PAGE = 1;
 
     /**

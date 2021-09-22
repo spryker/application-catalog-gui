@@ -15,6 +15,9 @@ use Spryker\Zed\ApplicationCatalogGui\Dependency\Client\ApplicationCatalogGuiToA
 
 class AdvertisementBanner implements AdvertisementBannerInterface
 {
+    /**
+     * @var string
+     */
     protected const TYPE_APPLICATION = 'application';
 
     /**
