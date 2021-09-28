@@ -1,15 +1,13 @@
-{# @var banner \Generated\Shared\Transfer\AdvertisementBannerTransfer #}
-
 {% extends '@Gui/Layout/layout.twig' %}
+
 {% block head_css %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-application-catalog-main.css') }}">
     <base href="/application-catalog-gui/" />
 {% endblock %}
 
-
 {% block content %}
-<app-root></app-root>
+    <app-root></app-root>
 {% endblock %}
 
 {% block footer_js %}
