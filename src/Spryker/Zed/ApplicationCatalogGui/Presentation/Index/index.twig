@@ -1,49 +1,26 @@
 {# @var banner \Generated\Shared\Transfer\AdvertisementBannerTransfer #}
 
 {% extends '@Gui/Layout/layout.twig' %}
+{% block head_css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-application-catalog-main.css') }}">
+    <base href="/application-catalog-gui/" />
+{% endblock %}
+
 
 {% block content %}
-    <style>
-        .dataTables_filter {
-            display: none;
+<app-root></app-root>
+{% endblock %}
+
+{% block footer_js %}
+    {{ parent() }}
+    <script>
+        window['catalogSpaOptions'] = {
+            tenantId: 'A',
+            language: 'en',
+            tenantDomain: 'http://backoffice.de.spryker.local/',
+            apiUrl: 'https://glue.trs.demo-spryker.com'
         }
-    </style>
-
-    {% embed '@Gui/Partials/widget.twig' %}
-        {% block widget_title -%}
-            <h5>{{ 'Catalog' | trans }}</h5>
-        {%- endblock %}
-
-        {% block widget_content %}
-            {# <div class="row">
-                <div class="col-lg-12">
-                    {% for labelData in labelsData %}
-                        {% include '@ApplicationCatalogGui/Partials/label-button.twig' with {
-                            url: labelData.url,
-                            title: labelData.title,
-                            class: labelData.class
-                        } only %}
-                    {% endfor %}
-                </div>
-            </div> #}
-            <br>
-            <div class="row">
-                {# <div class="col-lg-3">
-                    <h3>{{ 'Discover by category' | trans }}</h3>
-                    {% include '@ApplicationCatalogGui/Partials/category-menu.twig' with {
-                        categoriesMenu: categoriesMenu
-                    } only %}
-                </div> #}
-                <div class="col-lg-12">
-                    {{ appsTable | raw }}
-
-                    <div style="margin-top: 15px">
-                        {% include '@ApplicationCatalogGui/Partials/banner.twig' with {
-                            banner: banner
-                        } only %}
-                    </div>
-                </div>
-            </div>
-        {% endblock %}
-    {% endembed %}
+    </script>
+    <script src="{{ assetsPath('js/spryker-zed-application-catalog-main.js') }}"></script>
 {% endblock %}
