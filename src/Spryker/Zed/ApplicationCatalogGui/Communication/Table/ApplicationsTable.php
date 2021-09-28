@@ -167,7 +167,8 @@ class ApplicationsTable extends AbstractTable
         $detailButton = $this->generateButton($detailsUrl, static::DETAILS_BTN_NAME, [
             'class' => 'btn-success',
         ]);
-        $connectionButton = $this->prepareConnectionButton($applicationTransfer);
+//        $connectionButton = $this->prepareConnectionButton($applicationTransfer);
+        $connectionButton = '';
 
         return $connectionButton . ' ' . $detailButton;
     }

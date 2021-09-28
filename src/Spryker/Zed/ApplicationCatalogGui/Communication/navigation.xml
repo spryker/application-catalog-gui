@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <application-catalog-gui>
-        <label>Application Catalog</label>
-        <title>Application Catalog</title>
+        <label>Apps</label>
+        <title>Apps</title>
         <icon>fa-archive</icon>
         <pages>
             <catalog>
@@ -11,17 +11,15 @@
                 <bundle>application-catalog-gui</bundle>
                 <controller>index</controller>
                 <action>index</action>
-                <pages>
-                    <details>
-                        <label>Application Details</label>
-                        <title>Application Details</title>
-                        <bundle>application-catalog-gui</bundle>
-                        <controller>index/details</controller>
-                        <action>index</action>
-                        <visible>0</visible>
-                    </details>
-                </pages>
             </catalog>
+            <details>
+                <label>App</label>
+                <title>App</title>
+                <bundle>application-catalog-gui</bundle>
+                <controller>index</controller>
+                <action>details</action>
+                <visible>0</visible>
+            </details>
         </pages>
     </application-catalog-gui>
 </config>
