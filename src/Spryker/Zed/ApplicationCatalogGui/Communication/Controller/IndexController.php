@@ -39,6 +39,8 @@ class IndexController extends AbstractController
      */
     public function indexAction(Request $request): array
     {
+        return $this->viewResponse();
+// phpcs:disable
         $applicationCriteriaTransfer = $this->getApplicationCriteriaTransferFromRequest($request);
         $applicationsTable = $this->getFactory()->createApplicationsTable($applicationCriteriaTransfer);
 
@@ -72,6 +74,7 @@ class IndexController extends AbstractController
             'categoriesMenu' => $categoriesMenu,
             'banner' => $this->getFactory()->createAdvertisementBanner()->getAdvertisementBanner($advertisementBannerCriteriaTransfer),
         ]);
+// phpcs:enable
     }
 
     /**
