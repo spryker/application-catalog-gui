@@ -14,10 +14,10 @@
     {{ parent() }}
     <script>
         window['catalogSpaOptions'] = {
-            tenantId: 'A',
-            language: 'en',
-            tenantDomain: 'http://backoffice.de.spryker.local/',
-            apiUrl: 'https://glue.trs.demo-spryker.com'
+            tenantId: '{{ tenantUuid }}',
+            language: '{{ localeName }}',
+            tenantDomain: '{{ baseUrlZed }}',
+            apiUrl: '{{ registryServiceEndpoint }}'
         }
     </script>
     <script src="{{ assetsPath('js/spryker-zed-application-catalog-main.js') }}"></script>
