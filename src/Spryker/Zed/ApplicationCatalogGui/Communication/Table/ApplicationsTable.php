@@ -16,22 +16,61 @@ use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 
 class ApplicationsTable extends AbstractTable
 {
+    /**
+     * @var string
+     */
     public const KEY_FILTER = 'filter';
+    /**
+     * @var string
+     */
     public const KEY_UUID = 'uuid';
 
+    /**
+     * @var string
+     */
     public const KEY_CATEGORY_IDS = 'categories';
+    /**
+     * @var string
+     */
     public const KEY_LABEL_IDS = 'labels';
+    /**
+     * @var string
+     */
     public const KEY_SEARCH_VALUE = 'value';
 
+    /**
+     * @var string
+     */
     public const PAGE_URL = '/application-catalog-gui';
+    /**
+     * @var string
+     */
     public const APP_DETAILS_URL = '/application-catalog-gui/index/details';
 
+    /**
+     * @var string
+     */
     protected const CONNECT_BTN_NAME = 'Connect';
+    /**
+     * @var string
+     */
     protected const DISCONNECT_BTN_NAME = 'Disconnect';
+    /**
+     * @var string
+     */
     protected const DETAILS_BTN_NAME = 'Details';
+    /**
+     * @var string
+     */
     protected const TABLE_DATA_URL = '/table';
+    /**
+     * @var string
+     */
     protected const CONNECT_URL = '/application-catalog-gui/index/connect';
 
+    /**
+     * @var string
+     */
     protected const CONNECTED_STATUS = 'connected';
 
     /**
@@ -167,7 +206,8 @@ class ApplicationsTable extends AbstractTable
         $detailButton = $this->generateButton($detailsUrl, static::DETAILS_BTN_NAME, [
             'class' => 'btn-success',
         ]);
-        $connectionButton = $this->prepareConnectionButton($applicationTransfer);
+//        $connectionButton = $this->prepareConnectionButton($applicationTransfer);
+        $connectionButton = '';
 
         return $connectionButton . ' ' . $detailButton;
     }

@@ -1,25 +1,23 @@
-{# @var banner \Generated\Shared\Transfer\AdvertisementBannerTransfer #}
-
 {% extends '@Gui/Layout/layout.twig' %}
+
 {% block head_css %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-application-catalog-main.css') }}">
     <base href="/application-catalog-gui/" />
 {% endblock %}
 
-
 {% block content %}
-<app-root></app-root>
+    <app-root></app-root>
 {% endblock %}
 
 {% block footer_js %}
     {{ parent() }}
     <script>
         window['catalogSpaOptions'] = {
-            tenantId: 'A',
-            language: 'en',
-            tenantDomain: 'http://backoffice.de.spryker.local/',
-            apiUrl: 'https://glue.trs.demo-spryker.com'
+            tenantId: '{{ tenantUuid }}',
+            language: '{{ localeName }}',
+            tenantDomain: '{{ baseUrlZed }}',
+            apiUrl: '{{ registryServiceEndpoint }}'
         }
     </script>
     <script src="{{ assetsPath('js/spryker-zed-application-catalog-main.js') }}"></script>

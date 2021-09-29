@@ -17,7 +17,13 @@ use Spryker\Zed\Kernel\Container;
  */
 class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyProvider
 {
+    /**
+     * @var string
+     */
     public const CLIENT_APP_STORE = 'CLIENT_APP_STORE';
+    /**
+     * @var string
+     */
     public const FACADE_LOCALE = 'FACADE_LOCALE';
 
     /**
