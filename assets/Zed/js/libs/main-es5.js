@@ -886,9 +886,9 @@ function _classCallCheck(instance, Constructor) {
             var environment = {
                 production: false,
                 tenantId: 'X',
-                apiUrl: 'https://glue.trs.demo-spryker.com',
+                apiUrl: 'https://glue.trs-staging.demo-spryker.com',
                 language: 'en',
-                tenantDomain: 'http://backoffice.de.spryker.local/',
+                tenantDomain: 'https://backoffice.de.sdk-demo.demo-spryker.com/',
                 payoneId: 'PaymentPayone',
                 payoneStorageStatusKey: 'spaCatalogPayoneStatus',
             };
