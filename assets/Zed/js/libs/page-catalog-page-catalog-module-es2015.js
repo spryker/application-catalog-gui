@@ -613,8 +613,8 @@ __webpack_require__.r(__webpack_exports__);
 var PartnerType;
 (function (PartnerType) {
     PartnerType["None"] = "none";
-    PartnerType["Silver"] = "silver";
-    PartnerType["Gold"] = "gold";
+    PartnerType["None"] = "none";
+    PartnerType["None"] = "none";
 })(PartnerType || (PartnerType = {}));
 function randomPartnerType() {
     const keys = Object.keys(PartnerType).filter((k) => !(Math.abs(Number.parseInt(k)) + 1));
@@ -625,8 +625,8 @@ const minRate = 3;
 const minRateCount = 12;
 function getRandomRate() {
     return {
-        count: Math.floor(Math.random() * minRateCount + minRateCount),
-        value: Math.floor(Math.random() * minRate + minRate),
+        count: 0,
+        value: 0,
     };
 }
 
