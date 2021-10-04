@@ -466,30 +466,14 @@ function _classCallCheck(instance, Constructor) {
                 /*! ./translation-loader.service */
                 '../frontend/app-store-catalog/src/app/translation-loader.service.ts',
             );
+            /* harmony import */
 
-            if (window['catalogSpaOptions']) {
-                var catalogSpaOptions = window['catalogSpaOptions'];
+            var _global_options_population__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(
+                /*! ./global-options-population */
+                '../frontend/app-store-catalog/src/app/global-options-population.ts',
+            );
 
-                if (catalogSpaOptions.tenantId) {
-                    _environments_environment__WEBPACK_IMPORTED_MODULE_10__['environment'].tenantId =
-                        catalogSpaOptions.tenantId;
-                }
-
-                if (catalogSpaOptions.tenantDomain) {
-                    _environments_environment__WEBPACK_IMPORTED_MODULE_10__['environment'].tenantDomain =
-                        catalogSpaOptions.tenantDomain;
-                }
-
-                if (catalogSpaOptions.language) {
-                    _environments_environment__WEBPACK_IMPORTED_MODULE_10__['environment'].language =
-                        catalogSpaOptions.language;
-                }
-
-                if (catalogSpaOptions.apiUrl) {
-                    _environments_environment__WEBPACK_IMPORTED_MODULE_10__['environment'].apiUrl =
-                        catalogSpaOptions.apiUrl;
-                }
-            }
+            Object(_global_options_population__WEBPACK_IMPORTED_MODULE_13__['globalOptionsPopulation'])();
 
             function swaggerConfigurationFactory() {
                 return new _swagger__WEBPACK_IMPORTED_MODULE_4__['Configuration']({
@@ -618,6 +602,55 @@ function _classCallCheck(instance, Constructor) {
         },
 
         /***/
+        '../frontend/app-store-catalog/src/app/global-options-population.ts': function frontendAppStoreCatalogSrcAppGlobalOptionsPopulationTs(
+            module,
+            __webpack_exports__,
+            __webpack_require__,
+        ) {
+            'use strict';
+
+            __webpack_require__.r(__webpack_exports__);
+            /* harmony export (binding) */
+
+            __webpack_require__.d(__webpack_exports__, 'globalOptionsPopulation', function () {
+                return globalOptionsPopulation;
+            });
+            /* harmony import */
+
+            var _environments_environment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+                /*! ../environments/environment */
+                '../frontend/app-store-catalog/src/environments/environment.ts',
+            );
+
+            function globalOptionsPopulation() {
+                if (window['catalogSpaOptions']) {
+                    var catalogSpaOptions = window['catalogSpaOptions'];
+
+                    if (catalogSpaOptions.tenantId) {
+                        _environments_environment__WEBPACK_IMPORTED_MODULE_0__['environment'].tenantId =
+                            catalogSpaOptions.tenantId;
+                    }
+
+                    if (catalogSpaOptions.tenantDomain) {
+                        _environments_environment__WEBPACK_IMPORTED_MODULE_0__['environment'].tenantDomain =
+                            catalogSpaOptions.tenantDomain;
+                    }
+
+                    if (catalogSpaOptions.language) {
+                        _environments_environment__WEBPACK_IMPORTED_MODULE_0__['environment'].language =
+                            catalogSpaOptions.language;
+                    }
+
+                    if (catalogSpaOptions.apiUrl) {
+                        _environments_environment__WEBPACK_IMPORTED_MODULE_0__['environment'].apiUrl =
+                            catalogSpaOptions.apiUrl;
+                    }
+                }
+            }
+            /***/
+        },
+
+        /***/
         '../frontend/app-store-catalog/src/app/i18n/de.ts': function frontendAppStoreCatalogSrcAppI18nDeTs(
             module,
             __webpack_exports__,
@@ -659,21 +692,14 @@ function _classCallCheck(instance, Constructor) {
                     HOW_IT_WORKS: 'So funktioniert es mit Spryker',
                     LEGAL: 'Rechtliches',
                     RESOURCES: 'Ressourcen',
-                    CONNECT_NOTIFICATION: {
-                        TITLE: 'Verbinden',
-                        DESCRIPTION: 'Anwendung wurde erfolgreich verbunden.',
-                    },
-                    DISCONNECT_NOTIFICATION: {
-                        TITLE: 'Getrennt',
-                        DESCRIPTION: 'Anwendung wurde erfolgreich getrennt.',
-                    },
+                    CONNECT_NOTIFICATION: 'Anwendung wurde erfolgreich verbunden.',
+                    WAITING_FOR_CONFIGURATION_NOTIFICATION: 'Anwendungsverbindung ausstehend.',
+                    CONFIGURED_NOTIFICATION: 'Anwendung wurde erfolgreich konfiguriert.',
+                    DISCONNECT_NOTIFICATION: 'Anwendung wurde erfolgreich getrennt.',
                 },
                 CONFIGURATION: {
                     SAVE: 'Senden',
-                    SAVE_NOTIFICATION: {
-                        TITLE: 'Konfigurieren',
-                        DESCRIPTION: 'Konfiguration wurde erfolgreich gespeichert.',
-                    },
+                    SAVE_NOTIFICATION: 'Konfiguration wurde erfolgreich gespeichert.',
                 },
             };
             /***/
@@ -721,21 +747,14 @@ function _classCallCheck(instance, Constructor) {
                     HOW_IT_WORKS: 'How it works with Spryker',
                     LEGAL: 'Legal',
                     RESOURCES: 'Resources',
-                    CONNECT_NOTIFICATION: {
-                        TITLE: 'Connected',
-                        DESCRIPTION: 'Application has been connected successfully.',
-                    },
-                    DISCONNECT_NOTIFICATION: {
-                        TITLE: 'Disconnected',
-                        DESCRIPTION: 'Application has been disconnected successfully.',
-                    },
+                    CONNECT_NOTIFICATION: 'Application has been connected successfully.',
+                    WAITING_FOR_CONFIGURATION_NOTIFICATION: 'Application connection pending.',
+                    CONFIGURED_NOTIFICATION: 'Application has been configured successfully.',
+                    DISCONNECT_NOTIFICATION: 'Application has been disconnected successfully.',
                 },
                 CONFIGURATION: {
                     SAVE: 'Save',
-                    SAVE_NOTIFICATION: {
-                        TITLE: 'Configuration',
-                        DESCRIPTION: 'Configuration has been saved successfully.',
-                    },
+                    SAVE_NOTIFICATION: 'Configuration has been saved successfully.',
                 },
             };
             /***/
@@ -817,20 +836,11 @@ function _classCallCheck(instance, Constructor) {
                     {
                         key: 'getTranslation',
                         value: function getTranslation(lang) {
-                            switch (lang) {
-                                case 'en':
-                                    return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__['of'])(
-                                        _i18n__WEBPACK_IMPORTED_MODULE_2__['en'],
-                                    );
+                            var _a;
 
-                                case 'de':
-                                    return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__['of'])(
-                                        _i18n__WEBPACK_IMPORTED_MODULE_2__['de'],
-                                    );
-
-                                default:
-                                    return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__['of'])({});
-                            }
+                            return Object(rxjs__WEBPACK_IMPORTED_MODULE_1__['of'])(
+                                (_a = _i18n__WEBPACK_IMPORTED_MODULE_2__[lang]) !== null && _a !== void 0 ? _a : {},
+                            );
                         },
                     },
                 ]);
