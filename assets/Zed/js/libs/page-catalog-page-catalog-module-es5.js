@@ -1185,8 +1185,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     (function (PartnerType) {
       PartnerType["None"] = "none";
-      PartnerType["Silver"] = "silver";
-      PartnerType["Gold"] = "gold";
+      PartnerType["None"] = "none";
+      PartnerType["None"] = "none";
     })(PartnerType || (PartnerType = {}));
 
     function randomPartnerType() {
@@ -1202,8 +1202,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     function getRandomRate() {
       return {
-        count: Math.floor(Math.random() * minRateCount + minRateCount),
-        value: Math.floor(Math.random() * minRate + minRate)
+        count: 0,
+        value: 0
       };
     }
     /***/
