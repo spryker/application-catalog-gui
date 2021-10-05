@@ -20,18 +20,22 @@ class ApplicationsTable extends AbstractTable
      * @var string
      */
     public const KEY_FILTER = 'filter';
+
     /**
      * @var string
      */
     public const KEY_UUID = 'uuid';
+
     /**
      * @var string
      */
     public const KEY_CATEGORY_IDS = 'categories';
+
     /**
      * @var string
      */
     public const KEY_LABEL_IDS = 'labels';
+
     /**
      * @var string
      */
@@ -41,6 +45,7 @@ class ApplicationsTable extends AbstractTable
      * @var string
      */
     public const PAGE_URL = '/application-catalog-gui';
+
     /**
      * @var string
      */
@@ -50,18 +55,22 @@ class ApplicationsTable extends AbstractTable
      * @var string
      */
     protected const CONNECT_BTN_NAME = 'Connect';
+
     /**
      * @var string
      */
     protected const DISCONNECT_BTN_NAME = 'Disconnect';
+
     /**
      * @var string
      */
     protected const DETAILS_BTN_NAME = 'Details';
+
     /**
      * @var string
      */
     protected const TABLE_DATA_URL = '/table';
+
     /**
      * @var string
      */

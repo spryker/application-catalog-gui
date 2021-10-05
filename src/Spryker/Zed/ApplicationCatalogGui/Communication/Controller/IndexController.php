@@ -7,13 +7,10 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Communication\Controller;
 
-use Generated\Shared\Transfer\AdvertisementBannerCriteriaTransfer;
-use Generated\Shared\Transfer\ApplicationCategoryCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationConfigurationRequestTransfer;
 use Generated\Shared\Transfer\ApplicationConnectRequestTransfer;
 use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
 use Generated\Shared\Transfer\ApplicationTransfer;
-use Generated\Shared\Transfer\LabelCriteriaTransfer;
 use Spryker\Zed\ApplicationCatalogGui\Communication\Table\ApplicationsTable;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,44 +42,21 @@ class IndexController extends AbstractController
     protected const MESSAGE_CONNECTION_FAILED = 'Connection is failed';
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @return mixed[]
      */
-    public function indexAction(Request $request): array
+    public function indexAction(): array
     {
-        $applicationCriteriaTransfer = $this->getApplicationCriteriaTransferFromRequest($request);
-        $applicationsTable = $this->getFactory()->createApplicationsTable($applicationCriteriaTransfer);
-
-        $applicationCategoryCriteriaTransfer = (new ApplicationCategoryCriteriaTransfer())
-            ->setLocale($applicationCriteriaTransfer->getLocale());
-        $applicationCategoryCollectionTransfer = $this->getFactory()->getApplicationCatalogClient()
-            ->getCategoryCollection($applicationCategoryCriteriaTransfer);
-
-        $labelCriteriaTransfer = (new LabelCriteriaTransfer())
-            ->setLocale($applicationCriteriaTransfer->getLocale());
-        $labelCollectionTransfer = $this->getFactory()->getApplicationCatalogClient()
-            ->getLabelCollection($labelCriteriaTransfer);
-
-        $advertisementBannerCriteriaTransfer = new AdvertisementBannerCriteriaTransfer();
-
-        $categoriesMenu = $this->getFactory()->createCategoriesNavigation()->renderCategoriesMenu(
-            $applicationCategoryCollectionTransfer->getCategories(),
-            $applicationCriteriaTransfer->getCategoryIds(),
-            $request
-        );
-
-        $labelsData = $this->getFactory()->createLabelsNavigation()->getLabelsData(
-            $labelCollectionTransfer->getLabels(),
-            $applicationCriteriaTransfer->getLabelIds(),
-            $request
-        );
+        $localeTransfer = $this->getFactory()->getLocaleFacade()
+            ->getCurrentLocale();
 
         return $this->viewResponse([
-            'appsTable' => $applicationsTable->render(),
-            'labelsData' => $labelsData,
-            'categoriesMenu' => $categoriesMenu,
-            'banner' => $this->getFactory()->createAdvertisementBanner()->getAdvertisementBanner($advertisementBannerCriteriaTransfer),
+            'localeName' => mb_substr($localeTransfer->getLocaleNameOrFail(), 0, 2),
+            'tenantUuid' => $this->getFactory()->getConfig()
+                ->getTenantUuid(),
+            'baseUrlZed' => $this->getFactory()->getConfig()
+                ->getBaseUrlZed(),
+            'registryServiceEndpoint' => $this->getFactory()->getConfig()
+                ->getRegistryServiceEndpoint(),
         ]);
     }
 
@@ -128,7 +102,7 @@ class IndexController extends AbstractController
      */
     public function connectAction(Request $request): RedirectResponse
     {
-        $uuid = $request->query->get(ApplicationsTable::KEY_UUID, '');
+        $uuid = (string)$request->query->get(ApplicationsTable::KEY_UUID, '');
 
         $applicationConnectRequestTransfer = (new ApplicationConnectRequestTransfer())
             ->setApplicationUuid($uuid);
@@ -153,7 +127,7 @@ class IndexController extends AbstractController
      */
     public function configureAction(Request $request): array
     {
-        $uuid = $request->query->get(ApplicationsTable::KEY_UUID, '');
+        $uuid = (string)$request->query->get(ApplicationsTable::KEY_UUID, '');
         $applicationTransfer = $this->getApplicationTransfer($request);
 
         if ($applicationTransfer === null) {
@@ -184,7 +158,7 @@ class IndexController extends AbstractController
      */
     protected function getApplicationTransfer(Request $request): ?ApplicationTransfer
     {
-        $uuid = $request->query->get(ApplicationsTable::KEY_UUID, '');
+        $uuid = (string)$request->query->get(ApplicationsTable::KEY_UUID, '');
 
         $applicationCriteriaTransfer = (new ApplicationCriteriaTransfer())
             ->setApplicationUuid($uuid)

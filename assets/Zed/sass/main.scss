@@ -3,6 +3,15 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
+.page-heading {
+    display: none;
+}
+
+.cdk-overlay-container.spy-drawer-container-overlay {
+    //TODO[Rustem Zakiev]: Resolve it without using important
+    z-index: 2001 !important;
+}
+
 .config-container {
     overflow: hidden;
     position: relative;
