@@ -21,6 +21,7 @@ class ApplicationCatalogGuiConfig extends AbstractBundleConfig
      * @var int
      */
     protected const DEFAULT_PAGE_SIZE = 9;
+
     /**
      * @var int
      */
