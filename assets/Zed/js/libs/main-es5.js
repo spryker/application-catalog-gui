@@ -1,3 +1,21 @@
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (typeof call === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -446,13 +464,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var de = {
       HOME: {
-        TITLE: 'App-Store-Katalog',
+        TITLE: 'App Orchestration Platform Catalog',
         APPLICATIONS_COUNT_TEXT: 'anwendungen',
         FILTERS: {
           NEW: 'Neu',
           POPULAR: 'Beliebt',
           GOLD_PARTNER: 'Goldpartner',
-          SILVER_PARTNER: 'Silverpartner'
+          SILVER_PARTNER: 'Silverpartner',
+          TRIAL: 'Kostenlose Testphase'
         }
       },
       CONNECTED_BADGE: {
@@ -496,13 +515,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var en = {
       HOME: {
-        TITLE: 'App Store Catalog',
+        TITLE: 'App Orchestration Platform Catalog',
         APPLICATIONS_COUNT_TEXT: 'applications',
         FILTERS: {
           NEW: 'New',
           POPULAR: 'Popular',
           GOLD_PARTNER: 'Gold partner',
-          SILVER_PARTNER: 'Silver partner'
+          SILVER_PARTNER: 'Silver partner',
+          TRIAL: 'Free trial'
         }
       },
       CONNECTED_BADGE: {
@@ -858,13 +878,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _variables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    var _encoder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! ../encoder */
+    "../frontend/app-store-catalog/swagger/encoder.ts");
+    /* harmony import */
+
+
+    var _variables__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
     /*! ../variables */
     "../frontend/app-store-catalog/swagger/variables.ts");
     /* harmony import */
 
 
-    var _configuration__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+    var _configuration__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
     /*! ../configuration */
     "../frontend/app-store-catalog/swagger/configuration.ts");
 
@@ -875,7 +901,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.httpClient = httpClient;
         this.basePath = 'https://apps.spryker.com';
         this.defaultHeaders = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]();
-        this.configuration = new _configuration__WEBPACK_IMPORTED_MODULE_3__["Configuration"]();
+        this.configuration = new _configuration__WEBPACK_IMPORTED_MODULE_4__["Configuration"]();
 
         if (basePath) {
           this.basePath = basePath;
@@ -1161,9 +1187,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       }, {
         key: "appsGet",
-        value: function appsGet(acceptLanguage, xTenantId) {
-          var observe = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'body';
-          var reportProgress = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+        value: function appsGet(acceptLanguage, xTenantId, label, category) {
+          var observe = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'body';
+          var reportProgress = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
 
           if (acceptLanguage === null || acceptLanguage === undefined) {
             throw new Error('Required parameter acceptLanguage was null or undefined when calling appsGet.');
@@ -1171,6 +1197,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           if (xTenantId === null || xTenantId === undefined) {
             throw new Error('Required parameter xTenantId was null or undefined when calling appsGet.');
+          }
+
+          var queryParameters = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]({
+            encoder: new _encoder__WEBPACK_IMPORTED_MODULE_2__["CustomHttpUrlEncodingCodec"]()
+          });
+
+          if (label !== undefined && label !== null) {
+            queryParameters = queryParameters.set('label', label);
+          }
+
+          if (category !== undefined && category !== null) {
+            queryParameters = queryParameters.set('category', category);
           }
 
           var headers = this.defaultHeaders;
@@ -1192,6 +1230,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           var consumes = [];
           return this.httpClient.request('get', "".concat(this.basePath, "/apps"), {
+            params: queryParameters,
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1237,7 +1276,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }();
 
     DefaultService.ɵfac = function DefaultService_Factory(t) {
-      return new (t || DefaultService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_variables__WEBPACK_IMPORTED_MODULE_2__["BASE_PATH"], 8), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_configuration__WEBPACK_IMPORTED_MODULE_3__["Configuration"], 8));
+      return new (t || DefaultService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_variables__WEBPACK_IMPORTED_MODULE_3__["BASE_PATH"], 8), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_configuration__WEBPACK_IMPORTED_MODULE_4__["Configuration"], 8));
     };
 
     DefaultService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
@@ -1257,10 +1296,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"]
           }, {
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"],
-            args: [_variables__WEBPACK_IMPORTED_MODULE_2__["BASE_PATH"]]
+            args: [_variables__WEBPACK_IMPORTED_MODULE_3__["BASE_PATH"]]
           }]
         }, {
-          type: _configuration__WEBPACK_IMPORTED_MODULE_3__["Configuration"],
+          type: _configuration__WEBPACK_IMPORTED_MODULE_4__["Configuration"],
           decorators: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"]
           }]
@@ -1345,6 +1384,55 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       return Configuration;
     }();
+    /***/
+
+  },
+
+  /***/
+  "../frontend/app-store-catalog/swagger/encoder.ts": function frontendAppStoreCatalogSwaggerEncoderTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "CustomHttpUrlEncodingCodec", function () {
+      return CustomHttpUrlEncodingCodec;
+    });
+    /* harmony import */
+
+
+    var _angular_common_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! @angular/common/http */
+    "../node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
+
+    var CustomHttpUrlEncodingCodec = /*#__PURE__*/function (_angular_common_http_) {
+      _inherits(CustomHttpUrlEncodingCodec, _angular_common_http_);
+
+      var _super = _createSuper(CustomHttpUrlEncodingCodec);
+
+      function CustomHttpUrlEncodingCodec() {
+        _classCallCheck(this, CustomHttpUrlEncodingCodec);
+
+        return _super.apply(this, arguments);
+      }
+
+      _createClass(CustomHttpUrlEncodingCodec, [{
+        key: "encodeKey",
+        value: function encodeKey(k) {
+          k = _get(_getPrototypeOf(CustomHttpUrlEncodingCodec.prototype), "encodeKey", this).call(this, k);
+          return k.replace(/\+/gi, '%2B');
+        }
+      }, {
+        key: "encodeValue",
+        value: function encodeValue(v) {
+          v = _get(_getPrototypeOf(CustomHttpUrlEncodingCodec.prototype), "encodeValue", this).call(this, v);
+          return v.replace(/\+/gi, '%2B');
+        }
+      }]);
+
+      return CustomHttpUrlEncodingCodec;
+    }(_angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpUrlEncodingCodec"]);
     /***/
 
   },
