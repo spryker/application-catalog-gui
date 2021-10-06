@@ -337,7 +337,8 @@ class PageCatalogComponent {
         this.router = router;
         this.isAppsLoading$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](true);
         this.apps$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"]([]);
-        this.applicationsCountText$ = this.apps$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((apps) => apps.length === 9 ? apps.length : `${apps.length} of 9`));
+        this.allAppsCount = 9;
+        this.applicationsCountText$ = this.apps$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((apps) => 7 === this.allAppsCount ? apps.length : `${apps.length} out of ${this.allAppsCount}`));
         this.categories = [
             'All Categories',
             'Payments',
@@ -361,7 +362,7 @@ class PageCatalogComponent {
     ngOnInit() {
         this.activatedRoute.queryParamMap.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])(params => {
             const label = params.has('label') ? params.get('label') : null;
-            const category = params.has('category') ? params.get('category') : null;
+            const category = params.has('category') ? params.get('category') : this.categories[0];
             this.activeCategory = category;
             this.activeFilterItem = label;
             this.isAppsLoading$.next(true);
@@ -376,7 +377,7 @@ class PageCatalogComponent {
         this.router.navigate([], { queryParams: { label }, queryParamsHandling: 'merge', relativeTo: this.activatedRoute });
     }
     categoryChange(selected) {
-        this.router.navigate([], { queryParams: { category: selected }, queryParamsHandling: 'merge', relativeTo: this.activatedRoute });
+        this.router.navigate([], { queryParams: { category: selected === this.categories[0] ? null : selected }, queryParamsHandling: 'merge', relativeTo: this.activatedRoute });
     }
     prepareCardData(cardData) {
         return cardData.data.map((cardDataItem) => {
@@ -404,7 +405,7 @@ class PageCatalogComponent {
     getNavigationItems() {
         return this.categories.map((category) => ({
             title: category,
-            url: `/#${this.router.createUrlTree([], { queryParams: { category }, queryParamsHandling: 'merge', relativeTo: this.activatedRoute }).toString()}`,
+            url: `#${this.router.createUrlTree([], { queryParams: { category: category === this.categories[0] ? null : category }, queryParamsHandling: 'merge', relativeTo: this.activatedRoute }).toString()}`,
             isActive: category === this.activeCategory,
         }));
     }
@@ -653,7 +654,7 @@ class CatalogPageService {
             _assets_icons__WEBPACK_IMPORTED_MODULE_2__["IconTrialModule"].icon,
         ];
         const filterTranslationsPrefix = 'HOME.FILTERS';
-        const partnerTypes = [_swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].New, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].Popular, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].GoldPartner, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].SilverPartner, 'trial'];
+        const partnerTypes = [_swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].New, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].Popular, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].GoldPartner, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].SilverPartner, 'Free trial'];
         const filterTranslationConstants = ['NEW', 'POPULAR', 'GOLD_PARTNER', 'SILVER_PARTNER', 'TRIAL'].map((translationConstant) => `${filterTranslationsPrefix}.${translationConstant}`);
         return this.translateService.get(filterTranslationConstants).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((translatedTexts) => filterTranslationConstants.map((translationConstant, index) => ({
             icon: filterIcons[index],

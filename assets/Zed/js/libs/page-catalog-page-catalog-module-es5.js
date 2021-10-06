@@ -739,6 +739,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     var PageCatalogComponent = /*#__PURE__*/function () {
       function PageCatalogComponent(apiService, translateService, catalogPageService, activatedRoute, router) {
+        var _this = this;
+
         _classCallCheck(this, PageCatalogComponent);
 
         this.apiService = apiService;
@@ -748,8 +750,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.router = router;
         this.isAppsLoading$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](true);
         this.apps$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"]([]);
+        this.allAppsCount = 9;
         this.applicationsCountText$ = this.apps$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (apps) {
-          return apps.length === 9 ? apps.length : "".concat(apps.length, " of 9");
+          return 7 === _this.allAppsCount ? apps.length : "".concat(apps.length, " out of ").concat(_this.allAppsCount);
         }));
         this.categories = ['All Categories', 'Payments', 'User-Generated Content', 'Search', 'Customer', 'Content Management', 'Product Information Management', 'Digital Experience Platform'];
         this.categoryOptions = this.categories.map(function (category) {
@@ -768,25 +771,25 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(PageCatalogComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this = this;
+          var _this2 = this;
 
           this.activatedRoute.queryParamMap.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])(function (params) {
             var label = params.has('label') ? params.get('label') : null;
-            var category = params.has('category') ? params.get('category') : null;
-            _this.activeCategory = category;
-            _this.activeFilterItem = label;
+            var category = params.has('category') ? params.get('category') : _this2.categories[0];
+            _this2.activeCategory = category;
+            _this2.activeFilterItem = label;
 
-            _this.isAppsLoading$.next(true);
+            _this2.isAppsLoading$.next(true);
 
-            return _this.apiService.appsGet(_this.translateService.currentLang, _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].tenantId, label, category);
+            return _this2.apiService.appsGet(_this2.translateService.currentLang, _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].tenantId, label, category);
           }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) {
-            return _this.prepareCardData(res);
+            return _this2.prepareCardData(res);
           }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["takeUntil"])(this.destoyed$)).subscribe(function (apps) {
-            _this.isAppsLoading$.next(false);
+            _this2.isAppsLoading$.next(false);
 
-            _this.navigationItems = _this.getNavigationItems();
+            _this2.navigationItems = _this2.getNavigationItems();
 
-            _this.apps$.next(apps);
+            _this2.apps$.next(apps);
           });
         }
       }, {
@@ -805,7 +808,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function categoryChange(selected) {
           this.router.navigate([], {
             queryParams: {
-              category: selected
+              category: selected === this.categories[0] ? null : selected
             },
             queryParamsHandling: 'merge',
             relativeTo: this.activatedRoute
@@ -814,7 +817,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "prepareCardData",
         value: function prepareCardData(cardData) {
-          var _this2 = this;
+          var _this3 = this;
 
           return cardData.data.map(function (cardDataItem) {
             var _a;
@@ -824,7 +827,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
               logoUrl: cardDataItem.attributes.iconUrl,
               title: cardDataItem.attributes.name,
               description: cardDataItem.attributes.descriptionShort,
-              status: _this2.prepareAppStatus(cardDataItem),
+              status: _this3.prepareAppStatus(cardDataItem),
               tags: cardDataItem.attributes.categories,
               partnerType: (_a = cardDataItem.attributes.labels[0]) !== null && _a !== void 0 ? _a : null,
               rate: cardDataItem.attributes.rating,
@@ -846,19 +849,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "getNavigationItems",
         value: function getNavigationItems() {
-          var _this3 = this;
+          var _this4 = this;
 
           return this.categories.map(function (category) {
             return {
               title: category,
-              url: "/#".concat(_this3.router.createUrlTree([], {
+              url: "#".concat(_this4.router.createUrlTree([], {
                 queryParams: {
-                  category: category
+                  category: category === _this4.categories[0] ? null : category
                 },
                 queryParamsHandling: 'merge',
-                relativeTo: _this3.activatedRoute
+                relativeTo: _this4.activatedRoute
               }).toString()),
-              isActive: category === _this3.activeCategory
+              isActive: category === _this4.activeCategory
             };
           });
         }
@@ -1253,7 +1256,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function getTopFilterItems() {
           var filterIcons = [_assets_icons__WEBPACK_IMPORTED_MODULE_2__["IconNewModule"].icon, _assets_icons__WEBPACK_IMPORTED_MODULE_2__["IconPopularModule"].icon, _assets_icons__WEBPACK_IMPORTED_MODULE_2__["IconGoldPartnerModule"].icon, _assets_icons__WEBPACK_IMPORTED_MODULE_2__["IconSilverPartnerModule"].icon, _assets_icons__WEBPACK_IMPORTED_MODULE_2__["IconTrialModule"].icon];
           var filterTranslationsPrefix = 'HOME.FILTERS';
-          var partnerTypes = [_swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].New, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].Popular, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].GoldPartner, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].SilverPartner, 'trial'];
+          var partnerTypes = [_swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].New, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].Popular, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].GoldPartner, _swagger__WEBPACK_IMPORTED_MODULE_4__["PartnerType"].SilverPartner, 'Free trial'];
           var filterTranslationConstants = ['NEW', 'POPULAR', 'GOLD_PARTNER', 'SILVER_PARTNER', 'TRIAL'].map(function (translationConstant) {
             return "".concat(filterTranslationsPrefix, ".").concat(translationConstant);
           });
@@ -1591,12 +1594,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(NavigationComponent, [{
         key: "clickHandler",
         value: function clickHandler(event, url) {
-          var _this4 = this;
+          var _this5 = this;
 
           event.stopPropagation();
           event.preventDefault();
           this.interceptorDispatcherService.dispatchToAll(NavigationRedirectInterceptionEvent).subscribe(function () {
-            _this4.windowToken.location.href = url;
+            _this5.windowToken.location.href = url;
           });
         }
       }, {
