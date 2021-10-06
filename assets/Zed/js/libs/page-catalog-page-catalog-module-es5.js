@@ -775,8 +775,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
           this.activatedRoute.queryParamMap.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])(function (params) {
             var label = params.has('label') ? params.get('label') : null;
-            var category = params.has('category') ? params.get('category') : _this2.categories[0];
-            _this2.activeCategory = category;
+            var category = params.has('category') ? params.get('category') : null;
+            _this2.activeCategory = category !== null && category !== void 0 ? category : _this2.categories[0];
             _this2.activeFilterItem = label;
 
             _this2.isAppsLoading$.next(true);

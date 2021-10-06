@@ -362,8 +362,8 @@ class PageCatalogComponent {
     ngOnInit() {
         this.activatedRoute.queryParamMap.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])(params => {
             const label = params.has('label') ? params.get('label') : null;
-            const category = params.has('category') ? params.get('category') : this.categories[0];
-            this.activeCategory = category;
+            const category = params.has('category') ? params.get('category') : null;
+            this.activeCategory = category !== null && category !== void 0 ? category : this.categories[0];
             this.activeFilterItem = label;
             this.isAppsLoading$.next(true);
             return this.apiService.appsGet(this.translateService.currentLang, _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].tenantId, label, category);
