@@ -480,7 +480,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       _createClass(FiltersComponent, [{
         key: "clickFilterItem",
         value: function clickFilterItem(filterItem) {
-          this.selectFiltersItem.emit(filterItem.value);
+          var selectedValue = this.activeValue === filterItem.value ? null : filterItem.value;
+          this.selectFiltersItem.emit(selectedValue);
         }
       }]);
 

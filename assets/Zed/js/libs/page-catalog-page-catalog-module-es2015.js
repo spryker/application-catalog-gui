@@ -209,7 +209,8 @@ class FiltersComponent {
         this.selectFiltersItem = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
     }
     clickFilterItem(filterItem) {
-        this.selectFiltersItem.emit(filterItem.value);
+        const selectedValue = this.activeValue === filterItem.value ? null : filterItem.value;
+        this.selectFiltersItem.emit(selectedValue);
     }
 }
 FiltersComponent.ɵfac = function FiltersComponent_Factory(t) { return new (t || FiltersComponent)(); };
