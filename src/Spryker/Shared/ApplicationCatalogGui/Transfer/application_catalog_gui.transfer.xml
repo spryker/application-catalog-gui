@@ -27,9 +27,16 @@
         <property name="rating" type="float" strict="true"/>
         <property name="totalReviews" type="int" strict="true"/>
         <property name="overview" type="string" strict="true"/>
+        <property name="galleryItems" singular="galleryItem" type="GalleryItem[]" strict="true" description="images/videos with previews (small/full size)"/>
         <property name="updatedAt" type="string" strict="true"/>
         <property name="resources" singular="resource" type="ResourceItem[]" strict="true" description="Title, url"/>
         <property name="connectionState" type="ConnectionState" strict="true"/>
+    </transfer>
+
+    <transfer name="GalleryItem" strict="true">
+        <property name="type" type="string"/>
+        <property name="urlSmall" type="string"/>
+        <property name="urlLarge" type="string"/>
     </transfer>
 
     <transfer name="ApplicationCategory" strict="true">
