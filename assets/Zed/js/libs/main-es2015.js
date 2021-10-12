@@ -272,13 +272,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "de", function() { return de; });
 const de = {
     HOME: {
-        TITLE: 'App-Store-Katalog',
+        TITLE: 'App Orchestration Platform Catalog',
         APPLICATIONS_COUNT_TEXT: 'anwendungen',
         FILTERS: {
             NEW: 'Neu',
             POPULAR: 'Beliebt',
             GOLD_PARTNER: 'Goldpartner',
             SILVER_PARTNER: 'Silverpartner',
+            TRIAL: 'Kostenlose Testphase'
         },
     },
     CONNECTED_BADGE: {
@@ -321,13 +322,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "en", function() { return en; });
 const en = {
     HOME: {
-        TITLE: 'App Store Catalog',
+        TITLE: 'App Orchestration Platform Catalog',
         APPLICATIONS_COUNT_TEXT: 'applications',
         FILTERS: {
             NEW: 'New',
             POPULAR: 'Popular',
             GOLD_PARTNER: 'Gold partner',
             SILVER_PARTNER: 'Silver partner',
+            TRIAL: 'Free trial'
         },
     },
     CONNECTED_BADGE: {
@@ -557,8 +559,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultService", function() { return DefaultService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "../node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
-/* harmony import */ var _variables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../variables */ "../frontend/app-store-catalog/swagger/variables.ts");
-/* harmony import */ var _configuration__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../configuration */ "../frontend/app-store-catalog/swagger/configuration.ts");
+/* harmony import */ var _encoder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../encoder */ "../frontend/app-store-catalog/swagger/encoder.ts");
+/* harmony import */ var _variables__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../variables */ "../frontend/app-store-catalog/swagger/variables.ts");
+/* harmony import */ var _configuration__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../configuration */ "../frontend/app-store-catalog/swagger/configuration.ts");
+
 
 
 
@@ -571,7 +575,7 @@ class DefaultService {
         this.httpClient = httpClient;
         this.basePath = 'https://apps.spryker.com';
         this.defaultHeaders = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]();
-        this.configuration = new _configuration__WEBPACK_IMPORTED_MODULE_3__["Configuration"]();
+        this.configuration = new _configuration__WEBPACK_IMPORTED_MODULE_4__["Configuration"]();
         if (basePath) {
             this.basePath = basePath;
         }
@@ -779,12 +783,19 @@ class DefaultService {
             reportProgress: reportProgress
         });
     }
-    appsGet(acceptLanguage, xTenantId, observe = 'body', reportProgress = false) {
+    appsGet(acceptLanguage, xTenantId, label, category, observe = 'body', reportProgress = false) {
         if (acceptLanguage === null || acceptLanguage === undefined) {
             throw new Error('Required parameter acceptLanguage was null or undefined when calling appsGet.');
         }
         if (xTenantId === null || xTenantId === undefined) {
             throw new Error('Required parameter xTenantId was null or undefined when calling appsGet.');
+        }
+        let queryParameters = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]({ encoder: new _encoder__WEBPACK_IMPORTED_MODULE_2__["CustomHttpUrlEncodingCodec"]() });
+        if (label !== undefined && label !== null) {
+            queryParameters = queryParameters.set('label', label);
+        }
+        if (category !== undefined && category !== null) {
+            queryParameters = queryParameters.set('category', category);
         }
         let headers = this.defaultHeaders;
         if (acceptLanguage !== undefined && acceptLanguage !== null) {
@@ -802,6 +813,7 @@ class DefaultService {
         }
         const consumes = [];
         return this.httpClient.request('get', `${this.basePath}/apps`, {
+            params: queryParameters,
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -836,7 +848,7 @@ class DefaultService {
         });
     }
 }
-DefaultService.ɵfac = function DefaultService_Factory(t) { return new (t || DefaultService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_variables__WEBPACK_IMPORTED_MODULE_2__["BASE_PATH"], 8), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_configuration__WEBPACK_IMPORTED_MODULE_3__["Configuration"], 8)); };
+DefaultService.ɵfac = function DefaultService_Factory(t) { return new (t || DefaultService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_variables__WEBPACK_IMPORTED_MODULE_3__["BASE_PATH"], 8), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_configuration__WEBPACK_IMPORTED_MODULE_4__["Configuration"], 8)); };
 DefaultService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: DefaultService, factory: DefaultService.ɵfac });
 (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](DefaultService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"]
@@ -844,8 +856,8 @@ DefaultService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineIn
                 type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"]
             }, {
                 type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"],
-                args: [_variables__WEBPACK_IMPORTED_MODULE_2__["BASE_PATH"]]
-            }] }, { type: _configuration__WEBPACK_IMPORTED_MODULE_3__["Configuration"], decorators: [{
+                args: [_variables__WEBPACK_IMPORTED_MODULE_3__["BASE_PATH"]]
+            }] }, { type: _configuration__WEBPACK_IMPORTED_MODULE_4__["Configuration"], decorators: [{
                 type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"]
             }] }]; }, null); })();
 
@@ -894,6 +906,32 @@ class Configuration {
     isJsonMime(mime) {
         const jsonMime = new RegExp('^(application\/json|[^;/ \t]+\/[^;/ \t]+[+]json)[ \t]*(;.*)?$', 'i');
         return mime != null && (jsonMime.test(mime) || mime.toLowerCase() === 'application/json-patch+json');
+    }
+}
+
+
+/***/ }),
+
+/***/ "../frontend/app-store-catalog/swagger/encoder.ts":
+/*!********************************************************!*\
+  !*** ../frontend/app-store-catalog/swagger/encoder.ts ***!
+  \********************************************************/
+/*! exports provided: CustomHttpUrlEncodingCodec */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomHttpUrlEncodingCodec", function() { return CustomHttpUrlEncodingCodec; });
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common/http */ "../node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
+
+class CustomHttpUrlEncodingCodec extends _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpUrlEncodingCodec"] {
+    encodeKey(k) {
+        k = super.encodeKey(k);
+        return k.replace(/\+/gi, '%2B');
+    }
+    encodeValue(v) {
+        v = super.encodeValue(v);
+        return v.replace(/\+/gi, '%2B');
     }
 }
 
