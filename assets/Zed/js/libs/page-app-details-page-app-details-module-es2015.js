@@ -2160,7 +2160,7 @@ class PageAppDetailsService {
         const connectedTranslation = 'DETAILS.CONNECT_NOTIFICATION';
         const waitingForConfigurationTranslation = 'DETAILS.WAITING_FOR_CONFIGURATION_NOTIFICATION';
         return this.defaultService
-            .appsAppIdConnectPost(PageAppDetailsService.getRequestArgs(appId, 'connect'), _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId, this.translateService.currentLang, appId)
+            .appsAppIdConnectPost(Object(_utils_configuration__WEBPACK_IMPORTED_MODULE_9__["getRequestArgs"])(appId, 'connect'), _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId, this.translateService.currentLang, appId)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["withLatestFrom"])(this.translateService.get([connectedTranslation, waitingForConfigurationTranslation])), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(([updatedDetailsResponse, translations]) => {
             let status = updatedDetailsResponse.data.attributes.status;
             if (updatedDetailsResponse.data.attributes.id === _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].payoneId) {
@@ -2177,7 +2177,7 @@ class PageAppDetailsService {
     }
     disconnectApp(appId) {
         return this.defaultService
-            .appsAppIdDisconnectPost(PageAppDetailsService.getRequestArgs(appId, 'disconnect'), _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId, this.translateService.currentLang, appId)
+            .appsAppIdDisconnectPost(Object(_utils_configuration__WEBPACK_IMPORTED_MODULE_9__["getRequestArgs"])(appId, 'disconnect'), _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId, this.translateService.currentLang, appId)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["withLatestFrom"])(this.translateService.get('DETAILS.DISCONNECT_NOTIFICATION')), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(([updatedDetailsResponse, message]) => {
             if (updatedDetailsResponse.data.attributes.id === _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].payoneId) {
                 localStorage.removeItem(_environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].payoneStorageStatusKey);
@@ -2230,7 +2230,7 @@ class PageAppDetailsService {
         const formData = Boolean(appConfiguration.length) ? appConfiguration[0].attributes.configuration : '{}';
         return {
             isIframe: appDetailsData.attributes.configuration === null,
-            iframeLink: appManifest.configureUrl,
+            iframeLink: Object(_utils_configuration__WEBPACK_IMPORTED_MODULE_9__["prepareConfigureUrl"])(appManifest.configureUrl),
             appName: appManifest.name,
             formData: JSON.parse(formData),
             configuration: cleanedConfiguration,
@@ -2244,17 +2244,6 @@ class PageAppDetailsService {
     }
     notifyError(errorMessage) {
         this.notifyMessage(errorMessage, _spryker_notification__WEBPACK_IMPORTED_MODULE_6__["NotificationType"].Error);
-    }
-    static getRequestArgs(appId, type) {
-        return {
-            data: {
-                type,
-                attributes: {
-                    appId,
-                    tenantId: _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId,
-                },
-            },
-        };
     }
 }
 PageAppDetailsService.ɵfac = function PageAppDetailsService_Factory(t) { return new (t || PageAppDetailsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_ngx_translate_core__WEBPACK_IMPORTED_MODULE_1__["TranslateService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_swagger__WEBPACK_IMPORTED_MODULE_5__["DefaultService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_spryker_notification__WEBPACK_IMPORTED_MODULE_6__["NotificationService"])); };
@@ -2298,16 +2287,39 @@ var AppAssetType;
 /*!*********************************************************************************!*\
   !*** ../frontend/app-store-catalog/src/page-app-details/utils/configuration.ts ***!
   \*********************************************************************************/
-/*! exports provided: parseAndCleanConfiguration */
+/*! exports provided: parseAndCleanConfiguration, getRequestArgs, prepareConfigureUrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseAndCleanConfiguration", function() { return parseAndCleanConfiguration; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRequestArgs", function() { return getRequestArgs; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "prepareConfigureUrl", function() { return prepareConfigureUrl; });
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../environments/environment */ "../frontend/app-store-catalog/src/environments/environment.ts");
+
 function parseAndCleanConfiguration(configuration) {
     const confObj = JSON.parse(configuration);
     delete confObj.$schema;
     return confObj;
+}
+function getRequestArgs(appId, type) {
+    return {
+        data: {
+            type,
+            attributes: {
+                appId,
+                tenantId: _environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].tenantId,
+            },
+        },
+    };
+}
+function prepareConfigureUrl(url) {
+    const urlObj = new URL(url);
+    const tenantUuidParamName = 'tenantUuid';
+    const tenantDomainParamName = 'tenantDomain';
+    urlObj.searchParams.set(tenantUuidParamName, _environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].tenantId);
+    urlObj.searchParams.set(tenantDomainParamName, _environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].tenantDomain);
+    return urlObj.toString();
 }
 
 

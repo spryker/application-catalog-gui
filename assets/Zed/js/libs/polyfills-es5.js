@@ -19,13 +19,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony import */
 
 
-    var zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    var url_polyfill_light__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! url-polyfill-light */
+    "../node_modules/url-polyfill-light/url-polyfill.js");
+    /* harmony import */
+
+
+    var url_polyfill_light__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(url_polyfill_light__WEBPACK_IMPORTED_MODULE_0__);
+    /* harmony import */
+
+
+    var zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
     /*! zone.js/dist/zone */
     "../node_modules/zone.js/dist/zone-evergreen.js");
     /* harmony import */
 
 
-    var zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_0__);
+    var zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(zone_js_dist_zone__WEBPACK_IMPORTED_MODULE_1__);
     /***/
 
   },
@@ -12483,6 +12493,322 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   },
 
   /***/
+  "../node_modules/url-polyfill-light/url-polyfill.js": function node_modulesUrlPolyfillLightUrlPolyfillJs(module, exports) {
+    var g = typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : this;
+
+    (function (global) {
+      /**
+       * Polyfill URLSearchParams
+       *
+       * Inspired from : https://github.com/WebReflection/url-search-params/blob/master/src/url-search-params.js
+       */
+      var checkIfIteratorIsSupported = function checkIfIteratorIsSupported() {
+        try {
+          return !!Symbol.iterator;
+        } catch (error) {
+          return false;
+        }
+      };
+
+      var iteratorSupported = checkIfIteratorIsSupported();
+
+      var createIterator = function createIterator(items) {
+        var iterator = {
+          next: function next() {
+            var value = items.shift();
+            return {
+              done: value === void 0,
+              value: value
+            };
+          }
+        };
+
+        if (iteratorSupported) {
+          iterator[Symbol.iterator] = function () {
+            return iterator;
+          };
+        }
+
+        return iterator;
+      };
+
+      var polyfillURLSearchParams = function polyfillURLSearchParams() {
+        var URLSearchParams = function URLSearchParams(searchString) {
+          Object.defineProperty(this, '_entries', {
+            value: {}
+          });
+
+          if (typeof searchString === 'string') {
+            if (searchString !== '') {
+              searchString = searchString.replace(/^\?/, '');
+              var attributes = searchString.split('&');
+              var attribute;
+
+              for (var i = 0; i < attributes.length; i++) {
+                attribute = attributes[i].split('=');
+                this.append(decodeURIComponent(attribute[0]), attribute.length > 1 ? decodeURIComponent(attribute[1]) : '');
+              }
+            }
+          } else if (searchString instanceof URLSearchParams) {
+            var _this = this;
+
+            searchString.forEach(function (value, name) {
+              _this.append(value, name);
+            });
+          }
+        };
+
+        var proto = URLSearchParams.prototype;
+
+        proto.append = function (name, value) {
+          if (name in this._entries) {
+            this._entries[name].push(value.toString());
+          } else {
+            this._entries[name] = [value.toString()];
+          }
+        };
+
+        proto["delete"] = function (name) {
+          delete this._entries[name];
+        };
+
+        proto.get = function (name) {
+          return name in this._entries ? this._entries[name][0] : null;
+        };
+
+        proto.getAll = function (name) {
+          return name in this._entries ? this._entries[name].slice(0) : [];
+        };
+
+        proto.has = function (name) {
+          return name in this._entries;
+        };
+
+        proto.set = function (name, value) {
+          this._entries[name] = [value.toString()];
+        };
+
+        proto.forEach = function (callback, thisArg) {
+          var entries;
+
+          for (var name in this._entries) {
+            if (this._entries.hasOwnProperty(name)) {
+              entries = this._entries[name];
+
+              for (var i = 0; i < entries.length; i++) {
+                callback.call(thisArg, entries[i], name, this);
+              }
+            }
+          }
+        };
+
+        proto.keys = function () {
+          var items = [];
+          this.forEach(function (value, name) {
+            items.push(name);
+          });
+          return createIterator(items);
+        };
+
+        proto.values = function () {
+          var items = [];
+          this.forEach(function (value) {
+            items.push(value);
+          });
+          return createIterator(items);
+        };
+
+        proto.entries = function () {
+          var items = [];
+          this.forEach(function (value, name) {
+            items.push([name, value]);
+          });
+          return createIterator(items);
+        };
+
+        if (iteratorSupported) {
+          proto[Symbol.iterator] = proto.entries;
+        }
+
+        proto.toString = function () {
+          var searchString = '';
+          this.forEach(function (value, name) {
+            if (searchString.length > 0) searchString += '&';
+            searchString += encodeURIComponent(name) + '=' + encodeURIComponent(value);
+          });
+          return searchString;
+        };
+
+        global.URLSearchParams = URLSearchParams;
+      };
+
+      if (!('URLSearchParams' in global) || new URLSearchParams('?a=1').toString() !== 'a=1') {
+        polyfillURLSearchParams();
+      } // HTMLAnchorElement
+
+    })(g);
+
+    (function (global) {
+      /**
+       * Polyfill URL
+       *
+       * Inspired from : https://github.com/arv/DOM-URL-Polyfill/blob/master/src/url.js
+       */
+      var checkIfURLIsSupported = function checkIfURLIsSupported() {
+        try {
+          var u = new URL('b', 'http://a');
+          u.pathname = 'c%20d';
+          return u.href === 'http://a/c%20d' && u.searchParams;
+        } catch (e) {
+          return false;
+        }
+      };
+
+      var polyfillURL = function polyfillURL() {
+        var _URL = global.URL;
+
+        var URL = function URL(url, base) {
+          if (typeof url !== 'string') throw new TypeError('Failed to construct \'URL\': Invalid URL');
+          var doc = document.createElement("div");
+          window.doc = doc;
+          var anchorElement = document.createElement('a');
+          anchorElement.href = url;
+          doc.appendChild(anchorElement);
+          anchorElement.href = anchorElement.href; // force href to refresh
+
+          if (anchorElement.protocol === ':' || !/:/.test(anchorElement.href)) {
+            throw new TypeError('Invalid URL');
+          }
+
+          Object.defineProperty(this, '_anchorElement', {
+            value: anchorElement
+          });
+        };
+
+        var proto = URL.prototype;
+
+        var linkURLWithAnchorAttribute = function linkURLWithAnchorAttribute(attributeName) {
+          Object.defineProperty(proto, attributeName, {
+            get: function get() {
+              return this._anchorElement[attributeName];
+            },
+            set: function set(value) {
+              this._anchorElement[attributeName] = value;
+            },
+            enumerable: true
+          });
+        };
+
+        ['hash', 'host', 'hostname', 'port', 'protocol', 'search'].forEach(function (attributeName) {
+          linkURLWithAnchorAttribute(attributeName);
+        });
+        Object.defineProperties(proto, {
+          'toString': {
+            get: function get() {
+              var _this = this;
+
+              return function () {
+                return _this.href;
+              };
+            }
+          },
+          'href': {
+            get: function get() {
+              return this._anchorElement.href.replace(/\?$/, '');
+            },
+            set: function set(value) {
+              this._anchorElement.href = value;
+            },
+            enumerable: true
+          },
+          'pathname': {
+            get: function get() {
+              return this._anchorElement.pathname.replace(/(^\/?)/, '/');
+            },
+            set: function set(value) {
+              this._anchorElement.pathname = value;
+            },
+            enumerable: true
+          },
+          'origin': {
+            get: function get() {
+              return this._anchorElement.protocol + '//' + this._anchorElement.hostname + (this._anchorElement.port ? ':' + this._anchorElement.port : '');
+            },
+            enumerable: true
+          },
+          'password': {
+            // TODO
+            get: function get() {
+              return '';
+            },
+            set: function set(value) {},
+            enumerable: true
+          },
+          'username': {
+            // TODO
+            get: function get() {
+              return '';
+            },
+            set: function set(value) {},
+            enumerable: true
+          },
+          'searchParams': {
+            get: function get() {
+              var searchParams = new URLSearchParams(this.search);
+
+              var _this = this;
+
+              ['append', 'delete', 'set'].forEach(function (methodName) {
+                var method = searchParams[methodName];
+
+                searchParams[methodName] = function () {
+                  method.apply(searchParams, arguments);
+                  _this.search = searchParams.toString();
+                };
+              });
+              return searchParams;
+            },
+            enumerable: true
+          }
+        });
+
+        URL.createObjectURL = function (blob) {
+          return _URL.createObjectURL.apply(_URL, arguments);
+        };
+
+        URL.revokeObjectURL = function (url) {
+          return _URL.revokeObjectURL.apply(_URL, arguments);
+        };
+
+        global.URL = URL;
+      };
+
+      if (!checkIfURLIsSupported()) {
+        polyfillURL();
+      }
+
+      if (global.location !== void 0 && !('origin' in global.location)) {
+        var getOrigin = function getOrigin() {
+          return global.location.protocol + '//' + global.location.hostname + (global.location.port ? ':' + global.location.port : '');
+        };
+
+        try {
+          Object.defineProperty(global.location, 'origin', {
+            get: getOrigin,
+            enumerable: true
+          });
+        } catch (e) {
+          setInterval(function () {
+            global.location.origin = getOrigin();
+          }, 100);
+        }
+      }
+    })(g);
+    /***/
+
+  },
+
+  /***/
   "../node_modules/zone.js/dist/zone-evergreen.js": function node_modulesZoneJsDistZoneEvergreenJs(module, exports, __webpack_require__) {
     var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
     /**
@@ -13773,7 +14099,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }, {
             key: "allWithCallback",
             value: function allWithCallback(values, callback) {
-              var _this = this;
+              var _this2 = this;
 
               var resolve;
               var reject;
@@ -13794,7 +14120,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                   var value = _step2.value;
 
                   if (!isThenable(value)) {
-                    value = _this.resolve(value);
+                    value = _this2.resolve(value);
                   }
 
                   var curValueIndex = valueIndex;
@@ -13924,10 +14250,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           proto[symbolThen] = originalThen;
 
           Ctor.prototype.then = function (onResolve, onReject) {
-            var _this2 = this;
+            var _this3 = this;
 
             var wrapped = new ZoneAwarePromise(function (resolve, reject) {
-              originalThen.call(_this2, resolve, reject);
+              originalThen.call(_this3, resolve, reject);
             });
             return wrapped.then(onResolve, onReject);
           };

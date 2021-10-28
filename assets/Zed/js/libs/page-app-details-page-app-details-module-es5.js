@@ -4340,7 +4340,7 @@ function _createClass3(Constructor, protoProps, staticProps) { if (protoProps) _
         value: function connectApp(appId) {
           var connectedTranslation = 'DETAILS.CONNECT_NOTIFICATION';
           var waitingForConfigurationTranslation = 'DETAILS.WAITING_FOR_CONFIGURATION_NOTIFICATION';
-          return this.defaultService.appsAppIdConnectPost(PageAppDetailsService.getRequestArgs(appId, 'connect'), _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId, this.translateService.currentLang, appId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["withLatestFrom"])(this.translateService.get([connectedTranslation, waitingForConfigurationTranslation])), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function (_ref4) {
+          return this.defaultService.appsAppIdConnectPost(Object(_utils_configuration__WEBPACK_IMPORTED_MODULE_9__["getRequestArgs"])(appId, 'connect'), _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId, this.translateService.currentLang, appId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["withLatestFrom"])(this.translateService.get([connectedTranslation, waitingForConfigurationTranslation])), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function (_ref4) {
             var _ref5 = _slicedToArray2(_ref4, 2),
                 updatedDetailsResponse = _ref5[0],
                 translations = _ref5[1];
@@ -4361,7 +4361,7 @@ function _createClass3(Constructor, protoProps, staticProps) { if (protoProps) _
       }, {
         key: "disconnectApp",
         value: function disconnectApp(appId) {
-          return this.defaultService.appsAppIdDisconnectPost(PageAppDetailsService.getRequestArgs(appId, 'disconnect'), _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId, this.translateService.currentLang, appId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["withLatestFrom"])(this.translateService.get('DETAILS.DISCONNECT_NOTIFICATION')), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function (_ref6) {
+          return this.defaultService.appsAppIdDisconnectPost(Object(_utils_configuration__WEBPACK_IMPORTED_MODULE_9__["getRequestArgs"])(appId, 'disconnect'), _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId, this.translateService.currentLang, appId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["withLatestFrom"])(this.translateService.get('DETAILS.DISCONNECT_NOTIFICATION')), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function (_ref6) {
             var _ref7 = _slicedToArray2(_ref6, 2),
                 updatedDetailsResponse = _ref7[0],
                 message = _ref7[1];
@@ -4434,7 +4434,7 @@ function _createClass3(Constructor, protoProps, staticProps) { if (protoProps) _
           var formData = Boolean(appConfiguration.length) ? appConfiguration[0].attributes.configuration : '{}';
           return {
             isIframe: appDetailsData.attributes.configuration === null,
-            iframeLink: appManifest.configureUrl,
+            iframeLink: Object(_utils_configuration__WEBPACK_IMPORTED_MODULE_9__["prepareConfigureUrl"])(appManifest.configureUrl),
             appName: appManifest.name,
             formData: JSON.parse(formData),
             configuration: cleanedConfiguration
@@ -4452,19 +4452,6 @@ function _createClass3(Constructor, protoProps, staticProps) { if (protoProps) _
         key: "notifyError",
         value: function notifyError(errorMessage) {
           this.notifyMessage(errorMessage, _spryker_notification__WEBPACK_IMPORTED_MODULE_6__["NotificationType"].Error);
-        }
-      }], [{
-        key: "getRequestArgs",
-        value: function getRequestArgs(appId, type) {
-          return {
-            data: {
-              type: type,
-              attributes: {
-                appId: appId,
-                tenantId: _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].tenantId
-              }
-            }
-          };
         }
       }]);
 
@@ -4547,11 +4534,50 @@ function _createClass3(Constructor, protoProps, staticProps) { if (protoProps) _
     __webpack_require__.d(__webpack_exports__, "parseAndCleanConfiguration", function () {
       return parseAndCleanConfiguration;
     });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "getRequestArgs", function () {
+      return getRequestArgs;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "prepareConfigureUrl", function () {
+      return prepareConfigureUrl;
+    });
+    /* harmony import */
+
+
+    var _environments_environment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! ../../environments/environment */
+    "../frontend/app-store-catalog/src/environments/environment.ts");
 
     function parseAndCleanConfiguration(configuration) {
       var confObj = JSON.parse(configuration);
       delete confObj.$schema;
       return confObj;
+    }
+
+    function getRequestArgs(appId, type) {
+      return {
+        data: {
+          type: type,
+          attributes: {
+            appId: appId,
+            tenantId: _environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].tenantId
+          }
+        }
+      };
+    }
+
+    function prepareConfigureUrl(url) {
+      var urlObj = new URL(url);
+      var tenantUuidParamName = 'tenantUuid';
+      var tenantDomainParamName = 'tenantDomain';
+      urlObj.searchParams.set(tenantUuidParamName, _environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].tenantId);
+      urlObj.searchParams.set(tenantDomainParamName, _environments_environment__WEBPACK_IMPORTED_MODULE_0__["environment"].tenantDomain);
+      return urlObj.toString();
     }
     /***/
 
