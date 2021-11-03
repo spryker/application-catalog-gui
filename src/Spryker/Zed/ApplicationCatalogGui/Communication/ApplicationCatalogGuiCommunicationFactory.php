@@ -7,16 +7,7 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Communication;
 
-use Generated\Shared\Transfer\ApplicationCriteriaTransfer;
 use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
-use Spryker\Zed\ApplicationCatalogGui\Communication\Advertisement\AdvertisementBanner;
-use Spryker\Zed\ApplicationCatalogGui\Communication\Advertisement\AdvertisementBannerInterface;
-use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\CategoriesNavigation;
-use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\CategoriesNavigationInterface;
-use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\LabelsNavigation;
-use Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\LabelsNavigationInterface;
-use Spryker\Zed\ApplicationCatalogGui\Communication\Table\ApplicationsTable;
-use Spryker\Zed\ApplicationCatalogGui\Dependency\Client\ApplicationCatalogGuiToApplicationCatalogClientInterface;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
@@ -26,55 +17,10 @@ use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 class ApplicationCatalogGuiCommunicationFactory extends AbstractCommunicationFactory
 {
     /**
-     * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Client\ApplicationCatalogGuiToApplicationCatalogClientInterface
-     */
-    public function getApplicationCatalogClient(): ApplicationCatalogGuiToApplicationCatalogClientInterface
-    {
-        return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::CLIENT_APP_STORE);
-    }
-
-    /**
      * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface
      */
     public function getLocaleFacade(): ApplicationCatalogGuiToLocaleFacadeInterface
     {
         return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::FACADE_LOCALE);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ApplicationCriteriaTransfer $applicationCriteriaTransfer
-     *
-     * @return \Spryker\Zed\ApplicationCatalogGui\Communication\Table\ApplicationsTable
-     */
-    public function createApplicationsTable(
-        ApplicationCriteriaTransfer $applicationCriteriaTransfer
-    ): ApplicationsTable {
-        return new ApplicationsTable($this->getApplicationCatalogClient(), $applicationCriteriaTransfer);
-    }
-
-    /**
-     * @return \Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\LabelsNavigationInterface
-     */
-    public function createLabelsNavigation(): LabelsNavigationInterface
-    {
-        return new LabelsNavigation();
-    }
-
-    /**
-     * @return \Spryker\Zed\ApplicationCatalogGui\Communication\Navigation\CategoriesNavigationInterface
-     */
-    public function createCategoriesNavigation(): CategoriesNavigationInterface
-    {
-        return new CategoriesNavigation();
-    }
-
-    /**
-     * @return \Spryker\Zed\ApplicationCatalogGui\Communication\Advertisement\AdvertisementBannerInterface
-     */
-    public function createAdvertisementBanner(): AdvertisementBannerInterface
-    {
-        return new AdvertisementBanner(
-            $this->getApplicationCatalogClient()
-        );
     }
 }
