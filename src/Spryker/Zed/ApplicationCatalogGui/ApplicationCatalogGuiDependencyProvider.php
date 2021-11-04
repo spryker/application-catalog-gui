@@ -42,7 +42,7 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     {
         $container->set(static::FACADE_LOCALE, function (Container $container) {
             return new ApplicationCatalogGuiToLocaleFacadeBridge(
-                $container->getLocator()->locale()->facade()
+                $container->getLocator()->locale()->facade(),
             );
         });
 

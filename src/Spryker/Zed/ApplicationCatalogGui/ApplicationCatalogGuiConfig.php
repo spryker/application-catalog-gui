@@ -13,6 +13,7 @@ class ApplicationCatalogGuiConfig extends AbstractBundleConfig
 {
     /**
      * @uses \Spryker\Shared\Application\ApplicationConstants::BASE_URL_ZED
+     *
      * @var string
      */
     protected const BASE_URL_ZED = 'APPLICATION:BASE_URL_ZED';

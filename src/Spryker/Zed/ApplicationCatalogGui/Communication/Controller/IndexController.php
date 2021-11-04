@@ -15,7 +15,7 @@ use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 class IndexController extends AbstractController
 {
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function indexAction(): array
     {
