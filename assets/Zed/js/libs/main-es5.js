@@ -496,6 +496,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       CONFIGURATION: {
         SAVE: 'Senden',
         SAVE_NOTIFICATION: 'Konfiguration wurde erfolgreich gespeichert.'
+      },
+      SCHEMA_WIDGETS: {
+        ARRAY_WIDGET: {
+          REMOVE_BUTTON: 'Löschen',
+          ADD_BUTTON: 'Hinzufügen'
+        }
       }
     };
     /***/
@@ -547,6 +553,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       CONFIGURATION: {
         SAVE: 'Save',
         SAVE_NOTIFICATION: 'Configuration has been saved successfully.'
+      },
+      SCHEMA_WIDGETS: {
+        ARRAY_WIDGET: {
+          REMOVE_BUTTON: 'Remove',
+          ADD_BUTTON: 'Add'
+        }
       }
     };
     /***/
