@@ -5,6 +5,7 @@
 
 'use strict';
 
+require('../sass/main.scss');
 require('./libs/main-es5');
 require('./libs/page-app-details-page-app-details-module-es5.js');
 require('./libs/default~page-app-details-page-app-details-module~page-catalog-page-catalog-module-es5.js');

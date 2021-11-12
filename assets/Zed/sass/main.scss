@@ -1,0 +1,16 @@
+/**
+ * Copyright (c) 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
+.page-heading {
+    display: none;
+}
+
+//TODO[Rustem Zakiev]: Resolve it without using important
+.cdk-overlay-container {
+    z-index: 2001 !important;
+    &.spy-drawer-container-overlay {
+        z-index: 2001 !important;
+    }
+}
