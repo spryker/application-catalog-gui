@@ -7,9 +7,12 @@
     display: none;
 }
 
-.cdk-overlay-container.spy-drawer-container-overlay {
-    //TODO[Rustem Zakiev]: Resolve it without using important
-    z-index: 2001 !important;
+.cdk-overlay-container {
+    z-index: 2001;
+    .spy-drawer-container-overlay {
+        //TODO[Rustem Zakiev]: Resolve it without using important
+        z-index: 2001 !important;
+    }
 }
 
 .config-container {
