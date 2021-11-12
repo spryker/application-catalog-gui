@@ -411,9 +411,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_schema_form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ngx-schema-form */ "../node_modules/ngx-schema-form/__ivy_ngcc__/fesm2015/ngx-schema-form.js");
 /* harmony import */ var _spryker_icon_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @spryker/icon/icons */ "../node_modules/@spryker/icon/__ivy_ngcc__/fesm2015/spryker-icon-icons.js");
 /* harmony import */ var _spryker_button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @spryker/button */ "../node_modules/@spryker/button/__ivy_ngcc__/fesm2015/spryker-button.js");
-/* harmony import */ var _spryker_form_item__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @spryker/form-item */ "../node_modules/@spryker/form-item/__ivy_ngcc__/fesm2015/spryker-form-item.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "../node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-translate/core */ "../node_modules/@ngx-translate/core/__ivy_ngcc__/fesm2015/ngx-translate-core.js");
+/* harmony import */ var _spryker_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @spryker/utils */ "../node_modules/@spryker/utils/__ivy_ngcc__/fesm2015/spryker-utils.js");
+/* harmony import */ var _spryker_form_item__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @spryker/form-item */ "../node_modules/@spryker/form-item/__ivy_ngcc__/fesm2015/spryker-form-item.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ "../node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngx-translate/core */ "../node_modules/@ngx-translate/core/__ivy_ngcc__/fesm2015/ngx-translate-core.js");
+
+
 
 
 
@@ -428,14 +431,15 @@ function ArrayWidgetComponent_div_3_spy_button_5_Template(rf, ctx) { if (rf & 1)
     const _r6 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "spy-button", 9);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ArrayWidgetComponent_div_3_spy_button_5_Template_spy_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r6); const itemProperty_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit; const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r4.removeItem(itemProperty_r2); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipe"](2, "translate");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipe"](1, "spyInvoke");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipe"](3, "translate");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("size", ctx_r3.removeButtonSize)("disabled", ctx_r3.isRemoveButtonDisabled());
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](2, 3, "SCHEMA_WIDGETS.ARRAY_WIDGET.REMOVE_BUTTON"), " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("size", ctx_r3.removeButtonSize)("disabled", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind2"](1, 3, ctx_r3.isRemoveButtonDisabled, ctx_r3.schema));
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](3, 6, "SCHEMA_WIDGETS.ARRAY_WIDGET.REMOVE_BUTTON"), " ");
 } }
 function ArrayWidgetComponent_div_3_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 3);
@@ -444,7 +448,8 @@ function ArrayWidgetComponent_div_3_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "sf-form-element", 6);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "div", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, ArrayWidgetComponent_div_3_spy_button_5_Template, 3, 5, "spy-button", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, ArrayWidgetComponent_div_3_spy_button_5_Template, 4, 8, "spy-button", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipe"](6, "spyInvoke");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -454,7 +459,7 @@ function ArrayWidgetComponent_div_3_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("formProperty", itemProperty_r2);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.showButtons());
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind2"](6, 2, ctx_r0.showButtons, ctx_r0.schema));
 } }
 function ArrayWidgetComponent_spy_button_4_Template(rf, ctx) { if (rf & 1) {
     const _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
@@ -465,7 +470,7 @@ function ArrayWidgetComponent_spy_button_4_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx_r1.isAddButtonDisabled());
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx_r1.isAddButtonDisabled(ctx_r1.schema));
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](2, 2, "SCHEMA_WIDGETS.ARRAY_WIDGET.ADD_BUTTON"), " ");
 } }
@@ -477,45 +482,43 @@ class ArrayWidgetComponent extends ngx_schema_form__WEBPACK_IMPORTED_MODULE_1__[
     }
     addItem() {
         this.formProperty.addItem();
-        this.updateButtonDisabledState();
+        this.updateButtonDisabledState(this.schema);
     }
     removeItem(item) {
         this.formProperty.removeItem(item);
-        this.updateButtonDisabledState();
+        this.updateButtonDisabledState(this.schema);
     }
-    updateButtonDisabledState() {
-        this.buttonDisabledAdd = this.isAddButtonDisabled();
-        this.buttonDisabledRemove = this.isRemoveButtonDisabled();
+    updateButtonDisabledState(schema) {
+        this.buttonDisabledAdd = this.isAddButtonDisabled(schema);
+        this.buttonDisabledRemove = this.isRemoveButtonDisabled(schema);
     }
-    isAddButtonDisabled() {
-        return this.isButtonDisabled('maxItems');
+    isAddButtonDisabled(schema) {
+        return this.isButtonDisabled('maxItems', schema);
     }
-    isRemoveButtonDisabled() {
-        return this.isButtonDisabled('minItems');
+    isRemoveButtonDisabled(schema) {
+        return this.isButtonDisabled('minItems', schema);
     }
-    isButtonDisabled(propName) {
-        if (this.schema.hasOwnProperty(propName) && Array.isArray(this.formProperty.properties)) {
-            if ((propName === 'maxItems' && this.formProperty.properties.length >= this.schema.maxItems) ||
-                (propName === 'minItems' && this.formProperty.properties.length <= this.schema.minItems)) {
-                return true;
-            }
-        }
-        return false;
+    isButtonDisabled(propName, schema) {
+        const hasItemsAndMinMaxIsSet = schema.hasOwnProperty(propName) && Array.isArray(this.formProperty.properties);
+        const isButtonNeedToDisable = (propName === 'maxItems' && this.formProperty.properties.length >= schema.maxItems) ||
+            (propName === 'minItems' && this.formProperty.properties.length <= schema.minItems);
+        return hasItemsAndMinMaxIsSet && isButtonNeedToDisable;
     }
-    showButtons() {
-        return !(this.schema.hasOwnProperty('minItems') &&
-            this.schema.hasOwnProperty('maxItems') &&
-            this.schema.minItems === this.schema.maxItems);
+    showButtons(schema) {
+        return !(schema.hasOwnProperty('minItems') &&
+            schema.hasOwnProperty('maxItems') &&
+            schema.minItems === schema.maxItems);
     }
 }
 ArrayWidgetComponent.ɵfac = function ArrayWidgetComponent_Factory(t) { return ɵArrayWidgetComponent_BaseFactory(t || ArrayWidgetComponent); };
-ArrayWidgetComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ArrayWidgetComponent, selectors: [["app-array-widget"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵInheritDefinitionFeature"]], decls: 5, vars: 4, consts: [[3, "for"], ["control", "", 4, "ngFor", "ngForOf"], [3, "disabled", "click", 4, "ngIf"], ["control", ""], [1, "spy-row", "spy-row-align-col-center"], [1, "spy-col-10"], [3, "formProperty"], [1, "spy-col-2"], [3, "size", "disabled", "click", 4, "ngIf"], [3, "size", "disabled", "click"], [3, "disabled", "click"]], template: function ArrayWidgetComponent_Template(rf, ctx) { if (rf & 1) {
+ArrayWidgetComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ArrayWidgetComponent, selectors: [["app-array-widget"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([Object(_spryker_utils__WEBPACK_IMPORTED_MODULE_4__["provideInvokeContext"])(ArrayWidgetComponent)]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵInheritDefinitionFeature"]], decls: 6, vars: 7, consts: [[3, "for"], ["control", "", 4, "ngFor", "ngForOf"], [3, "disabled", "click", 4, "ngIf"], ["control", ""], [1, "spy-row", "spy-row-align-col-center"], [1, "spy-col-10"], [3, "formProperty"], [1, "spy-col-2"], [3, "size", "disabled", "click", 4, "ngIf"], [3, "size", "disabled", "click"], [3, "disabled", "click"]], template: function ArrayWidgetComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "spy-form-item", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, ArrayWidgetComponent_div_3_Template, 6, 2, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, ArrayWidgetComponent_div_3_Template, 7, 5, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, ArrayWidgetComponent_spy_button_4_Template, 3, 4, "spy-button", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipe"](5, "spyInvoke");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
@@ -525,8 +528,8 @@ ArrayWidgetComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.formProperty.properties);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.showButtons());
-    } }, directives: [_spryker_form_item__WEBPACK_IMPORTED_MODULE_4__["FormItemComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], ngx_schema_form__WEBPACK_IMPORTED_MODULE_1__["FormElementComponent"], _spryker_button__WEBPACK_IMPORTED_MODULE_3__["ButtonComponent"]], pipes: [_ngx_translate_core__WEBPACK_IMPORTED_MODULE_6__["TranslatePipe"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJmcm9udGVuZC9hcHAtc3RvcmUtY2F0YWxvZy9zcmMvZm9ybS1zY2hlbWEtd2lkZ2V0cy9jb21wb25lbnRzL3dpZGdldHMvYXJyYXktd2lkZ2V0L2FycmF5LXdpZGdldC5jb21wb25lbnQubGVzcyJ9 */"], encapsulation: 2, changeDetection: 0 });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind2"](5, 4, ctx.showButtons, ctx.schema));
+    } }, directives: [_spryker_form_item__WEBPACK_IMPORTED_MODULE_5__["FormItemComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgIf"], ngx_schema_form__WEBPACK_IMPORTED_MODULE_1__["FormElementComponent"], _spryker_button__WEBPACK_IMPORTED_MODULE_3__["ButtonComponent"]], pipes: [_spryker_utils__WEBPACK_IMPORTED_MODULE_4__["InvokePipe"], _ngx_translate_core__WEBPACK_IMPORTED_MODULE_7__["TranslatePipe"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJmcm9udGVuZC9hcHAtc3RvcmUtY2F0YWxvZy9zcmMvZm9ybS1zY2hlbWEtd2lkZ2V0cy9jb21wb25lbnRzL3dpZGdldHMvYXJyYXktd2lkZ2V0L2FycmF5LXdpZGdldC5jb21wb25lbnQubGVzcyJ9 */"], encapsulation: 2, changeDetection: 0 });
 const ɵArrayWidgetComponent_BaseFactory = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetInheritedFactory"](ArrayWidgetComponent);
 (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ArrayWidgetComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
@@ -536,6 +539,7 @@ const ɵArrayWidgetComponent_BaseFactory = _angular_core__WEBPACK_IMPORTED_MODUL
                 styleUrls: ['./array-widget.component.less'],
                 encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewEncapsulation"].None,
                 changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                providers: [Object(_spryker_utils__WEBPACK_IMPORTED_MODULE_4__["provideInvokeContext"])(ArrayWidgetComponent)],
             }]
     }], null, null); })();
 
