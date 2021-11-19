@@ -45,8 +45,8 @@ class ApplicationCatalogGuiConfig extends AbstractBundleConfig
      *
      * @return string
      */
-    public function getRegistryServiceEndpoint(): string
+    public function getAppCatalogScriptUrl(): string
     {
-        return getenv('REGISTRY_SERVICE_ENDPOINT') ?: '';
+        return getenv('APP_CATALOG_SCRIPT_URL') ?: '';
     }
 }

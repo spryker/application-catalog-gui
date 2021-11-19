@@ -28,8 +28,8 @@ class IndexController extends AbstractController
                 ->getTenantUuid(),
             'baseUrlZed' => $this->getFactory()->getConfig()
                 ->getBaseUrlZed(),
-            'registryServiceEndpoint' => $this->getFactory()->getConfig()
-                ->getRegistryServiceEndpoint(),
+            'appCatalogScriptUrl' => $this->getFactory()->getConfig()
+                ->getAppCatalogScriptUrl(),
         ]);
     }
 }

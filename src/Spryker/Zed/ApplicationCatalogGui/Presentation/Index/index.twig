@@ -2,7 +2,6 @@
 
 {% block head_css %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-application-catalog-main.css') }}">
     <base href="/application-catalog-gui/" />
 {% endblock %}
 
@@ -12,13 +11,9 @@
 
 {% block footer_js %}
     {{ parent() }}
-    <script>
-        window['catalogSpaOptions'] = {
-            tenantId: '{{ tenantUuid }}',
-            language: '{{ localeName }}',
-            tenantDomain: '{{ baseUrlZed }}',
-            apiUrl: '{{ registryServiceEndpoint }}'
-        }
-    </script>
-    <script src="{{ assetsPath('js/spryker-zed-application-catalog-main.js') }}"></script>
+    <script src="{{ url(appCatalogScriptUrl, {
+        tenantId: tenantUuid,
+        tenantDomain: baseUrlZed,
+        language: localeName,
+    }) }}"></script>
 {% endblock %}
