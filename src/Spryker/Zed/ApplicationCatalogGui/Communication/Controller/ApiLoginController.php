@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @method \Spryker\Zed\ApplicationCatalogGui\Communication\ApplicationCatalogGuiCommunicationFactory getFactory()
+ * @method \Spryker\Zed\ApplicationCatalogGui\Business\ApplicationCatalogGuiFacadeInterface getFacade()
  */
 class ApiLoginController extends AbstractController
 {
@@ -20,7 +21,7 @@ class ApiLoginController extends AbstractController
      */
     public function indexAction(): JsonResponse
     {
-        $oauthClientResponseTransfer = $this->getFactory()->getApplicationCatalogGuiClient()->processAccessTokenRequest();
+        $oauthClientResponseTransfer = $this->getFacade()->getAccessToken();
 
         return $this->jsonResponse($oauthClientResponseTransfer->toArray(true, true));
     }

@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui;
 
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToGlossaryBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeBridge;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
@@ -24,7 +25,26 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     /**
      * @var string
      */
+    public const FACADE_GLOSSARY = 'FACADE_GLOSSARY';
+
+    /**
+     * @var string
+     */
     public const CLIENT_APPLICATION_CATALOG_GUI = 'CLIENT_APPLICATION_CATALOG';
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    public function provideBusinessLayerDependencies(Container $container): Container
+    {
+        $container = $this->addLocaleFacade($container);
+        $container = $this->addGlossaryFacade($container);
+        $container = $this->addApplicationCatalogGuiClient($container);
+
+        return $container;
+    }
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -34,7 +54,6 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = $this->addLocaleFacade($container);
-        $container = $this->addApplicationCatalogGuiClient($container);
 
         return $container;
     }
@@ -49,6 +68,22 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
         $container->set(static::FACADE_LOCALE, function (Container $container) {
             return new ApplicationCatalogGuiToLocaleFacadeBridge(
                 $container->getLocator()->locale()->facade(),
+            );
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addGlossaryFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_GLOSSARY, function (Container $container) {
+            return new ApplicationCatalogGuiToGlossaryBridge(
+                $container->getLocator()->glossary()->facade(),
             );
         });
 

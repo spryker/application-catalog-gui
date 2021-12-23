@@ -8,6 +8,7 @@
 namespace Spryker\Client\ApplicationCatalogGui\Executor;
 
 use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\OauthResponseErrorTransfer;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
@@ -22,6 +23,16 @@ class AccessTokenRequestExecutor implements AccessTokenRequestExecutorInterface
      * @var string
      */
     protected const GRANT_TYPE = 'client_credentials';
+
+    /**
+     * @var string
+     */
+    protected const RESPONSE_KEY_ERROR = 'error';
+
+    /**
+     * @var string
+     */
+    protected const RESPONSE_KEY_ERROR_DESCRIPTION = 'error_description';
 
     /**
      * @var \Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface
@@ -91,8 +102,12 @@ class AccessTokenRequestExecutor implements AccessTokenRequestExecutorInterface
     {
         $responseData = $this->utilEncodingService->decodeJson($response->getBody()->getContents(), true);
 
+        $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
+            ->setError($responseData[static::RESPONSE_KEY_ERROR] ?? null)
+            ->setErrorDescription($responseData[static::RESPONSE_KEY_ERROR_DESCRIPTION] ?? null);
+
         return (new OauthClientResponseTransfer())
                 ->setIsSuccessful(false)
-                ->setErrorMessage($responseData['error']);
+                ->setOauthResponseError($oauthResponseErrorTransfer);
     }
 }

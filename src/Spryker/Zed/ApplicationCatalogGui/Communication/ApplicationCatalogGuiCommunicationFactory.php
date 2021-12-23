@@ -7,13 +7,13 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Communication;
 
-use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface;
 use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
  * @method \Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiConfig getConfig()
+ * @method \Spryker\Zed\ApplicationCatalogGui\Business\ApplicationCatalogGuiFacadeInterface getFacade()
  */
 class ApplicationCatalogGuiCommunicationFactory extends AbstractCommunicationFactory
 {
@@ -23,13 +23,5 @@ class ApplicationCatalogGuiCommunicationFactory extends AbstractCommunicationFac
     public function getLocaleFacade(): ApplicationCatalogGuiToLocaleFacadeInterface
     {
         return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::FACADE_LOCALE);
-    }
-
-    /**
-     * @return \Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface
-     */
-    public function getApplicationCatalogGuiClient(): ApplicationCatalogGuiClientInterface
-    {
-        return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::CLIENT_APPLICATION_CATALOG_GUI);
     }
 }
