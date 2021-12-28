@@ -18,7 +18,7 @@ class ApplicationCatalogGuiConfig extends AbstractBundleConfig
      */
     public function getAopIdpUrl(): ?string
     {
-        return 'http://backoffice.registry.spryker.local/dummy-endpoint/jwt-token';// after finishing implemetations revert this comment and rebuild env getenv('SPRYKER_AOP_IDP_URL') ?: null;
+        return getenv('SPRYKER_AOP_IDP_URL') ?: null;
     }
 
     /**
