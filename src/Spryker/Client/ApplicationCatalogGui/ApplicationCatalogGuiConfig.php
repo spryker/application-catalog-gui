@@ -8,47 +8,46 @@
 namespace Spryker\Client\ApplicationCatalogGui;
 
 use Spryker\Client\Kernel\AbstractBundleConfig;
-use Spryker\Shared\ApplicationCatalogGui\ApplicationCatalogGuiConstants;
 
 class ApplicationCatalogGuiConfig extends AbstractBundleConfig
 {
     /**
      * @api
      *
-     * @return string
+     * @return string|null
      */
-    public function getAopIdpUrl(): string
+    public function getAopIdpUrl(): ?string
     {
-        return $this->get(ApplicationCatalogGuiConstants::AOP_IDP_URL, getenv('SPRYKER_AOP_IDP_URL'));
+        return 'http://backoffice.registry.spryker.local/dummy-endpoint/jwt-token';// after finishing implemetations revert this comment and rebuild env getenv('SPRYKER_AOP_IDP_URL') ?: null;
     }
 
     /**
      * @api
      *
-     * @return string
+     * @return string|null
      */
-    public function getAopClientId(): string
+    public function getAopClientId(): ?string
     {
-        return $this->get(ApplicationCatalogGuiConstants::OAP_CLIENT_ID, getenv('SPRYKER_OAP_CLIENT_ID'));
+        return getenv('SPRYKER_AOP_CLIENT_ID') ?: null;
     }
 
     /**
      * @api
      *
-     * @return string
+     * @return string|null
      */
-    public function getAopClientSecret(): string
+    public function getAopClientSecret(): ?string
     {
-        return $this->get(ApplicationCatalogGuiConstants::OAP_CLIENT_SECRET, getenv('SPRYKER_OAP_CLIENT_SECRET'));
+        return getenv('SPRYKER_AOP_CLIENT_SECRET') ?: null;
     }
 
     /**
      * @api
      *
-     * @return string
+     * @return string|null
      */
-    public function getAopAudience(): string
+    public function getAopAudience(): ?string
     {
-        return $this->get(ApplicationCatalogGuiConstants::OAP_CLIENT_AUDIENCE, getenv('SPRYKER_OAP_CLIENT_AUDIENCE'));
+        return getenv('SPRYKER_AOP_CLIENT_AUDIENCE') ?: null;
     }
 }

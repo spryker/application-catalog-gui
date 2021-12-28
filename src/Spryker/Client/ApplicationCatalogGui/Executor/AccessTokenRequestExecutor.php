@@ -15,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiConfig;
 use Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface;
 use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
+use Spryker\Shared\ApplicationCatalogGui\Exception\AopIdpUrlNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
 class AccessTokenRequestExecutor implements AccessTokenRequestExecutorInterface
@@ -65,14 +66,22 @@ class AccessTokenRequestExecutor implements AccessTokenRequestExecutorInterface
     }
 
     /**
+     * @throws \Spryker\Shared\ApplicationCatalogGui\Exception\AopIdpUrlNotFoundException
+     *
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
     public function processAccessTokenRequest(): OauthClientResponseTransfer
     {
+        $aopIdpUrl = $this->applicationCatalogGuiConfig->getAopIdpUrl();
+
+        if (!$aopIdpUrl) {
+            throw new AopIdpUrlNotFoundException('Aop IDP url was not found.');
+        }
+
         try {
             $response = $this->applicationCatalogGuiToGuzzleClient->request(
                 Request::METHOD_POST,
-                $this->applicationCatalogGuiConfig->getAopIdpUrl(),
+                $aopIdpUrl,
                 [
                     RequestOptions::JSON => [
                         'client_id' => $this->applicationCatalogGuiConfig->getAopClientId(),
@@ -87,7 +96,7 @@ class AccessTokenRequestExecutor implements AccessTokenRequestExecutorInterface
 
             return (new OauthClientResponseTransfer())
                 ->setIsSuccessful(true)
-                ->fromArray($responseData);
+                ->fromArray($responseData, true);
         } catch (RequestException $requestException) {
             return $this->processUnexpectedResponse($requestException->getResponse());
         }
