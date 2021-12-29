@@ -14,7 +14,7 @@ interface ApplicationCatalogGuiToGuzzleClientInterface
     /**
      * @param string $method
      * @param string $uri
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

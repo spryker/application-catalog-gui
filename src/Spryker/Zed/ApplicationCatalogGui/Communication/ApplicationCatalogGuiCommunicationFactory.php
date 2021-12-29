@@ -8,6 +8,8 @@
 namespace Spryker\Zed\ApplicationCatalogGui\Communication;
 
 use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Mapper\OauthClientResponseTransferToResponseDataMapper;
+use Spryker\Zed\ApplicationCatalogGui\Communication\Mapper\OauthClientResponseTransferToResponseDataMapperInterface;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
@@ -23,5 +25,13 @@ class ApplicationCatalogGuiCommunicationFactory extends AbstractCommunicationFac
     public function getLocaleFacade(): ApplicationCatalogGuiToLocaleFacadeInterface
     {
         return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::FACADE_LOCALE);
+    }
+
+    /**
+     * @return \Spryker\Zed\ApplicationCatalogGui\Communication\Mapper\OauthClientResponseTransferToResponseDataMapperInterface
+     */
+    public function createOauthClientResponseTransferToResponseDataMapper(): OauthClientResponseTransferToResponseDataMapperInterface
+    {
+        return new OauthClientResponseTransferToResponseDataMapper();
     }
 }

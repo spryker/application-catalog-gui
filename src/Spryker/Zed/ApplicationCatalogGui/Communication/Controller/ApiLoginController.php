@@ -9,6 +9,7 @@ namespace Spryker\Zed\ApplicationCatalogGui\Communication\Controller;
 
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method \Spryker\Zed\ApplicationCatalogGui\Communication\ApplicationCatalogGuiCommunicationFactory getFactory()
@@ -23,6 +24,16 @@ class ApiLoginController extends AbstractController
     {
         $oauthClientResponseTransfer = $this->getFacade()->getAccessToken();
 
-        return $this->jsonResponse($oauthClientResponseTransfer->toArray(true, true));
+        if ($oauthClientResponseTransfer->getIsSuccessful()) {
+            $responseData = $this->getFactory()->createOauthClientResponseTransferToResponseDataMapper()
+                ->mapSuccessOauthClientResponseTransferToResponseAccessTokenData($oauthClientResponseTransfer, []);
+            $status = Response::HTTP_OK;
+        } else {
+            $responseData = $this->getFactory()->createOauthClientResponseTransferToResponseDataMapper()
+                ->mapFailedOauthClientResponseTransferToResponseErrorData($oauthClientResponseTransfer, []);
+            $status = Response::HTTP_BAD_REQUEST;
+        }
+
+        return $this->jsonResponse($responseData, $status);
     }
 }

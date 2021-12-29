@@ -8,13 +8,13 @@
 namespace SprykerTest\Zed\ApplicationCatalogGui\Business;
 
 use Codeception\Test\Unit;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response as GuzzleHttpResponse;
-use Psr\Http\Message\StreamInterface;
-use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
-use Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface;
-use Symfony\Component\HttpFoundation\Response as SymfonyHttpResponse;
+use Generated\Shared\Transfer\LocaleTransfer;
+use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\OauthResponseErrorTransfer;
+use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface;
+use Spryker\Shared\ApplicationCatalogGui\Exception\AopIdpUrlNotFoundException;
+use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
 
 /**
  * Auto-generated group annotations
@@ -30,6 +30,51 @@ use Symfony\Component\HttpFoundation\Response as SymfonyHttpResponse;
 class ApplicationCatalogGuiFacadeTest extends Unit
 {
     /**
+     * @var string
+     */
+    protected const TEST_ACCESS_TOKEN = 'some-access-token';
+
+    /**
+     * @var int
+     */
+    protected const TEST_EXPIRES_IN = 86400;
+
+    /**
+     * @var string
+     */
+    protected const TEST_TOKEN_TYPE = 'Bearer';
+
+    /**
+     * @var string
+     */
+    protected const TEST_ERROR = 'access_denied';
+
+    /**
+     * @var string
+     */
+    protected const TEST_ERROR_DESCRIPTION = 'Unauthorized';
+
+    /**
+     * @var string
+     */
+    protected const EXCEPTION_MESSAGE = 'Aop Idp Url not found';
+
+    /**
+     * @var string
+     */
+    protected const ERROR_MESSAGE_EN = 'Authentication failed';
+
+    /**
+     * @var string
+     */
+    protected const ERROR_MESSAGE_DE = 'Authentifizierung fehlgeschlagen';
+
+    /**
+     * @var string
+     */
+    protected const TEST_LOCALE_NAME_DE = 'de_DE';
+
+    /**
      * @var \SprykerTest\Zed\ApplicationCatalogGui\ApplicationCatalogGuiBusinessTester
      */
     protected $tester;
@@ -37,84 +82,132 @@ class ApplicationCatalogGuiFacadeTest extends Unit
     /**
      * @return void
      */
-    public function testGetAccessTokenWithSuccesssfulResponse(): void
+    public function testGetAccessTokenReturnToken(): void
     {
         // Arrange
-        $httpClientMock = $this->getHttpClientMock();
-        $responseMock = $this->getResponseMock('successful_request.json', SymfonyHttpResponse::HTTP_OK);
-        $httpClientMock->method('request')->willReturn($responseMock);
+        $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
+            ->setIsSuccessful(true)
+            ->setAccessToken(static::TEST_ACCESS_TOKEN)
+            ->setExpiresIn(static::TEST_EXPIRES_IN)
+            ->setTokenType(static::TEST_TOKEN_TYPE);
+
+        $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
+        $applicationCatalogGuiClientMock->method('processAccessTokenRequest')->willReturn($oauthClientResponseTransfer);
 
         // Act
         $oauthClientResponseTransfer = $this->tester->getFacade()->getAccessToken();
 
         // Assert
         $this->assertTrue($oauthClientResponseTransfer->getIsSuccessful());
-        $this->assertEquals('some-access-token', $oauthClientResponseTransfer->getAccessToken());
-        $this->assertEquals(86400, $oauthClientResponseTransfer->getExpiresIn());
-        $this->assertEquals('Bearer', $oauthClientResponseTransfer->getTokenType());
+        $this->assertEquals(static::TEST_ACCESS_TOKEN, $oauthClientResponseTransfer->getAccessToken());
+        $this->assertEquals(static::TEST_EXPIRES_IN, $oauthClientResponseTransfer->getExpiresIn());
+        $this->assertEquals(static::TEST_TOKEN_TYPE, $oauthClientResponseTransfer->getTokenType());
     }
 
     /**
      * @return void
      */
-    public function testGetAccessTokenWithFailedResponse(): void
+    public function testGetAccessTokenReturnError(): void
     {
         // Arrange
-        $httpClientMock = $this->getHttpClientMock();
-        $responseMock = $this->getResponseMock('unsuccessful_request.json', SymfonyHttpResponse::HTTP_UNAUTHORIZED);
-        $httpClientMock->method('request')->willThrowException((new RequestException('', new Request('post', 'uri'), $responseMock)));
+        $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
+            ->setError(static::TEST_ERROR)
+            ->setErrorDescription(static::TEST_ERROR_DESCRIPTION);
+        $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
+            ->setIsSuccessful(false)
+            ->setOauthResponseError($oauthResponseErrorTransfer);
+
+        $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
+        $applicationCatalogGuiClientMock->method('processAccessTokenRequest')->willReturn($oauthClientResponseTransfer);
 
         // Act
         $oauthClientResponseTransfer = $this->tester->getFacade()->getAccessToken();
 
         // Assert
         $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
+        $this->assertSame(static::TEST_ERROR, $oauthClientResponseTransfer->getOauthResponseError()->getError());
+        $this->assertSame(static::TEST_ERROR_DESCRIPTION, $oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
+        $this->assertSame(static::ERROR_MESSAGE_EN, $oauthClientResponseTransfer->getErrorMessage());
     }
 
     /**
-     * @return \Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return void
      */
-    protected function getHttpClientMock(): ApplicationCatalogGuiToGuzzleClientInterface
+    public function testGetAccessTokenReturnDeError(): void
     {
-        $httpClientMock = $this->createMock(ApplicationCatalogGuiToGuzzleClientInterface::class);
+        // Arrange
+        $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
+            ->setError(static::TEST_ERROR)
+            ->setErrorDescription(static::TEST_ERROR_DESCRIPTION);
+        $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
+            ->setIsSuccessful(false)
+            ->setOauthResponseError($oauthResponseErrorTransfer);
+
+        $this->mockLocaleFacade(static::TEST_LOCALE_NAME_DE);
+        $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
+        $applicationCatalogGuiClientMock->method('processAccessTokenRequest')->willReturn($oauthClientResponseTransfer);
+
+        // Act
+        $oauthClientResponseTransfer = $this->tester->getFacade()->getAccessToken();
+
+        // Assert
+        $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
+        $this->assertSame(static::TEST_ERROR, $oauthClientResponseTransfer->getOauthResponseError()->getError());
+        $this->assertSame(static::TEST_ERROR_DESCRIPTION, $oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
+        $this->assertSame(static::ERROR_MESSAGE_DE, $oauthClientResponseTransfer->getErrorMessage());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetAccessTokenThrowsException(): void
+    {
+        // Arrange
+        $aopIdpUrlNotFoundException = new AopIdpUrlNotFoundException(static::EXCEPTION_MESSAGE);
+        $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
+        $applicationCatalogGuiClientMock->method('processAccessTokenRequest')->willThrowException($aopIdpUrlNotFoundException);
+
+        // Act
+        $oauthClientResponseTransfer = $this->tester->getFacade()->getAccessToken();
+
+        // Assert
+        $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
+        $this->assertSame(static::EXCEPTION_MESSAGE, $oauthClientResponseTransfer->getOauthResponseError()->getError());
+        $this->assertNull($oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
+        $this->assertSame(static::ERROR_MESSAGE_EN, $oauthClientResponseTransfer->getErrorMessage());
+    }
+
+    /**
+     * @return \Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getApplicationCatalogGuiClientMock(): ApplicationCatalogGuiClientInterface
+    {
+        $applicationCatalogGuiClientMock = $this->createMock(ApplicationCatalogGuiClientInterface::class);
 
         $this->tester->setDependency(
-            ApplicationCatalogGuiDependencyProvider::CLIENT_HTTP,
-            $httpClientMock,
+            ApplicationCatalogGuiDependencyProvider::CLIENT_APPLICATION_CATALOG_GUI,
+            $applicationCatalogGuiClientMock,
         );
 
-        return $httpClientMock;
+        return $applicationCatalogGuiClientMock;
     }
 
     /**
-     * @param string $responseFileName
-     * @param int $responseCode
+     * @param string $localeName
      *
-     * @return \GuzzleHttp\Psr7\Response|\PHPUnit\Framework\MockObject\MockObject
+     * @return void
      */
-    protected function getResponseMock(string $responseFileName, int $responseCode): GuzzleHttpResponse
+    protected function mockLocaleFacade(string $localeName): void
     {
-        $responseBody = $this->getFixture($responseFileName);
-        $responseMock = $this->createMock(GuzzleHttpResponse::class);
-        $streamMock = $this->createMock(StreamInterface::class);
+        $localeFacadeMock = $this->createMock(ApplicationCatalogGuiToLocaleFacadeInterface::class);
 
-        $streamMock->method('getContents')
-            ->willReturn($responseBody);
-        $responseMock->method('getBody')
-            ->willReturn($streamMock);
-        $responseMock->method('getStatusCode')
-            ->willReturn($responseCode);
+        $localeFacadeMock->method('getCurrentLocale')->willReturn(
+            (new LocaleTransfer())->setLocaleName($localeName),
+        );
 
-        return $responseMock;
-    }
-
-    /**
-     * @param string $fileName
-     *
-     * @return string
-     */
-    protected function getFixture(string $fileName): string
-    {
-        return file_get_contents(codecept_data_dir('Fixtures/' . $fileName));
+        $this->tester->setDependency(
+            ApplicationCatalogGuiDependencyProvider::FACADE_LOCALE,
+            $localeFacadeMock,
+        );
     }
 }
