@@ -14,5 +14,5 @@ interface AccessTokenReaderInterface
     /**
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
-    public function getAccessToken(): OauthClientResponseTransfer;
+    public function requestAccessToken(): OauthClientResponseTransfer;
 }

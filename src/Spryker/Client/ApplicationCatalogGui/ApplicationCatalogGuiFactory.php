@@ -8,10 +8,10 @@
 namespace Spryker\Client\ApplicationCatalogGui;
 
 use Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface;
-use Spryker\Client\ApplicationCatalogGui\Executor\AccessTokenRequestExecutor;
-use Spryker\Client\ApplicationCatalogGui\Executor\AccessTokenRequestExecutorInterface;
+use Spryker\Client\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToUtilEncodingInterface;
+use Spryker\Client\ApplicationCatalogGui\ExternalClient\OauthAccessTokenClient;
+use Spryker\Client\ApplicationCatalogGui\ExternalClient\OauthAccessTokenClientInterface;
 use Spryker\Client\Kernel\AbstractFactory;
-use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
 
 /**
  * @method \Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiConfig getConfig()
@@ -19,11 +19,11 @@ use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
 class ApplicationCatalogGuiFactory extends AbstractFactory
 {
     /**
-     * @return \Spryker\Client\ApplicationCatalogGui\Executor\AccessTokenRequestExecutorInterface
+     * @return \Spryker\Client\ApplicationCatalogGui\ExternalClient\OauthAccessTokenClientInterface
      */
-    public function createAccessTokenRequestExecutor(): AccessTokenRequestExecutorInterface
+    public function createOauthAccessTokenClient(): OauthAccessTokenClientInterface
     {
-        return new AccessTokenRequestExecutor(
+        return new OauthAccessTokenClient(
             $this->getHttpClient(),
             $this->getServiceUtilEncoding(),
             $this->getConfig(),
@@ -39,9 +39,9 @@ class ApplicationCatalogGuiFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
+     * @return \Spryker\Client\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToUtilEncodingInterface
      */
-    public function getServiceUtilEncoding(): UtilEncodingServiceInterface
+    public function getServiceUtilEncoding(): ApplicationCatalogGuiToUtilEncodingInterface
     {
         return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::SERVICE_UTIL_ENCODING);
     }

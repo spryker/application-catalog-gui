@@ -61,22 +61,22 @@ class ApplicationCatalogGuiClientTest extends Unit
     /**
      * @return void
      */
-    public function testProcessAccessTokenRequestThrowsException(): void
+    public function testRequestOauthAccessTokenThrowsAopIdpUrlNotFoundException(): void
     {
         // Arrange
-        $this->mockAopClientConfig(null);
+        $this->tester->mockAopClientConfig(null);
 
         // Assert
         $this->expectException(AopIdpUrlNotFoundException::class);
 
         // Act
-        $this->tester->getClient()->processAccessTokenRequest();
+        $this->tester->getClient()->requestOauthAccessToken();
     }
 
     /**
      * @return void
      */
-    public function testProcessAccessTokenRequestReturnsFailed(): void
+    public function testRequestOauthAccessTokenReturnsErrorWhenUnauthorized(): void
     {
         // Arrange
         $httpClientMock = $this->getHttpClientMock();
@@ -87,10 +87,10 @@ class ApplicationCatalogGuiClientTest extends Unit
         $httpClientMock->method('request')->willThrowException(
             new RequestException('', new Request('post', 'uri'), $responseMock),
         );
-        $this->mockAopClientConfig();
+        $this->tester->mockAopClientConfig();
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getClient()->processAccessTokenRequest();
+        $oauthClientResponseTransfer = $this->tester->getClient()->requestOauthAccessToken();
 
         // Assert
         $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
@@ -101,7 +101,7 @@ class ApplicationCatalogGuiClientTest extends Unit
     /**
      * @return void
      */
-    public function testProcessAccessTokenRequestReturnsSuccess(): void
+    public function testRequestOauthAccessTokenReturnsAccessTokenWhenSuccess(): void
     {
         // Arrange
         $httpClientMock = $this->getHttpClientMock();
@@ -110,29 +110,16 @@ class ApplicationCatalogGuiClientTest extends Unit
             SymfonyHttpResponse::HTTP_OK,
         );
         $httpClientMock->method('request')->willReturn($responseMock);
-        $this->mockAopClientConfig();
+        $this->tester->mockAopClientConfig();
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getClient()->processAccessTokenRequest();
+        $oauthClientResponseTransfer = $this->tester->getClient()->requestOauthAccessToken();
 
         // Assert
         $this->assertTrue($oauthClientResponseTransfer->getIsSuccessful());
         $this->assertEquals(static::TEST_ACCESS_TOKEN, $oauthClientResponseTransfer->getAccessToken());
         $this->assertEquals(static::TEST_EXPIRES_IN, $oauthClientResponseTransfer->getExpiresIn());
         $this->assertEquals(static::TEST_TOKEN_TYPE, $oauthClientResponseTransfer->getTokenType());
-    }
-
-    /**
-     * @param string|null $aopIdpUrl
-     *
-     * @return void
-     */
-    protected function mockAopClientConfig(?string $aopIdpUrl = 'url'): void
-    {
-        $this->tester->mockConfigMethod('getAopIdpUrl', $aopIdpUrl);
-        $this->tester->mockConfigMethod('getAopClientId', 'client_id');
-        $this->tester->mockConfigMethod('getAopClientSecret', 'client_secret');
-        $this->tester->mockConfigMethod('getAopAudience', 'aop_audience');
     }
 
     /**
@@ -158,7 +145,7 @@ class ApplicationCatalogGuiClientTest extends Unit
      */
     protected function getResponseMock(string $responseFileName, int $responseCode): GuzzleHttpResponse
     {
-        $responseBody = $this->getFixture($responseFileName);
+        $responseBody = $this->tester->getFixture($responseFileName);
         $responseMock = $this->createMock(GuzzleHttpResponse::class);
         $streamMock = $this->createMock(StreamInterface::class);
 
@@ -170,15 +157,5 @@ class ApplicationCatalogGuiClientTest extends Unit
             ->willReturn($responseCode);
 
         return $responseMock;
-    }
-
-    /**
-     * @param string $fileName
-     *
-     * @return string
-     */
-    protected function getFixture(string $fileName): string
-    {
-        return file_get_contents(codecept_data_dir('Fixtures/' . $fileName));
     }
 }

@@ -82,7 +82,7 @@ class ApplicationCatalogGuiFacadeTest extends Unit
     /**
      * @return void
      */
-    public function testGetAccessTokenReturnToken(): void
+    public function testRequestAccessTokenReturnsValidToken(): void
     {
         // Arrange
         $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
@@ -92,10 +92,10 @@ class ApplicationCatalogGuiFacadeTest extends Unit
             ->setTokenType(static::TEST_TOKEN_TYPE);
 
         $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
-        $applicationCatalogGuiClientMock->method('processAccessTokenRequest')->willReturn($oauthClientResponseTransfer);
+        $applicationCatalogGuiClientMock->method('requestOauthAccessToken')->willReturn($oauthClientResponseTransfer);
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getFacade()->getAccessToken();
+        $oauthClientResponseTransfer = $this->tester->getFacade()->requestAccessToken();
 
         // Assert
         $this->assertTrue($oauthClientResponseTransfer->getIsSuccessful());
@@ -107,7 +107,7 @@ class ApplicationCatalogGuiFacadeTest extends Unit
     /**
      * @return void
      */
-    public function testGetAccessTokenReturnError(): void
+    public function testRequestAccessTokenReturnsErrorWhenOauthRequestIsUnsuccessful(): void
     {
         // Arrange
         $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
@@ -118,10 +118,10 @@ class ApplicationCatalogGuiFacadeTest extends Unit
             ->setOauthResponseError($oauthResponseErrorTransfer);
 
         $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
-        $applicationCatalogGuiClientMock->method('processAccessTokenRequest')->willReturn($oauthClientResponseTransfer);
+        $applicationCatalogGuiClientMock->method('requestOauthAccessToken')->willReturn($oauthClientResponseTransfer);
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getFacade()->getAccessToken();
+        $oauthClientResponseTransfer = $this->tester->getFacade()->requestAccessToken();
 
         // Assert
         $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
@@ -133,7 +133,7 @@ class ApplicationCatalogGuiFacadeTest extends Unit
     /**
      * @return void
      */
-    public function testGetAccessTokenReturnDeError(): void
+    public function testRequestAccessTokenReturnsErrorWhenOauthRequestIsUnsuccessfulWithDeLocale(): void
     {
         // Arrange
         $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
@@ -145,10 +145,10 @@ class ApplicationCatalogGuiFacadeTest extends Unit
 
         $this->mockLocaleFacade(static::TEST_LOCALE_NAME_DE);
         $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
-        $applicationCatalogGuiClientMock->method('processAccessTokenRequest')->willReturn($oauthClientResponseTransfer);
+        $applicationCatalogGuiClientMock->method('requestOauthAccessToken')->willReturn($oauthClientResponseTransfer);
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getFacade()->getAccessToken();
+        $oauthClientResponseTransfer = $this->tester->getFacade()->requestAccessToken();
 
         // Assert
         $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
@@ -160,15 +160,15 @@ class ApplicationCatalogGuiFacadeTest extends Unit
     /**
      * @return void
      */
-    public function testGetAccessTokenThrowsException(): void
+    public function testGetAccessTokenThrowsAopIdpUrlNotFoundException(): void
     {
         // Arrange
         $aopIdpUrlNotFoundException = new AopIdpUrlNotFoundException(static::EXCEPTION_MESSAGE);
         $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
-        $applicationCatalogGuiClientMock->method('processAccessTokenRequest')->willThrowException($aopIdpUrlNotFoundException);
+        $applicationCatalogGuiClientMock->method('requestOauthAccessToken')->willThrowException($aopIdpUrlNotFoundException);
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getFacade()->getAccessToken();
+        $oauthClientResponseTransfer = $this->tester->getFacade()->requestAccessToken();
 
         // Assert
         $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());

@@ -22,10 +22,10 @@ class ApplicationCatalogGuiClient extends AbstractClient implements ApplicationC
      *
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
-    public function processAccessTokenRequest(): OauthClientResponseTransfer
+    public function requestOauthAccessToken(): OauthClientResponseTransfer
     {
         return $this->getFactory()
-            ->createAccessTokenRequestExecutor()
-            ->processAccessTokenRequest();
+            ->createOauthAccessTokenClient()
+            ->requestOauthAccessToken();
     }
 }

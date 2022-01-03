@@ -16,11 +16,15 @@ interface ApplicationCatalogGuiFacadeInterface
 {
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Uses ApplicationCatalogGuiClient to get the access token.
+     * - Does nothing with the OauthClientResponseTransfer if the OauthClientResponseTransfer.isSuccessful is `true`.
+     * - Adds general translatable message to OauthClientResponseTransfer.errorMessage if the OauthClientResponseTransfer.isSuccessful is `false`.
+     * - Logs the error if the OauthClientResponseTransfer.isSuccessful is `false` or catches the AopIdpUrlNotFoundException.
+     * - Returns OauthClientResponseTransfer.
      *
      * @api
      *
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
-    public function getAccessToken(): OauthClientResponseTransfer;
+    public function requestAccessToken(): OauthClientResponseTransfer;
 }

@@ -51,10 +51,10 @@ class AccessTokenReader implements AccessTokenReaderInterface
     /**
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
-    public function getAccessToken(): OauthClientResponseTransfer
+    public function requestAccessToken(): OauthClientResponseTransfer
     {
         try {
-            $oauthClientResponseTransfer = $this->applicationCatalogGuiClient->processAccessTokenRequest();
+            $oauthClientResponseTransfer = $this->applicationCatalogGuiClient->requestOauthAccessToken();
         } catch (AopIdpUrlNotFoundException $aopIdpUrlNotFoundException) {
             $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
                 ->setError($aopIdpUrlNotFoundException->getMessage());
@@ -75,8 +75,8 @@ class AccessTokenReader implements AccessTokenReaderInterface
 
             $oauthAuthenticationFailedException = new OauthAuthenticationFailedException(sprintf(
                 'Error: %s; ErrorDescription: %s.',
-                $oauthClientResponseTransfer->getOauthResponseError()->getError(),
-                $oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription(),
+                $oauthClientResponseTransfer->getOauthResponseErrorOrFail()->getError(),
+                $oauthClientResponseTransfer->getOauthResponseErrorOrFail()->getErrorDescription(),
             ));
 
             ErrorLogger::getInstance()->log($oauthAuthenticationFailedException);

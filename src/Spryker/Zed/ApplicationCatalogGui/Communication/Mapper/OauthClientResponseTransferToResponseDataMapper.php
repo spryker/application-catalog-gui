@@ -56,7 +56,7 @@ class OauthClientResponseTransferToResponseDataMapper implements OauthClientResp
             $data[static::RESPONSE_KEY_ERRORS] = [];
         }
 
-        $data['errors'][] = [
+        $data[static::RESPONSE_KEY_ERRORS][] = [
             static::RESPONSE_KEY_ERROR_DETAIL => $oauthClientResponseTransfer->getErrorMessage(),
             static::RESPONSE_KEY_ERROR_STATUS => Response::HTTP_BAD_REQUEST,
         ];

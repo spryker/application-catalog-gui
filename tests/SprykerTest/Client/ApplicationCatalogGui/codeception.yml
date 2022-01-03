@@ -19,7 +19,6 @@ suites:
             enabled:
                 - Asserts
                 - \SprykerTest\Shared\Testify\Helper\Environment
-                - \SprykerTest\Shared\Propel\Helper\TransactionHelper
                 - \SprykerTest\Shared\Testify\Helper\DependencyHelper
                 - \SprykerTest\Client\Testify\Helper\ConfigHelper
                 - \SprykerTest\Client\Testify\Helper\ClientHelper

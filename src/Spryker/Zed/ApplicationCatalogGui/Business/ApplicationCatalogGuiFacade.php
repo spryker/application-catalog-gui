@@ -22,8 +22,8 @@ class ApplicationCatalogGuiFacade extends AbstractFacade implements ApplicationC
      *
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
-    public function getAccessToken(): OauthClientResponseTransfer
+    public function requestAccessToken(): OauthClientResponseTransfer
     {
-        return $this->getFactory()->createAccessTokenReader()->getAccessToken();
+        return $this->getFactory()->createAccessTokenReader()->requestAccessToken();
     }
 }

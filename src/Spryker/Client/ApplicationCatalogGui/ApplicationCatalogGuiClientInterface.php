@@ -13,14 +13,14 @@ interface ApplicationCatalogGuiClientInterface
 {
     /**
      * Specification:
-     * - Send request to Auth0 service.
-     * - Add accessToken, expiresIn, tokenType if request successful.
-     * - Add errorMessage to OauthClientResponseTransfer if request failed.
-     * - Return OauthClientResponseTransfer.
+     * - Sends the request to the Auth0 service.
+     * - Adds accessToken, expiresIn, tokenType to OauthClientResponseTransfer if the request is successful.
+     * - Adds the error and the errorDescription to OauthClientResponseTransfer.oauthResponseError if the request is failed.
+     * - Returns OauthClientResponseTransfer.
      *
      * @api
      *
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
-    public function processAccessTokenRequest(): OauthClientResponseTransfer;
+    public function requestOauthAccessToken(): OauthClientResponseTransfer;
 }

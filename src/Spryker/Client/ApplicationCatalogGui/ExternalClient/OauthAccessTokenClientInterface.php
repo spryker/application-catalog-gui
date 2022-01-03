@@ -5,14 +5,14 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Client\ApplicationCatalogGui\Executor;
+namespace Spryker\Client\ApplicationCatalogGui\ExternalClient;
 
 use Generated\Shared\Transfer\OauthClientResponseTransfer;
 
-interface AccessTokenRequestExecutorInterface
+interface OauthAccessTokenClientInterface
 {
     /**
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
-    public function processAccessTokenRequest(): OauthClientResponseTransfer;
+    public function requestOauthAccessToken(): OauthClientResponseTransfer;
 }
