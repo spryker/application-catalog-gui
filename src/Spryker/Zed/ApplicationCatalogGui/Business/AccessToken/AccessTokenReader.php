@@ -8,16 +8,15 @@
 namespace Spryker\Zed\ApplicationCatalogGui\Business\AccessToken;
 
 use Generated\Shared\Transfer\OauthClientResponseTransfer;
-use Generated\Shared\Transfer\OauthResponseErrorTransfer;
 use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface;
-use Spryker\Shared\ApplicationCatalogGui\Exception\AopIdpUrlNotFoundException;
-use Spryker\Shared\ErrorHandler\ErrorLogger;
+use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToGlossaryInterface;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
-use Spryker\Zed\ApplicationCatalogGui\Exception\OauthAuthenticationFailedException;
 
 class AccessTokenReader implements AccessTokenReaderInterface
 {
+    use LoggerTrait;
+
     /**
      * @var \Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface
      */
@@ -53,16 +52,7 @@ class AccessTokenReader implements AccessTokenReaderInterface
      */
     public function requestAccessToken(): OauthClientResponseTransfer
     {
-        try {
-            $oauthClientResponseTransfer = $this->applicationCatalogGuiClient->requestOauthAccessToken();
-        } catch (AopIdpUrlNotFoundException $aopIdpUrlNotFoundException) {
-            $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
-                ->setError($aopIdpUrlNotFoundException->getMessage());
-
-            $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
-                ->setOauthResponseError($oauthResponseErrorTransfer)
-                ->setIsSuccessful(false);
-        }
+        $oauthClientResponseTransfer = $this->applicationCatalogGuiClient->requestOauthAccessToken();
 
         if (!$oauthClientResponseTransfer->getIsSuccessful()) {
             $oauthClientResponseTransfer->setErrorMessage(
@@ -73,13 +63,11 @@ class AccessTokenReader implements AccessTokenReaderInterface
                 ),
             );
 
-            $oauthAuthenticationFailedException = new OauthAuthenticationFailedException(sprintf(
+            $this->getLogger()->error(sprintf(
                 'Error: %s; ErrorDescription: %s.',
                 $oauthClientResponseTransfer->getOauthResponseErrorOrFail()->getError(),
                 $oauthClientResponseTransfer->getOauthResponseErrorOrFail()->getErrorDescription(),
             ));
-
-            ErrorLogger::getInstance()->log($oauthAuthenticationFailedException);
         }
 
         return $oauthClientResponseTransfer;

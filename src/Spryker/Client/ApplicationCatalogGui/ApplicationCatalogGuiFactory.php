@@ -7,10 +7,10 @@
 
 namespace Spryker\Client\ApplicationCatalogGui;
 
-use Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface;
+use Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToHttpClientAdapterInterface;
 use Spryker\Client\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToUtilEncodingInterface;
-use Spryker\Client\ApplicationCatalogGui\ExternalClient\OauthAccessTokenClient;
-use Spryker\Client\ApplicationCatalogGui\ExternalClient\OauthAccessTokenClientInterface;
+use Spryker\Client\ApplicationCatalogGui\RequestExecutor\OauthRequestExecutor;
+use Spryker\Client\ApplicationCatalogGui\RequestExecutor\OauthRequestExecutorInterface;
 use Spryker\Client\Kernel\AbstractFactory;
 
 /**
@@ -19,11 +19,11 @@ use Spryker\Client\Kernel\AbstractFactory;
 class ApplicationCatalogGuiFactory extends AbstractFactory
 {
     /**
-     * @return \Spryker\Client\ApplicationCatalogGui\ExternalClient\OauthAccessTokenClientInterface
+     * @return \Spryker\Client\ApplicationCatalogGui\RequestExecutor\OauthRequestExecutorInterface
      */
-    public function createOauthAccessTokenClient(): OauthAccessTokenClientInterface
+    public function createOauthAccessTokenClient(): OauthRequestExecutorInterface
     {
-        return new OauthAccessTokenClient(
+        return new OauthRequestExecutor(
             $this->getHttpClient(),
             $this->getServiceUtilEncoding(),
             $this->getConfig(),
@@ -31,9 +31,9 @@ class ApplicationCatalogGuiFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface
+     * @return \Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToHttpClientAdapterInterface
      */
-    public function getHttpClient(): ApplicationCatalogGuiToGuzzleClientInterface
+    public function getHttpClient(): ApplicationCatalogGuiToHttpClientAdapterInterface
     {
         return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::CLIENT_HTTP);
     }

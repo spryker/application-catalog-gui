@@ -5,20 +5,18 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Client\ApplicationCatalogGui\ExternalClient;
+namespace Spryker\Client\ApplicationCatalogGui\RequestExecutor;
 
 use Generated\Shared\Transfer\OauthClientResponseTransfer;
 use Generated\Shared\Transfer\OauthResponseErrorTransfer;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
-use Psr\Http\Message\ResponseInterface;
 use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiConfig;
-use Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface;
+use Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToHttpClientAdapterInterface;
 use Spryker\Client\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToUtilEncodingInterface;
-use Spryker\Shared\ApplicationCatalogGui\Exception\AopIdpUrlNotFoundException;
+use Spryker\Client\ApplicationCatalogGui\Exception\ExternalHttpRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
-class OauthAccessTokenClient implements OauthAccessTokenClientInterface
+class OauthRequestExecutor implements OauthRequestExecutorInterface
 {
     /**
      * @var string
@@ -36,9 +34,9 @@ class OauthAccessTokenClient implements OauthAccessTokenClientInterface
     protected const RESPONSE_KEY_ERROR_DESCRIPTION = 'error_description';
 
     /**
-     * @var \Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface
+     * @var \Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToHttpClientAdapterInterface
      */
-    protected $applicationCatalogGuiToGuzzleClient;
+    protected $applicationCatalogGuiToHttpClientAdapter;
 
     /**
      * @var \Spryker\Client\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToUtilEncodingInterface
@@ -51,23 +49,21 @@ class OauthAccessTokenClient implements OauthAccessTokenClientInterface
     protected $applicationCatalogGuiConfig;
 
     /**
-     * @param \Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface $applicationCatalogGuiToGuzzleClient
+     * @param \Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToHttpClientAdapterInterface $applicationCatalogGuiToHttpClientAdapter
      * @param \Spryker\Client\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToUtilEncodingInterface $utilEncodingService
      * @param \Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiConfig $applicationCatalogGuiConfig
      */
     public function __construct(
-        ApplicationCatalogGuiToGuzzleClientInterface $applicationCatalogGuiToGuzzleClient,
+        ApplicationCatalogGuiToHttpClientAdapterInterface $applicationCatalogGuiToHttpClientAdapter,
         ApplicationCatalogGuiToUtilEncodingInterface $utilEncodingService,
         ApplicationCatalogGuiConfig $applicationCatalogGuiConfig
     ) {
-        $this->applicationCatalogGuiToGuzzleClient = $applicationCatalogGuiToGuzzleClient;
+        $this->applicationCatalogGuiToHttpClientAdapter = $applicationCatalogGuiToHttpClientAdapter;
         $this->utilEncodingService = $utilEncodingService;
         $this->applicationCatalogGuiConfig = $applicationCatalogGuiConfig;
     }
 
     /**
-     * @throws \Spryker\Shared\ApplicationCatalogGui\Exception\AopIdpUrlNotFoundException
-     *
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
     public function requestOauthAccessToken(): OauthClientResponseTransfer
@@ -75,11 +71,16 @@ class OauthAccessTokenClient implements OauthAccessTokenClientInterface
         $aopIdpUrl = $this->applicationCatalogGuiConfig->getAopIdpUrl();
 
         if (!$aopIdpUrl) {
-            throw new AopIdpUrlNotFoundException('Aop IDP url was not found.');
+            $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
+                ->setError('Aop IDP url was not found.');
+
+            return (new OauthClientResponseTransfer())
+                ->setOauthResponseError($oauthResponseErrorTransfer)
+                ->setIsSuccessful(false);
         }
 
         try {
-            $response = $this->applicationCatalogGuiToGuzzleClient->request(
+            $response = $this->applicationCatalogGuiToHttpClientAdapter->request(
                 Request::METHOD_POST,
                 $aopIdpUrl,
                 [
@@ -97,23 +98,23 @@ class OauthAccessTokenClient implements OauthAccessTokenClientInterface
             return (new OauthClientResponseTransfer())
                 ->setIsSuccessful(true)
                 ->fromArray($responseData, true);
-        } catch (RequestException $requestException) {
-            return $this->processUnexpectedResponse($requestException->getResponse());
+        } catch (ExternalHttpRequestException $requestException) {
+            return $this->processUnexpectedResponse($requestException);
         }
     }
 
     /**
-     * @param \Psr\Http\Message\ResponseInterface|null $response
+     * @param \Spryker\Client\ApplicationCatalogGui\Exception\ExternalHttpRequestException $externalHttpRequestException
      *
      * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
      */
-    protected function processUnexpectedResponse(?ResponseInterface $response): OauthClientResponseTransfer
+    protected function processUnexpectedResponse(ExternalHttpRequestException $externalHttpRequestException): OauthClientResponseTransfer
     {
         $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
             ->setIsSuccessful(false);
 
-        if ($response) {
-            $responseData = $this->utilEncodingService->decodeJson($response->getBody()->getContents(), true);
+        if (!empty($externalHttpRequestException->getResponseBody())) {
+            $responseData = $this->utilEncodingService->decodeJson($externalHttpRequestException->getResponseBody(), true);
 
             $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
                 ->setError($responseData[static::RESPONSE_KEY_ERROR] ?? null)

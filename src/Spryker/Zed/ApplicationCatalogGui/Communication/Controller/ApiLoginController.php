@@ -24,16 +24,16 @@ class ApiLoginController extends AbstractController
     {
         $oauthClientResponseTransfer = $this->getFacade()->requestAccessToken();
 
-        if ($oauthClientResponseTransfer->getIsSuccessful()) {
-            $responseData = $this->getFactory()->createOauthClientResponseTransferToResponseDataMapper()
-                ->mapSuccessOauthClientResponseTransferToResponseAccessTokenData($oauthClientResponseTransfer, []);
-            $status = Response::HTTP_OK;
-        } else {
+        if (!$oauthClientResponseTransfer->getIsSuccessful()) {
             $responseData = $this->getFactory()->createOauthClientResponseTransferToResponseDataMapper()
                 ->mapFailedOauthClientResponseTransferToResponseErrorData($oauthClientResponseTransfer, []);
-            $status = Response::HTTP_BAD_REQUEST;
+
+            return $this->jsonResponse($responseData, Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->jsonResponse($responseData, $status);
+        $responseData = $this->getFactory()->createOauthClientResponseTransferToResponseDataMapper()
+            ->mapSuccessOauthClientResponseTransferToResponseAccessTokenData($oauthClientResponseTransfer, []);
+
+        return $this->jsonResponse($responseData, Response::HTTP_OK);
     }
 }

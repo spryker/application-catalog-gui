@@ -17,10 +17,10 @@ interface ApplicationCatalogGuiFacadeInterface
     /**
      * Specification:
      * - Uses ApplicationCatalogGuiClient to get the access token.
-     * - Does nothing with the OauthClientResponseTransfer if the OauthClientResponseTransfer.isSuccessful is `true`.
-     * - Adds general translatable message to OauthClientResponseTransfer.errorMessage if the OauthClientResponseTransfer.isSuccessful is `false`.
-     * - Logs the error if the OauthClientResponseTransfer.isSuccessful is `false` or catches the AopIdpUrlNotFoundException.
-     * - Returns OauthClientResponseTransfer.
+     * - Does nothing with the OauthClientResponse if the OauthClientResponse.isSuccessful is `true`.
+     * - Adds general translatable message to OauthClientResponse.errorMessage if the OauthClientResponse.isSuccessful is `false`.
+     * - Logs the error if the OauthClientResponse.isSuccessful is `false` or catches the AopIdpUrlNotFoundException.
+     * - Returns OauthClientResponse.
      *
      * @api
      *

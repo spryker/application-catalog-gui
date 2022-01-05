@@ -5,16 +5,18 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle;
+namespace Spryker\Client\ApplicationCatalogGui\Dependency\External;
 
 use Psr\Http\Message\ResponseInterface;
 
-interface ApplicationCatalogGuiToGuzzleClientInterface
+interface ApplicationCatalogGuiToHttpClientAdapterInterface
 {
     /**
      * @param string $method
      * @param string $uri
-     * @param array<string, mixed> $options
+     * @param array<mixed> $options
+     *
+     * @throws \Spryker\Client\ApplicationCatalogGui\Exception\ExternalHttpRequestException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

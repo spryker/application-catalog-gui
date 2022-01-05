@@ -30,7 +30,7 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     /**
      * @var string
      */
-    public const CLIENT_APPLICATION_CATALOG_GUI = 'CLIENT_APPLICATION_CATALOG';
+    public const CLIENT_APPLICATION_CATALOG_GUI = 'CLIENT_APPLICATION_CATALOG_GUI';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container

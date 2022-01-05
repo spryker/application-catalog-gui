@@ -8,7 +8,7 @@
 namespace Spryker\Client\ApplicationCatalogGui;
 
 use GuzzleHttp\Client as GuzzleHttpClient;
-use Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientBridge;
+use Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToGuzzleHttpClientAdapter;
 use Spryker\Client\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToUtilEncodingBridge;
 use Spryker\Client\Kernel\AbstractDependencyProvider;
 use Spryker\Client\Kernel\Container;
@@ -51,7 +51,7 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractDependencyProvider
     protected function addHttpClient(Container $container): Container
     {
         $container->set(static::CLIENT_HTTP, function () {
-            return new ApplicationCatalogGuiToGuzzleClientBridge(
+            return new ApplicationCatalogGuiToGuzzleHttpClientAdapter(
                 new GuzzleHttpClient(),
             );
         });
