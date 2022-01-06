@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\LocaleTransfer;
 use Generated\Shared\Transfer\OauthClientResponseTransfer;
 use Generated\Shared\Transfer\OauthResponseErrorTransfer;
 use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface;
-use Spryker\Shared\ApplicationCatalogGui\Exception\AopIdpUrlNotFoundException;
 use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
 
@@ -53,11 +52,6 @@ class ApplicationCatalogGuiFacadeTest extends Unit
      * @var string
      */
     protected const TEST_ERROR_DESCRIPTION = 'Unauthorized';
-
-    /**
-     * @var string
-     */
-    protected const EXCEPTION_MESSAGE = 'Aop Idp Url not found';
 
     /**
      * @var string
@@ -155,26 +149,6 @@ class ApplicationCatalogGuiFacadeTest extends Unit
         $this->assertSame(static::TEST_ERROR, $oauthClientResponseTransfer->getOauthResponseError()->getError());
         $this->assertSame(static::TEST_ERROR_DESCRIPTION, $oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
         $this->assertSame(static::ERROR_MESSAGE_DE, $oauthClientResponseTransfer->getErrorMessage());
-    }
-
-    /**
-     * @return void
-     */
-    public function testGetAccessTokenThrowsAopIdpUrlNotFoundException(): void
-    {
-        // Arrange
-        $aopIdpUrlNotFoundException = new AopIdpUrlNotFoundException(static::EXCEPTION_MESSAGE);
-        $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
-        $applicationCatalogGuiClientMock->method('requestOauthAccessToken')->willThrowException($aopIdpUrlNotFoundException);
-
-        // Act
-        $oauthClientResponseTransfer = $this->tester->getFacade()->requestAccessToken();
-
-        // Assert
-        $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
-        $this->assertSame(static::EXCEPTION_MESSAGE, $oauthClientResponseTransfer->getOauthResponseError()->getError());
-        $this->assertNull($oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
-        $this->assertSame(static::ERROR_MESSAGE_EN, $oauthClientResponseTransfer->getErrorMessage());
     }
 
     /**

@@ -8,13 +8,11 @@
 namespace SprykerTest\Client\ApplicationCatalogGui;
 
 use Codeception\Test\Unit;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response as GuzzleHttpResponse;
 use Psr\Http\Message\StreamInterface;
 use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
-use Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface;
-use Spryker\Shared\ApplicationCatalogGui\Exception\AopIdpUrlNotFoundException;
+use Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToHttpClientAdapterInterface;
+use Spryker\Client\ApplicationCatalogGui\Exception\ExternalHttpRequestException;
 use Symfony\Component\HttpFoundation\Response as SymfonyHttpResponse;
 
 /**
@@ -54,6 +52,11 @@ class ApplicationCatalogGuiClientTest extends Unit
     protected const TEST_ERROR_DESCRIPTION = 'Unauthorized';
 
     /**
+     * @var string
+     */
+    protected const CONFIGURATION_ERROR_MESSAGE = 'Aop IDP url was not found.';
+
+    /**
      * @var \SprykerTest\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientTester
      */
     protected $tester;
@@ -61,16 +64,18 @@ class ApplicationCatalogGuiClientTest extends Unit
     /**
      * @return void
      */
-    public function testRequestOauthAccessTokenThrowsAopIdpUrlNotFoundException(): void
+    public function testRequestOauthAccessTokenReturnsErrorWhenAopIdpUrlNotFound(): void
     {
         // Arrange
         $this->tester->mockAopClientConfig(null);
 
-        // Assert
-        $this->expectException(AopIdpUrlNotFoundException::class);
-
         // Act
-        $this->tester->getClient()->requestOauthAccessToken();
+        $oauthClientResponseTransfer = $this->tester->getClient()->requestOauthAccessToken();
+
+        // Assert
+        $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
+        $this->assertSame(static::CONFIGURATION_ERROR_MESSAGE, $oauthClientResponseTransfer->getOauthResponseError()->getError());
+        $this->assertNull($oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
     }
 
     /**
@@ -80,12 +85,12 @@ class ApplicationCatalogGuiClientTest extends Unit
     {
         // Arrange
         $httpClientMock = $this->getHttpClientMock();
-        $responseMock = $this->getResponseMock(
-            'unsuccessful_response.json',
-            SymfonyHttpResponse::HTTP_UNAUTHORIZED,
-        );
+
+        $externalHttpRequestException = (new ExternalHttpRequestException())
+            ->setResponseBody($this->tester->getFixture('unsuccessful_response.json'));
+
         $httpClientMock->method('request')->willThrowException(
-            new RequestException('', new Request('post', 'uri'), $responseMock),
+            $externalHttpRequestException,
         );
         $this->tester->mockAopClientConfig();
 
@@ -123,11 +128,11 @@ class ApplicationCatalogGuiClientTest extends Unit
     }
 
     /**
-     * @return \Spryker\Client\ApplicationCatalogGui\Dependency\Guzzle\ApplicationCatalogGuiToGuzzleClientInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return \Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToHttpClientAdapterInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getHttpClientMock(): ApplicationCatalogGuiToGuzzleClientInterface
+    protected function getHttpClientMock(): ApplicationCatalogGuiToHttpClientAdapterInterface
     {
-        $httpClientMock = $this->createMock(ApplicationCatalogGuiToGuzzleClientInterface::class);
+        $httpClientMock = $this->createMock(ApplicationCatalogGuiToHttpClientAdapterInterface::class);
 
         $this->tester->setDependency(
             ApplicationCatalogGuiDependencyProvider::CLIENT_HTTP,
