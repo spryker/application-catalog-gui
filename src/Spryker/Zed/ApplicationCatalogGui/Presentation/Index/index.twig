@@ -14,7 +14,6 @@
     {{ parent() }}
     <script src="{{ url(appCatalogScriptUrl, {
         tenantId: tenantUuid,
-        tenantDomain: baseUrlZed,
         language: localeName,
     }) }}"></script>
 {% endblock %}

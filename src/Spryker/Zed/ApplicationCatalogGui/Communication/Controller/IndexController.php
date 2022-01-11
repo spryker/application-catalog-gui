@@ -27,8 +27,6 @@ class IndexController extends AbstractController
             'localeName' => mb_substr($localeTransfer->getLocaleNameOrFail(), 0, 2),
             'tenantUuid' => $this->getFactory()->getConfig()
                 ->getTenantUuid(),
-            'baseUrlZed' => $this->getFactory()->getConfig()
-                ->getBaseUrlZed(),
             'appCatalogScriptUrl' => $this->getFactory()->getConfig()
                 ->getAppCatalogScriptUrl(),
         ]);
