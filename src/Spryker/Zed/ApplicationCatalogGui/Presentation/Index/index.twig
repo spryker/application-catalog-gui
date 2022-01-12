@@ -13,7 +13,7 @@
 {% block footer_js %}
     {{ parent() }}
     <script src="{{ url(appCatalogScriptUrl, {
-        tenantId: tenantUuid,
+        tenantId: tenantIdentifier,
         language: localeName,
     }) }}"></script>
 {% endblock %}
