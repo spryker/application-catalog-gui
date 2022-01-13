@@ -16,4 +16,7 @@
         tenantId: tenantUuid,
         language: localeName,
     }) }}"></script>
+    <script>
+        window.catalogSpaOptions.getAuthTokenUrl = '/application-catalog-gui/api-login';
+    </script>
 {% endblock %}
