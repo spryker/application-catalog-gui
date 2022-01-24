@@ -8,12 +8,10 @@
 namespace SprykerTest\Zed\ApplicationCatalogGui\Business;
 
 use Codeception\Test\Unit;
-use Generated\Shared\Transfer\LocaleTransfer;
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
-use Generated\Shared\Transfer\OauthResponseErrorTransfer;
+use Generated\Shared\Transfer\AccessTokenErrorTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface;
 use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
-use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
 
 /**
  * Auto-generated group annotations
@@ -41,22 +39,12 @@ class ApplicationCatalogGuiFacadeTest extends Unit
     /**
      * @var string
      */
-    protected const TEST_TOKEN_TYPE = 'Bearer';
-
-    /**
-     * @var string
-     */
     protected const TEST_ERROR = 'access_denied';
 
     /**
      * @var string
      */
-    protected const TEST_ERROR_DESCRIPTION = 'Unauthorized';
-
-    /**
-     * @var string
-     */
-    protected const ERROR_MESSAGE_EN = 'Authentication failed';
+    protected const TEST_ERROR_DESCRIPTION = 'Authentication failed.';
 
     /**
      * @var string
@@ -79,23 +67,21 @@ class ApplicationCatalogGuiFacadeTest extends Unit
     public function testRequestAccessTokenReturnsValidToken(): void
     {
         // Arrange
-        $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
+        $accessTokenResponseTransfer = (new AccessTokenResponseTransfer())
             ->setIsSuccessful(true)
             ->setAccessToken(static::TEST_ACCESS_TOKEN)
-            ->setExpiresIn(static::TEST_EXPIRES_IN)
-            ->setTokenType(static::TEST_TOKEN_TYPE);
+            ->setExpiresIn(static::TEST_EXPIRES_IN);
 
         $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
-        $applicationCatalogGuiClientMock->method('requestOauthAccessToken')->willReturn($oauthClientResponseTransfer);
+        $applicationCatalogGuiClientMock->method('requestAccessToken')->willReturn($accessTokenResponseTransfer);
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getFacade()->requestAccessToken();
+        $accessTokenResponseTransfer = $this->tester->getFacade()->requestAccessToken();
 
         // Assert
-        $this->assertTrue($oauthClientResponseTransfer->getIsSuccessful());
-        $this->assertEquals(static::TEST_ACCESS_TOKEN, $oauthClientResponseTransfer->getAccessToken());
-        $this->assertEquals(static::TEST_EXPIRES_IN, $oauthClientResponseTransfer->getExpiresIn());
-        $this->assertEquals(static::TEST_TOKEN_TYPE, $oauthClientResponseTransfer->getTokenType());
+        $this->assertTrue($accessTokenResponseTransfer->getIsSuccessful());
+        $this->assertEquals(static::TEST_ACCESS_TOKEN, $accessTokenResponseTransfer->getAccessToken());
+        $this->assertEquals(static::TEST_EXPIRES_IN, $accessTokenResponseTransfer->getExpiresIn());
     }
 
     /**
@@ -104,51 +90,23 @@ class ApplicationCatalogGuiFacadeTest extends Unit
     public function testRequestAccessTokenReturnsErrorWhenOauthRequestIsUnsuccessful(): void
     {
         // Arrange
-        $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
+        $accessTokenErrorTransfer = (new AccessTokenErrorTransfer())
             ->setError(static::TEST_ERROR)
             ->setErrorDescription(static::TEST_ERROR_DESCRIPTION);
-        $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
+        $accessTokenResponseTransfer = (new AccessTokenResponseTransfer())
             ->setIsSuccessful(false)
-            ->setOauthResponseError($oauthResponseErrorTransfer);
+            ->setAccessTokenError($accessTokenErrorTransfer);
 
         $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
-        $applicationCatalogGuiClientMock->method('requestOauthAccessToken')->willReturn($oauthClientResponseTransfer);
+        $applicationCatalogGuiClientMock->method('requestAccessToken')->willReturn($accessTokenResponseTransfer);
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getFacade()->requestAccessToken();
+        $accessTokenResponseTransfer = $this->tester->getFacade()->requestAccessToken();
 
         // Assert
-        $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
-        $this->assertSame(static::TEST_ERROR, $oauthClientResponseTransfer->getOauthResponseError()->getError());
-        $this->assertSame(static::TEST_ERROR_DESCRIPTION, $oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
-        $this->assertSame(static::ERROR_MESSAGE_EN, $oauthClientResponseTransfer->getErrorMessage());
-    }
-
-    /**
-     * @return void
-     */
-    public function testRequestAccessTokenReturnsErrorWhenOauthRequestIsUnsuccessfulWithDeLocale(): void
-    {
-        // Arrange
-        $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
-            ->setError(static::TEST_ERROR)
-            ->setErrorDescription(static::TEST_ERROR_DESCRIPTION);
-        $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
-            ->setIsSuccessful(false)
-            ->setOauthResponseError($oauthResponseErrorTransfer);
-
-        $this->mockLocaleFacade(static::TEST_LOCALE_NAME_DE);
-        $applicationCatalogGuiClientMock = $this->getApplicationCatalogGuiClientMock();
-        $applicationCatalogGuiClientMock->method('requestOauthAccessToken')->willReturn($oauthClientResponseTransfer);
-
-        // Act
-        $oauthClientResponseTransfer = $this->tester->getFacade()->requestAccessToken();
-
-        // Assert
-        $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
-        $this->assertSame(static::TEST_ERROR, $oauthClientResponseTransfer->getOauthResponseError()->getError());
-        $this->assertSame(static::TEST_ERROR_DESCRIPTION, $oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
-        $this->assertSame(static::ERROR_MESSAGE_DE, $oauthClientResponseTransfer->getErrorMessage());
+        $this->assertFalse($accessTokenResponseTransfer->getIsSuccessful());
+        $this->assertSame(static::TEST_ERROR, $accessTokenResponseTransfer->getAccessTokenError()->getError());
+        $this->assertSame(static::TEST_ERROR_DESCRIPTION, $accessTokenResponseTransfer->getAccessTokenError()->getErrorDescription());
     }
 
     /**
@@ -164,24 +122,5 @@ class ApplicationCatalogGuiFacadeTest extends Unit
         );
 
         return $applicationCatalogGuiClientMock;
-    }
-
-    /**
-     * @param string $localeName
-     *
-     * @return void
-     */
-    protected function mockLocaleFacade(string $localeName): void
-    {
-        $localeFacadeMock = $this->createMock(ApplicationCatalogGuiToLocaleFacadeInterface::class);
-
-        $localeFacadeMock->method('getCurrentLocale')->willReturn(
-            (new LocaleTransfer())->setLocaleName($localeName),
-        );
-
-        $this->tester->setDependency(
-            ApplicationCatalogGuiDependencyProvider::FACADE_LOCALE,
-            $localeFacadeMock,
-        );
     }
 }

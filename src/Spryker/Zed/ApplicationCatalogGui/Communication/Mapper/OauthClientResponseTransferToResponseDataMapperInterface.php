@@ -7,29 +7,29 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Communication\Mapper;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 
 interface OauthClientResponseTransferToResponseDataMapperInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\OauthClientResponseTransfer $oauthClientResponseTransfer
+     * @param \Generated\Shared\Transfer\AccessTokenResponseTransfer $accessTokenResponseTransfer
      * @param array<string, mixed> $data
      *
      * @return array<string, mixed>
      */
     public function mapFailedOauthClientResponseTransferToResponseErrorData(
-        OauthClientResponseTransfer $oauthClientResponseTransfer,
+        AccessTokenResponseTransfer $accessTokenResponseTransfer,
         array $data
     ): array;
 
     /**
-     * @param \Generated\Shared\Transfer\OauthClientResponseTransfer $oauthClientResponseTransfer
+     * @param \Generated\Shared\Transfer\AccessTokenResponseTransfer $accessTokenResponseTransfer
      * @param array<string, mixed> $data
      *
      * @return array<string, mixed>
      */
     public function mapSuccessOauthClientResponseTransferToResponseAccessTokenData(
-        OauthClientResponseTransfer $oauthClientResponseTransfer,
+        AccessTokenResponseTransfer $accessTokenResponseTransfer,
         array $data
     ): array;
 }

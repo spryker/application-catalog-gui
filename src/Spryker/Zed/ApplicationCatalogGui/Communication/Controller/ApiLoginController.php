@@ -22,17 +22,17 @@ class ApiLoginController extends AbstractController
      */
     public function indexAction(): JsonResponse
     {
-        $oauthClientResponseTransfer = $this->getFacade()->requestAccessToken();
+        $accessTokenResponseTransfer = $this->getFacade()->requestAccessToken();
 
-        if (!$oauthClientResponseTransfer->getIsSuccessful()) {
+        if (!$accessTokenResponseTransfer->getIsSuccessful()) {
             $responseData = $this->getFactory()->createOauthClientResponseTransferToResponseDataMapper()
-                ->mapFailedOauthClientResponseTransferToResponseErrorData($oauthClientResponseTransfer, []);
+                ->mapFailedOauthClientResponseTransferToResponseErrorData($accessTokenResponseTransfer, []);
 
             return $this->jsonResponse($responseData, Response::HTTP_BAD_REQUEST);
         }
 
         $responseData = $this->getFactory()->createOauthClientResponseTransferToResponseDataMapper()
-            ->mapSuccessOauthClientResponseTransferToResponseAccessTokenData($oauthClientResponseTransfer, []);
+            ->mapSuccessOauthClientResponseTransferToResponseAccessTokenData($accessTokenResponseTransfer, []);
 
         return $this->jsonResponse($responseData, Response::HTTP_OK);
     }

@@ -7,7 +7,7 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Communication\Mapper;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 use Symfony\Component\HttpFoundation\Response;
 
 class OauthClientResponseTransferToResponseDataMapper implements OauthClientResponseTransferToResponseDataMapperInterface
@@ -43,13 +43,13 @@ class OauthClientResponseTransferToResponseDataMapper implements OauthClientResp
     protected const RESPONSE_KEY_TOKEN_TYPE = 'token_type';
 
     /**
-     * @param \Generated\Shared\Transfer\OauthClientResponseTransfer $oauthClientResponseTransfer
+     * @param \Generated\Shared\Transfer\AccessTokenResponseTransfer $accessTokenResponseTransfer
      * @param array<string, mixed> $data
      *
      * @return array<string, mixed>
      */
     public function mapFailedOauthClientResponseTransferToResponseErrorData(
-        OauthClientResponseTransfer $oauthClientResponseTransfer,
+        AccessTokenResponseTransfer $accessTokenResponseTransfer,
         array $data
     ): array {
         if (!isset($data[static::RESPONSE_KEY_ERRORS])) {
@@ -57,7 +57,7 @@ class OauthClientResponseTransferToResponseDataMapper implements OauthClientResp
         }
 
         $data[static::RESPONSE_KEY_ERRORS][] = [
-            static::RESPONSE_KEY_ERROR_DETAIL => $oauthClientResponseTransfer->getErrorMessage(),
+            static::RESPONSE_KEY_ERROR_DETAIL => $accessTokenResponseTransfer->getAccessTokenError()->getErrorDescription(),
             static::RESPONSE_KEY_ERROR_STATUS => Response::HTTP_BAD_REQUEST,
         ];
 
@@ -65,18 +65,17 @@ class OauthClientResponseTransferToResponseDataMapper implements OauthClientResp
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OauthClientResponseTransfer $oauthClientResponseTransfer
+     * @param \Generated\Shared\Transfer\AccessTokenResponseTransfer $accessTokenResponseTransfer
      * @param array<string, mixed> $data
      *
      * @return array<string, mixed>
      */
     public function mapSuccessOauthClientResponseTransferToResponseAccessTokenData(
-        OauthClientResponseTransfer $oauthClientResponseTransfer,
+        AccessTokenResponseTransfer $accessTokenResponseTransfer,
         array $data
     ): array {
-        $data[static::RESPONSE_KEY_ACCESS_TOKEN] = $oauthClientResponseTransfer->getAccessToken();
-        $data[static::RESPONSE_KEY_EXPIRES_IN] = $oauthClientResponseTransfer->getExpiresIn();
-        $data[static::RESPONSE_KEY_TOKEN_TYPE] = $oauthClientResponseTransfer->getTokenType();
+        $data[static::RESPONSE_KEY_ACCESS_TOKEN] = $accessTokenResponseTransfer->getAccessToken();
+        $data[static::RESPONSE_KEY_EXPIRES_IN] = $accessTokenResponseTransfer->getExpiresIn();
 
         return $data;
     }

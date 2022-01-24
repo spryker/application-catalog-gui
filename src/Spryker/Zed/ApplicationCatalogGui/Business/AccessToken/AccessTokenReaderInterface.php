@@ -7,12 +7,12 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Business\AccessToken;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 
 interface AccessTokenReaderInterface
 {
     /**
-     * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
+     * @return \Generated\Shared\Transfer\AccessTokenResponseTransfer
      */
-    public function requestAccessToken(): OauthClientResponseTransfer;
+    public function requestAccessToken(): AccessTokenResponseTransfer;
 }

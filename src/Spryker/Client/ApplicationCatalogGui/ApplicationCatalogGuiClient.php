@@ -7,7 +7,7 @@
 
 namespace Spryker\Client\ApplicationCatalogGui;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 use Spryker\Client\Kernel\AbstractClient;
 
 /**
@@ -20,12 +20,12 @@ class ApplicationCatalogGuiClient extends AbstractClient implements ApplicationC
      *
      * @api
      *
-     * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
+     * @return \Generated\Shared\Transfer\AccessTokenResponseTransfer
      */
-    public function requestOauthAccessToken(): OauthClientResponseTransfer
+    public function requestAccessToken(): AccessTokenResponseTransfer
     {
         return $this->getFactory()
-            ->createOauthAccessTokenClient()
-            ->requestOauthAccessToken();
+            ->createAccessTokenClient()
+            ->requestAccessToken();
     }
 }

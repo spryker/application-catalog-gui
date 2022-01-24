@@ -5,16 +5,14 @@
         <property name="localeName" type="string"/>
     </transfer>
 
-    <transfer name="OauthClientResponse" strict="true">
+    <transfer name="AccessTokenResponse" strict="true">
         <property name="isSuccessful" type="bool"/>
-        <property name="oauthResponseError" type="OauthResponseError"/>
-        <property name="errorMessage" type="string"/>
+        <property name="accessTokenError" type="AccessTokenError"/>
         <property name="accessToken" type="string"/>
-        <property name="expiresIn" type="int"/>
-        <property name="tokenType" type="string"/>
+        <property name="expiresIn" type="string"/>
     </transfer>
 
-    <transfer name="OauthResponseError" strict="true">
+    <transfer name="AccessTokenError" strict="true">
         <property name="error" type="string"/>
         <property name="errorDescription" type="string"/>
     </transfer>

@@ -7,20 +7,20 @@
 
 namespace Spryker\Client\ApplicationCatalogGui;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 
 interface ApplicationCatalogGuiClientInterface
 {
     /**
      * Specification:
-     * - Sends the request to the Auth0 service.
-     * - Adds accessToken, expiresIn, tokenType to OauthClientResponseTransfer if the request is successful.
-     * - Adds the error and the errorDescription to OauthClientResponseTransfer.oauthResponseError if the request is failed.
-     * - Returns OauthClientResponseTransfer.
+     * - Sends the request to the authentication service, based on the module configuration.
+     * - Adds accessToken, expiresIn to AccessTokenResponseTransfer if the request is successful.
+     * - Adds the error and the errorDescription to AccessTokenResponseTransfer.oauthResponseError if the request is failed.
+     * - Returns AccessTokenResponseTransfer.
      *
      * @api
      *
-     * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
+     * @return \Generated\Shared\Transfer\AccessTokenResponseTransfer
      */
-    public function requestOauthAccessToken(): OauthClientResponseTransfer;
+    public function requestAccessToken(): AccessTokenResponseTransfer;
 }

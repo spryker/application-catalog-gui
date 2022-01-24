@@ -7,8 +7,8 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui;
 
-use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToGlossaryBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeBridge;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeBridge;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 
@@ -25,7 +25,7 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     /**
      * @var string
      */
-    public const FACADE_GLOSSARY = 'FACADE_GLOSSARY';
+    public const FACADE_TRANSLATOR = 'FACADE_TRANSLATOR';
 
     /**
      * @var string
@@ -39,9 +39,8 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
      */
     public function provideBusinessLayerDependencies(Container $container): Container
     {
-        $container = $this->addLocaleFacade($container);
-        $container = $this->addGlossaryFacade($container);
         $container = $this->addApplicationCatalogGuiClient($container);
+        $container = $this->addTranslatorFacade($container);
 
         return $container;
     }
@@ -54,6 +53,7 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = $this->addLocaleFacade($container);
+        $container = $this->addTranslatorFacade($container);
 
         return $container;
     }
@@ -79,12 +79,10 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addGlossaryFacade(Container $container): Container
+    protected function addApplicationCatalogGuiClient(Container $container): Container
     {
-        $container->set(static::FACADE_GLOSSARY, function (Container $container) {
-            return new ApplicationCatalogGuiToGlossaryBridge(
-                $container->getLocator()->glossary()->facade(),
-            );
+        $container->set(static::CLIENT_APPLICATION_CATALOG_GUI, function (Container $container) {
+            return $container->getLocator()->applicationCatalogGui()->client();
         });
 
         return $container;
@@ -95,10 +93,12 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addApplicationCatalogGuiClient(Container $container): Container
+    protected function addTranslatorFacade(Container $container): Container
     {
-        $container->set(static::CLIENT_APPLICATION_CATALOG_GUI, function (Container $container) {
-            return $container->getLocator()->applicationCatalogGui()->client();
+        $container->set(static::FACADE_TRANSLATOR, function (Container $container) {
+            return new ApplicationCatalogGuiToTranslatorFacadeBridge(
+                $container->getLocator()->translator()->facade(),
+            );
         });
 
         return $container;

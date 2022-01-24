@@ -12,11 +12,14 @@
 
 {% block footer_js %}
     {{ parent() }}
+    <script>
+        window['catalogSpaOptions'] = {
+            authTokenUrl: '/application-catalog-gui/api-login'
+        }
+    </script>
+
     <script src="{{ url(appCatalogScriptUrl, {
         tenantId: tenantUuid,
         language: localeName,
     }) }}"></script>
-    <script>
-        window.catalogSpaOptions.getAuthTokenUrl = '/application-catalog-gui/api-login';
-    </script>
 {% endblock %}

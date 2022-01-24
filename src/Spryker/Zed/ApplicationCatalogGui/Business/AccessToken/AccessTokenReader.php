@@ -7,11 +7,11 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Business\AccessToken;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\AccessTokenErrorTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface;
 use Spryker\Shared\Log\LoggerTrait;
-use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToGlossaryInterface;
-use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeInterface;
 
 class AccessTokenReader implements AccessTokenReaderInterface
 {
@@ -23,51 +23,41 @@ class AccessTokenReader implements AccessTokenReaderInterface
     protected $applicationCatalogGuiClient;
 
     /**
-     * @var \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToGlossaryInterface
+     * @var \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeInterface
      */
-    protected $glossaryFacade;
-
-    /**
-     * @var \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface
-     */
-    protected $localeFacade;
+    protected $translatorFacade;
 
     /**
      * @param \Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiClientInterface $applicationCatalogGuiClient
-     * @param \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToGlossaryInterface $glossaryFacade
-     * @param \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface $localeFacade
+     * @param \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeInterface $translatorFacade
      */
     public function __construct(
         ApplicationCatalogGuiClientInterface $applicationCatalogGuiClient,
-        ApplicationCatalogGuiToGlossaryInterface $glossaryFacade,
-        ApplicationCatalogGuiToLocaleFacadeInterface $localeFacade
+        ApplicationCatalogGuiToTranslatorFacadeInterface $translatorFacade
     ) {
         $this->applicationCatalogGuiClient = $applicationCatalogGuiClient;
-        $this->glossaryFacade = $glossaryFacade;
-        $this->localeFacade = $localeFacade;
+        $this->translatorFacade = $translatorFacade;
     }
 
     /**
-     * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
+     * @return \Generated\Shared\Transfer\AccessTokenResponseTransfer
      */
-    public function requestAccessToken(): OauthClientResponseTransfer
+    public function requestAccessToken(): AccessTokenResponseTransfer
     {
-        $oauthClientResponseTransfer = $this->applicationCatalogGuiClient->requestOauthAccessToken();
+        $oauthClientResponseTransfer = $this->applicationCatalogGuiClient->requestAccessToken();
 
         if (!$oauthClientResponseTransfer->getIsSuccessful()) {
-            $oauthClientResponseTransfer->setErrorMessage(
-                $this->glossaryFacade->translate(
-                    'application_catalog_gui.access_token.oauth_error',
-                    [],
-                    $this->localeFacade->getCurrentLocale(),
-                ),
-            );
-
             $this->getLogger()->error(sprintf(
-                'Error: %s; ErrorDescription: %s.',
-                $oauthClientResponseTransfer->getOauthResponseErrorOrFail()->getError(),
-                $oauthClientResponseTransfer->getOauthResponseErrorOrFail()->getErrorDescription(),
+                'Reason: %s; Description: %s.',
+                $oauthClientResponseTransfer->getAccessTokenErrorOrFail()->getError(),
+                $oauthClientResponseTransfer->getAccessTokenErrorOrFail()->getErrorDescription(),
             ));
+
+            $oauthClientResponseTransfer->setAccessTokenError(
+                (new AccessTokenErrorTransfer())
+                    ->setError($oauthClientResponseTransfer->getAccessTokenErrorOrFail()->getError())
+                    ->setErrorDescription($this->translatorFacade->trans('Authentication failed.')),
+            );
         }
 
         return $oauthClientResponseTransfer;

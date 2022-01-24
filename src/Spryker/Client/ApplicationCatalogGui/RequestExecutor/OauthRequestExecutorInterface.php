@@ -7,12 +7,12 @@
 
 namespace Spryker\Client\ApplicationCatalogGui\RequestExecutor;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 
 interface OauthRequestExecutorInterface
 {
     /**
-     * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
+     * @return \Generated\Shared\Transfer\AccessTokenResponseTransfer
      */
-    public function requestOauthAccessToken(): OauthClientResponseTransfer;
+    public function requestAccessToken(): AccessTokenResponseTransfer;
 }

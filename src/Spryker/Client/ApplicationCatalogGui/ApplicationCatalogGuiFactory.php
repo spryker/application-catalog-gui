@@ -21,7 +21,7 @@ class ApplicationCatalogGuiFactory extends AbstractFactory
     /**
      * @return \Spryker\Client\ApplicationCatalogGui\RequestExecutor\OauthRequestExecutorInterface
      */
-    public function createOauthAccessTokenClient(): OauthRequestExecutorInterface
+    public function createAccessTokenClient(): OauthRequestExecutorInterface
     {
         return new OauthRequestExecutor(
             $this->getHttpClient(),

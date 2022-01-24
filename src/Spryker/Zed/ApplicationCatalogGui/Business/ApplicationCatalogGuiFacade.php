@@ -7,7 +7,7 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Business;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -20,9 +20,9 @@ class ApplicationCatalogGuiFacade extends AbstractFacade implements ApplicationC
      *
      * @api
      *
-     * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
+     * @return \Generated\Shared\Transfer\AccessTokenResponseTransfer
      */
-    public function requestAccessToken(): OauthClientResponseTransfer
+    public function requestAccessToken(): AccessTokenResponseTransfer
     {
         return $this->getFactory()->createAccessTokenReader()->requestAccessToken();
     }

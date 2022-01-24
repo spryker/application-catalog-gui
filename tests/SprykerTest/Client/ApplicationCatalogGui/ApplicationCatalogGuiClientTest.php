@@ -39,11 +39,6 @@ class ApplicationCatalogGuiClientTest extends Unit
     /**
      * @var string
      */
-    protected const TEST_TOKEN_TYPE = 'Bearer';
-
-    /**
-     * @var string
-     */
     protected const TEST_ERROR = 'access_denied';
 
     /**
@@ -64,24 +59,24 @@ class ApplicationCatalogGuiClientTest extends Unit
     /**
      * @return void
      */
-    public function testRequestOauthAccessTokenReturnsErrorWhenAopIdpUrlNotFound(): void
+    public function testRequestAccessTokenReturnsErrorWhenAopIdpUrlNotFound(): void
     {
         // Arrange
         $this->tester->mockAopClientConfig(null);
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getClient()->requestOauthAccessToken();
+        $accessTokenResponseTransfer = $this->tester->getClient()->requestAccessToken();
 
         // Assert
-        $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
-        $this->assertSame(static::CONFIGURATION_ERROR_MESSAGE, $oauthClientResponseTransfer->getOauthResponseError()->getError());
-        $this->assertNull($oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
+        $this->assertFalse($accessTokenResponseTransfer->getIsSuccessful());
+        $this->assertSame(static::CONFIGURATION_ERROR_MESSAGE, $accessTokenResponseTransfer->getAccessTokenError()->getError());
+        $this->assertNull($accessTokenResponseTransfer->getAccessTokenError()->getErrorDescription());
     }
 
     /**
      * @return void
      */
-    public function testRequestOauthAccessTokenReturnsErrorWhenUnauthorized(): void
+    public function testRequestAccessTokenReturnsErrorWhenUnauthorized(): void
     {
         // Arrange
         $httpClientMock = $this->getHttpClientMock();
@@ -95,18 +90,18 @@ class ApplicationCatalogGuiClientTest extends Unit
         $this->tester->mockAopClientConfig();
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getClient()->requestOauthAccessToken();
+        $accessTokenResponseTransfer = $this->tester->getClient()->requestAccessToken();
 
         // Assert
-        $this->assertFalse($oauthClientResponseTransfer->getIsSuccessful());
-        $this->assertSame(static::TEST_ERROR, $oauthClientResponseTransfer->getOauthResponseError()->getError());
-        $this->assertSame(static::TEST_ERROR_DESCRIPTION, $oauthClientResponseTransfer->getOauthResponseError()->getErrorDescription());
+        $this->assertFalse($accessTokenResponseTransfer->getIsSuccessful());
+        $this->assertSame(static::TEST_ERROR, $accessTokenResponseTransfer->getAccessTokenError()->getError());
+        $this->assertSame(static::TEST_ERROR_DESCRIPTION, $accessTokenResponseTransfer->getAccessTokenError()->getErrorDescription());
     }
 
     /**
      * @return void
      */
-    public function testRequestOauthAccessTokenReturnsAccessTokenWhenSuccess(): void
+    public function testRequestAccessTokenReturnsAccessTokenWhenSuccess(): void
     {
         // Arrange
         $httpClientMock = $this->getHttpClientMock();
@@ -118,13 +113,12 @@ class ApplicationCatalogGuiClientTest extends Unit
         $this->tester->mockAopClientConfig();
 
         // Act
-        $oauthClientResponseTransfer = $this->tester->getClient()->requestOauthAccessToken();
+        $accessTokenResponseTransfer = $this->tester->getClient()->requestAccessToken();
 
         // Assert
-        $this->assertTrue($oauthClientResponseTransfer->getIsSuccessful());
-        $this->assertEquals(static::TEST_ACCESS_TOKEN, $oauthClientResponseTransfer->getAccessToken());
-        $this->assertEquals(static::TEST_EXPIRES_IN, $oauthClientResponseTransfer->getExpiresIn());
-        $this->assertEquals(static::TEST_TOKEN_TYPE, $oauthClientResponseTransfer->getTokenType());
+        $this->assertTrue($accessTokenResponseTransfer->getIsSuccessful());
+        $this->assertEquals(static::TEST_ACCESS_TOKEN, $accessTokenResponseTransfer->getAccessToken());
+        $this->assertEquals(static::TEST_EXPIRES_IN, $accessTokenResponseTransfer->getExpiresIn());
     }
 
     /**

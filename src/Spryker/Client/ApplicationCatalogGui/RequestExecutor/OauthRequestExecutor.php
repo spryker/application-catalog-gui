@@ -7,8 +7,8 @@
 
 namespace Spryker\Client\ApplicationCatalogGui\RequestExecutor;
 
-use Generated\Shared\Transfer\OauthClientResponseTransfer;
-use Generated\Shared\Transfer\OauthResponseErrorTransfer;
+use Generated\Shared\Transfer\AccessTokenErrorTransfer;
+use Generated\Shared\Transfer\AccessTokenResponseTransfer;
 use GuzzleHttp\RequestOptions;
 use Spryker\Client\ApplicationCatalogGui\ApplicationCatalogGuiConfig;
 use Spryker\Client\ApplicationCatalogGui\Dependency\External\ApplicationCatalogGuiToHttpClientAdapterInterface;
@@ -64,18 +64,18 @@ class OauthRequestExecutor implements OauthRequestExecutorInterface
     }
 
     /**
-     * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
+     * @return \Generated\Shared\Transfer\AccessTokenResponseTransfer
      */
-    public function requestOauthAccessToken(): OauthClientResponseTransfer
+    public function requestAccessToken(): AccessTokenResponseTransfer
     {
         $aopIdpUrl = $this->applicationCatalogGuiConfig->getAopIdpUrl();
 
         if (!$aopIdpUrl) {
-            $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
+            $oauthResponseErrorTransfer = (new AccessTokenErrorTransfer())
                 ->setError('Aop IDP url was not found.');
 
-            return (new OauthClientResponseTransfer())
-                ->setOauthResponseError($oauthResponseErrorTransfer)
+            return (new AccessTokenResponseTransfer())
+                ->setAccessTokenError($oauthResponseErrorTransfer)
                 ->setIsSuccessful(false);
         }
 
@@ -95,7 +95,7 @@ class OauthRequestExecutor implements OauthRequestExecutorInterface
 
             $responseData = $this->utilEncodingService->decodeJson($response->getBody()->getContents(), true);
 
-            return (new OauthClientResponseTransfer())
+            return (new AccessTokenResponseTransfer())
                 ->setIsSuccessful(true)
                 ->fromArray($responseData, true);
         } catch (ExternalHttpRequestException $requestException) {
@@ -106,24 +106,24 @@ class OauthRequestExecutor implements OauthRequestExecutorInterface
     /**
      * @param \Spryker\Client\ApplicationCatalogGui\Exception\ExternalHttpRequestException $externalHttpRequestException
      *
-     * @return \Generated\Shared\Transfer\OauthClientResponseTransfer
+     * @return \Generated\Shared\Transfer\AccessTokenResponseTransfer
      */
-    protected function processUnexpectedResponse(ExternalHttpRequestException $externalHttpRequestException): OauthClientResponseTransfer
+    protected function processUnexpectedResponse(ExternalHttpRequestException $externalHttpRequestException): AccessTokenResponseTransfer
     {
-        $oauthClientResponseTransfer = (new OauthClientResponseTransfer())
+        $accessTokenResponseTransfer = (new AccessTokenResponseTransfer())
             ->setIsSuccessful(false);
 
         if (!empty($externalHttpRequestException->getResponseBody())) {
             $responseData = $this->utilEncodingService->decodeJson($externalHttpRequestException->getResponseBody(), true);
 
-            $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
+            $oauthResponseErrorTransfer = (new AccessTokenErrorTransfer())
                 ->setError($responseData[static::RESPONSE_KEY_ERROR] ?? null)
                 ->setErrorDescription($responseData[static::RESPONSE_KEY_ERROR_DESCRIPTION] ?? null);
         } else {
-            $oauthResponseErrorTransfer = (new OauthResponseErrorTransfer())
+            $oauthResponseErrorTransfer = (new AccessTokenErrorTransfer())
                 ->setError('Response is empty.');
         }
 
-        return $oauthClientResponseTransfer->setOauthResponseError($oauthResponseErrorTransfer);
+        return $accessTokenResponseTransfer->setAccessTokenError($oauthResponseErrorTransfer);
     }
 }
