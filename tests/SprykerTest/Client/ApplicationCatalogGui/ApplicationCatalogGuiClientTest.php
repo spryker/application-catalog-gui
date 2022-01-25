@@ -34,7 +34,7 @@ class ApplicationCatalogGuiClientTest extends Unit
     /**
      * @var int
      */
-    protected const TEST_EXPIRES_IN = 86400;
+    protected const TEST_EXPIRES_IN = '86400';
 
     /**
      * @var string
@@ -117,8 +117,8 @@ class ApplicationCatalogGuiClientTest extends Unit
 
         // Assert
         $this->assertTrue($accessTokenResponseTransfer->getIsSuccessful());
-        $this->assertEquals(static::TEST_ACCESS_TOKEN, $accessTokenResponseTransfer->getAccessToken());
-        $this->assertEquals(static::TEST_EXPIRES_IN, $accessTokenResponseTransfer->getExpiresIn());
+        $this->assertSame(static::TEST_ACCESS_TOKEN, $accessTokenResponseTransfer->getAccessToken());
+        $this->assertSame(static::TEST_EXPIRES_IN, $accessTokenResponseTransfer->getExpiresIn());
     }
 
     /**
