@@ -32,7 +32,7 @@ class ApplicationCatalogGuiClientTest extends Unit
     protected const TEST_ACCESS_TOKEN = 'some-access-token';
 
     /**
-     * @var int
+     * @var string
      */
     protected const TEST_EXPIRES_IN = '86400';
 
