@@ -5,4 +5,16 @@
         <property name="localeName" type="string"/>
     </transfer>
 
+    <transfer name="AccessTokenResponse" strict="true">
+        <property name="isSuccessful" type="bool"/>
+        <property name="accessTokenError" type="AccessTokenError"/>
+        <property name="accessToken" type="string"/>
+        <property name="expiresIn" type="string"/>
+    </transfer>
+
+    <transfer name="AccessTokenError" strict="true">
+        <property name="error" type="string"/>
+        <property name="errorDescription" type="string"/>
+    </transfer>
+
 </transfers>
