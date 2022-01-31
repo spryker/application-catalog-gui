@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\ApplicationCatalogGui\Dependency\Facade;
 
+use Generated\Shared\Transfer\LocaleTransfer;
+
 class ApplicationCatalogGuiToLocaleFacadeBridge implements ApplicationCatalogGuiToLocaleFacadeInterface
 {
     /**
@@ -25,7 +27,7 @@ class ApplicationCatalogGuiToLocaleFacadeBridge implements ApplicationCatalogGui
     /**
      * @return \Generated\Shared\Transfer\LocaleTransfer
      */
-    public function getCurrentLocale()
+    public function getCurrentLocale(): LocaleTransfer
     {
         return $this->localeFacade->getCurrentLocale();
     }
