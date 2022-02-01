@@ -28,7 +28,7 @@ class ApplicationCatalogGuiToUtilEncodingBridge implements ApplicationCatalogGui
      * @param int|null $depth
      * @param int|null $options
      *
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function decodeJson(string $jsonValue, bool $assoc = false, ?int $depth = null, ?int $options = null): ?array
     {
