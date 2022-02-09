@@ -8,6 +8,7 @@
 namespace Spryker\Zed\ApplicationCatalogGui;
 
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeBridge;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreFacadeBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeBridge;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
@@ -33,6 +34,11 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     public const CLIENT_APPLICATION_CATALOG_GUI = 'CLIENT_APPLICATION_CATALOG_GUI';
 
     /**
+     * @var string
+     */
+    public const FACADE_STORE = 'FACADE_STORE';
+
+    /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
@@ -54,6 +60,21 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     {
         $container = $this->addLocaleFacade($container);
         $container = $this->addTranslatorFacade($container);
+        $container = $this->addStoreFacade($container);
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addStoreFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_STORE, function (Container $container) {
+            return new ApplicationCatalogGuiToStoreFacadeBridge($container->getLocator()->store()->facade());
+        });
 
         return $container;
     }
