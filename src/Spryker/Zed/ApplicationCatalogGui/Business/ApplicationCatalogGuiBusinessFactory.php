@@ -32,11 +32,11 @@ class ApplicationCatalogGuiBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToStoreReferenceInterface;
+     * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceInterface;
      */
-    public function getStoreReferenceService(): ApplicationCatalogGuiToStoreReferenceInterface
+    public function getStoreReferenceFacade(): ApplicationCatalogGuiToStoreReferenceInterface
     {
-        return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::SERVICE_STORE_REFERENCE);
+        return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::FACADE_STORE_REFERENCE);
     }
 
     /**

@@ -5,46 +5,46 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\ApplicationCatalogGui\Dependency\Service;
+namespace Spryker\Zed\ApplicationCatalogGui\Dependency\Facade;
 
 use Generated\Shared\Transfer\StoreTransfer;
 
 class ApplicationCatalogGuiToStoreReferenceBridge implements ApplicationCatalogGuiToStoreReferenceInterface
 {
     /**
-     * @var \Spryker\Service\StoreReference\StoreReferenceServiceInterface
+     * @var \Spryker\Zed\StoreReference\Business\StoreReferenceFacadeInterface
      */
-    protected $storeReferenceService;
+    protected $storeReferenceFacade;
 
     /**
-     * @param \Spryker\Service\StoreReference\StoreReferenceServiceInterface $storeReferenceService
+     * @param \Spryker\Zed\StoreReference\Business\StoreReferenceFacadeInterface $storeReferenceFacade
      */
-    public function __construct($storeReferenceService)
+    public function __construct($storeReferenceFacade)
     {
-        $this->storeReferenceService = $storeReferenceService;
+        $this->storeReferenceFacade = $storeReferenceFacade;
     }
 
     /**
      * @param string $storeReference
      *
-     * @throws \Spryker\Service\StoreReference\Exception\StoreReferenceNotFoundException
+     * @throws \Spryker\Zed\StoreReference\Business\Exception\StoreReferenceNotFoundException
      *
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function getStoreByStoreReference(string $storeReference): StoreTransfer
     {
-        return $this->storeReferenceService->getStoreByStoreReference($storeReference);
+        return $this->storeReferenceFacade->getStoreByStoreReference($storeReference);
     }
 
     /**
      * @param string $storeName
      *
-     * @throws \Spryker\Service\StoreReference\Exception\StoreReferenceNotFoundException
+     * @throws \Spryker\Zed\StoreReference\Business\Exception\StoreReferenceNotFoundException
      *
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function getStoreByStoreName(string $storeName): StoreTransfer
     {
-        return $this->storeReferenceService->getStoreByStoreName($storeName);
+        return $this->storeReferenceFacade->getStoreByStoreName($storeName);
     }
 }
