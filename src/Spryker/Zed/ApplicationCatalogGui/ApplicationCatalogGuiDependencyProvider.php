@@ -10,6 +10,8 @@ namespace Spryker\Zed\ApplicationCatalogGui;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreFacadeBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeBridge;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToStoreReferenceBridge;
+use Spryker\Zed\AssetExternal\Dependency\Service\AssetExternalToStoreReferenceBridge;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 
@@ -39,6 +41,11 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     public const FACADE_STORE = 'FACADE_STORE';
 
     /**
+     * @var string
+     */
+    public const SERVICE_STORE_REFERENCE = 'SERVICE_STORE_REFERENCE';
+
+    /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
@@ -47,6 +54,7 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     {
         $container = $this->addApplicationCatalogGuiClient($container);
         $container = $this->addTranslatorFacade($container);
+        $container = $this->addStoreReferenceService($container);
 
         return $container;
     }
@@ -61,6 +69,7 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
         $container = $this->addLocaleFacade($container);
         $container = $this->addTranslatorFacade($container);
         $container = $this->addStoreFacade($container);
+        $container = $this->addStoreReferenceService($container);
 
         return $container;
     }
@@ -74,6 +83,20 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     {
         $container->set(static::FACADE_STORE, function (Container $container) {
             return new ApplicationCatalogGuiToStoreFacadeBridge($container->getLocator()->store()->facade());
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addStoreReferenceService(Container $container): Container
+    {
+        $container->set(static::SERVICE_STORE_REFERENCE, function (Container $container) {
+            return new ApplicationCatalogGuiToStoreReferenceBridge($container->getLocator()->storeReference()->service());
         });
 
         return $container;

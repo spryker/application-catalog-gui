@@ -12,6 +12,7 @@ use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
 use Spryker\Zed\ApplicationCatalogGui\Business\AccessToken\AccessTokenReader;
 use Spryker\Zed\ApplicationCatalogGui\Business\AccessToken\AccessTokenReaderInterface;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeInterface;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToStoreReferenceInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -28,6 +29,14 @@ class ApplicationCatalogGuiBusinessFactory extends AbstractBusinessFactory
             $this->getApplicationCatalogGuiClient(),
             $this->getTranslatorFacade(),
         );
+    }
+
+    /**
+     * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Service\ApplicationCatalogGuiToStoreReferenceInterface;
+     */
+    public function getStoreReferenceService(): ApplicationCatalogGuiToStoreReferenceInterface
+    {
+        return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::SERVICE_STORE_REFERENCE);
     }
 
     /**
