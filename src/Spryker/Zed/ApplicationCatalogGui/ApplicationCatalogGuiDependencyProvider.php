@@ -10,7 +10,7 @@ namespace Spryker\Zed\ApplicationCatalogGui;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreFacadeBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeBridge;
-use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceBridge;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceFacadeBridge;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 
@@ -95,7 +95,7 @@ class ApplicationCatalogGuiDependencyProvider extends AbstractBundleDependencyPr
     protected function addStoreReferenceFacade(Container $container): Container
     {
         $container->set(static::FACADE_STORE_REFERENCE, function (Container $container) {
-            return new ApplicationCatalogGuiToStoreReferenceBridge($container->getLocator()->storeReference()->facade());
+            return new ApplicationCatalogGuiToStoreReferenceFacadeBridge($container->getLocator()->storeReference()->facade());
         });
 
         return $container;

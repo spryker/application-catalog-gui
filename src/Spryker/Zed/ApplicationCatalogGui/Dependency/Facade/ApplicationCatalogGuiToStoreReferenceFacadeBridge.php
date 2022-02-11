@@ -9,7 +9,7 @@ namespace Spryker\Zed\ApplicationCatalogGui\Dependency\Facade;
 
 use Generated\Shared\Transfer\StoreTransfer;
 
-class ApplicationCatalogGuiToStoreReferenceBridge implements ApplicationCatalogGuiToStoreReferenceInterface
+class ApplicationCatalogGuiToStoreReferenceFacadeBridge implements ApplicationCatalogGuiToStoreReferenceInterface
 {
     /**
      * @var \Spryker\Zed\StoreReference\Business\StoreReferenceFacadeInterface
