@@ -29,7 +29,7 @@ class IndexController extends AbstractController
 
         return $this->viewResponse([
             'localeName' => mb_substr($localeTransfer->getLocaleNameOrFail(), 0, 2),
-            'tenantIdentifier' => $storeTransfer->getStoreReference(),
+            'storeReference' => $storeTransfer->getStoreReference(),
             'appCatalogScriptUrl' => $this->getFactory()->getConfig()
                 ->getAppCatalogScriptUrl(),
         ]);
