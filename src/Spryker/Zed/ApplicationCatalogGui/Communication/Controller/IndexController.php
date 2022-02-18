@@ -24,14 +24,13 @@ class IndexController extends AbstractController
             ->getCurrentLocale();
 
         $storeTransfer = $this->getFactory()->getStoreReferenceFacade()->getStoreByStoreName(
-            $this->getFactory()->getStoreFacade()->getCurrentStore()->getName()
+            $this->getFactory()->getStoreFacade()->getCurrentStore()->getName(),
         );
 
         return $this->viewResponse([
             'localeName' => mb_substr($localeTransfer->getLocaleNameOrFail(), 0, 2),
             'storeReference' => $storeTransfer->getStoreReference(),
-            'appCatalogScriptUrl' => $this->getFactory()->getConfig()
-                ->getAppCatalogScriptUrl(),
+            'appCatalogScriptUrl' => $this->getFactory()->getConfig()->getAppCatalogScriptUrl(),
         ]);
     }
 }

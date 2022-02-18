@@ -9,8 +9,8 @@ namespace Spryker\Zed\ApplicationCatalogGui;
 
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreFacadeBridge;
-use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeBridge;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceFacadeBridge;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToTranslatorFacadeBridge;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 

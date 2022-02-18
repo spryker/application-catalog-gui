@@ -35,7 +35,7 @@ class ApplicationCatalogGuiToUtilEncodingBridge implements ApplicationCatalogGui
         if ($assoc === false) {
             trigger_error(
                 'Param #2 `$assoc` must be `true` as return of type `object` is not accepted.',
-                E_USER_DEPRECATED
+                E_USER_DEPRECATED,
             );
         }
 

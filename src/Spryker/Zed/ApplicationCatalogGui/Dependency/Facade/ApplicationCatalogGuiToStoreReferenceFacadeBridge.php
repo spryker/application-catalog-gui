@@ -27,8 +27,6 @@ class ApplicationCatalogGuiToStoreReferenceFacadeBridge implements ApplicationCa
     /**
      * @param string $storeReference
      *
-     * @throws \Spryker\Zed\StoreReference\Business\Exception\StoreReferenceNotFoundException
-     *
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function getStoreByStoreReference(string $storeReference): StoreTransfer
@@ -38,8 +36,6 @@ class ApplicationCatalogGuiToStoreReferenceFacadeBridge implements ApplicationCa
 
     /**
      * @param string $storeName
-     *
-     * @throws \Spryker\Zed\StoreReference\Business\Exception\StoreReferenceNotFoundException
      *
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
