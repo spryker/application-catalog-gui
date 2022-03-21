@@ -9,7 +9,7 @@ namespace Spryker\Zed\ApplicationCatalogGui\Dependency\Facade;
 
 use Generated\Shared\Transfer\StoreTransfer;
 
-interface ApplicationCatalogGuiToStoreReferenceInterface
+interface ApplicationCatalogGuiToStoreReferenceFacadeInterface
 {
     /**
      * @param string $storeReference

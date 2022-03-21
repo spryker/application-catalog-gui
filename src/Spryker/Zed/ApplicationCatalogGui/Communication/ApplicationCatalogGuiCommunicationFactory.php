@@ -12,7 +12,7 @@ use Spryker\Zed\ApplicationCatalogGui\Communication\Mapper\OauthClientResponseTr
 use Spryker\Zed\ApplicationCatalogGui\Communication\Mapper\OauthClientResponseTransferToResponseDataMapperInterface;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreFacadeInterface;
-use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceInterface;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
@@ -38,9 +38,9 @@ class ApplicationCatalogGuiCommunicationFactory extends AbstractCommunicationFac
     }
 
     /**
-     * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceInterface;
+     * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceFacadeInterface
      */
-    public function getStoreReferenceFacade(): ApplicationCatalogGuiToStoreReferenceInterface
+    public function getStoreReferenceFacade(): ApplicationCatalogGuiToStoreReferenceFacadeInterface
     {
         return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::FACADE_STORE_REFERENCE);
     }

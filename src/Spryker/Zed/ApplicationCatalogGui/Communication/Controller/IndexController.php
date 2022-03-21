@@ -24,7 +24,7 @@ class IndexController extends AbstractController
             ->getCurrentLocale();
 
         $storeTransfer = $this->getFactory()->getStoreReferenceFacade()->getStoreByStoreName(
-            $this->getFactory()->getStoreFacade()->getCurrentStore()->getName(),
+            $this->getFactory()->getStoreFacade()->getCurrentStore()->getNameOrFail(),
         );
 
         return $this->viewResponse([

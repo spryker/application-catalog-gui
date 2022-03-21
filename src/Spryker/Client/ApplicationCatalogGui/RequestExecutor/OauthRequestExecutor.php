@@ -93,7 +93,7 @@ class OauthRequestExecutor implements OauthRequestExecutorInterface
                 ],
             );
 
-            $responseData = $this->utilEncodingService->decodeJson($response->getBody()->getContents(), true);
+            $responseData = (array)($this->utilEncodingService->decodeJson($response->getBody()->getContents(), true) ?? []);
 
             return (new AccessTokenResponseTransfer())
                 ->setIsSuccessful(true)
@@ -114,7 +114,7 @@ class OauthRequestExecutor implements OauthRequestExecutorInterface
             ->setIsSuccessful(false);
 
         if (!empty($externalHttpRequestException->getResponseBody())) {
-            $responseData = $this->utilEncodingService->decodeJson($externalHttpRequestException->getResponseBody(), true);
+            $responseData = (array)$this->utilEncodingService->decodeJson($externalHttpRequestException->getResponseBody(), true);
 
             $oauthResponseErrorTransfer = (new AccessTokenErrorTransfer())
                 ->setError($responseData[static::RESPONSE_KEY_ERROR] ?? null)

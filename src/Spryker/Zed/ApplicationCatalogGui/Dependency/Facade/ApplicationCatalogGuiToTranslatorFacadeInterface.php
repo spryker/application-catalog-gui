@@ -11,7 +11,7 @@ interface ApplicationCatalogGuiToTranslatorFacadeInterface
 {
     /**
      * @param string $id
-     * @param array $parameters
+     * @param array<string, string> $parameters
      * @param string|null $domain
      * @param string|null $locale
      *
