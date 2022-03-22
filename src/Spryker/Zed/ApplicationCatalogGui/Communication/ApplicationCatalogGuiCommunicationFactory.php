@@ -11,6 +11,8 @@ use Spryker\Zed\ApplicationCatalogGui\ApplicationCatalogGuiDependencyProvider;
 use Spryker\Zed\ApplicationCatalogGui\Communication\Mapper\OauthClientResponseTransferToResponseDataMapper;
 use Spryker\Zed\ApplicationCatalogGui\Communication\Mapper\OauthClientResponseTransferToResponseDataMapperInterface;
 use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToLocaleFacadeInterface;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreFacadeInterface;
+use Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
@@ -25,6 +27,22 @@ class ApplicationCatalogGuiCommunicationFactory extends AbstractCommunicationFac
     public function getLocaleFacade(): ApplicationCatalogGuiToLocaleFacadeInterface
     {
         return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::FACADE_LOCALE);
+    }
+
+    /**
+     * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreFacadeInterface;
+     */
+    public function getStoreFacade(): ApplicationCatalogGuiToStoreFacadeInterface
+    {
+        return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::FACADE_STORE);
+    }
+
+    /**
+     * @return \Spryker\Zed\ApplicationCatalogGui\Dependency\Facade\ApplicationCatalogGuiToStoreReferenceFacadeInterface
+     */
+    public function getStoreReferenceFacade(): ApplicationCatalogGuiToStoreReferenceFacadeInterface
+    {
+        return $this->getProvidedDependency(ApplicationCatalogGuiDependencyProvider::FACADE_STORE_REFERENCE);
     }
 
     /**
