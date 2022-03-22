@@ -6,17 +6,14 @@
     "require": {
         "php": ">=7.4",
         "psr/http-message": "^1.0.0",
-        "spryker/error-handler": "^2.1.0",
-        "spryker/glossary": "^3.8.0",
-        "spryker/gui": "^3.33.0",
         "spryker/guzzle": "^2.2.0",
         "spryker/kernel": "^3.30.0",
         "spryker/locale": "^1.0.0 || ^2.0.0 || ^3.0.0",
         "spryker/log": "^2.0.0 || ^3.0.0",
         "spryker/symfony": "^3.0.0",
         "spryker/transfer": "^3.27.0",
-        "spryker/util-encoding": "^1.0.0 || ^2.0.0",
-        "spryker/util-text": "^1.1.0"
+        "spryker/translator": "^1.5.1",
+        "spryker/util-encoding": "^1.0.0 || ^2.0.0"
     },
     "require-dev": {
         "spryker/code-sniffer": "*",
@@ -28,11 +25,16 @@
             "Spryker\\": "src/Spryker/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "SprykerTest\\": "tests/SprykerTest/"
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "cs-check": "phpcs -p -s --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/",
-        "cs-fix": "phpcbf -p --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/"
+        "cs-check": "phpcs -p -s --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/",
+        "cs-fix": "phpcbf -p --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/ tests/"
     },
     "extra": {
         "branch-alias": {

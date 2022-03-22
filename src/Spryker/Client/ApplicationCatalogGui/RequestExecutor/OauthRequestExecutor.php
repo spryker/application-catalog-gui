@@ -93,7 +93,17 @@ class OauthRequestExecutor implements OauthRequestExecutorInterface
                 ],
             );
 
+            /** @var array<string, mixed>|null $responseData */
             $responseData = $this->utilEncodingService->decodeJson($response->getBody()->getContents(), true);
+
+            if ($responseData === null) {
+                $oauthResponseErrorTransfer = (new AccessTokenErrorTransfer())
+                    ->setError('Response is not valid.');
+
+                return (new AccessTokenResponseTransfer())
+                    ->setIsSuccessful(false)
+                    ->setAccessTokenError($oauthResponseErrorTransfer);
+            }
 
             return (new AccessTokenResponseTransfer())
                 ->setIsSuccessful(true)
@@ -114,6 +124,7 @@ class OauthRequestExecutor implements OauthRequestExecutorInterface
             ->setIsSuccessful(false);
 
         if (!empty($externalHttpRequestException->getResponseBody())) {
+            /** @var array<string, mixed> $responseData */
             $responseData = $this->utilEncodingService->decodeJson($externalHttpRequestException->getResponseBody(), true);
 
             $oauthResponseErrorTransfer = (new AccessTokenErrorTransfer())
